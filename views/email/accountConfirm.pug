@@ -1,0 +1,20 @@
+extends baseEmail
+
+block content 
+  p Hi #{firstName},
+    p Welcome to E-Commerce, we're glad to have you 🎉🙏
+    p We're all a big familiy here, so make sure to confirm your account so we get to know you a bit better!
+    p #{url.url}
+    p #{url.host}
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+      tbody
+        tr
+          td(align='left')
+            table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+              tbody
+                tr
+                  td
+                    a#confirmAccount(href=url.url, target='_blanc') Confirm your account
+                    
+    p If you need any help with booking your next tour, please don't hesitate to contact me!
+    p - Amr Mustafa, CEO

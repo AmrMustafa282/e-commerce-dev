@@ -15,6 +15,10 @@ model User {
   isActive Boolean @default(true)
   isConfirmed Boolean @default(false)
   password String
+  passwordResetToken String @default("")
+  passwordResetExpires DateTime @default(now())
+  emailConfirmToken String @default("")
+  emailConfirmExpires DateTime @default(now())
   orders   Order[] @relation("UserToOrder")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

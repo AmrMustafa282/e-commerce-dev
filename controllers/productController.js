@@ -108,8 +108,8 @@ export const createProduct = catchAsync(async (req, res, next) => {
    colorId,
    name,
    price,
-   isFeatured,
-   isArchived
+  //  isFeatured,
+  //  isArchived
   },
  });
 

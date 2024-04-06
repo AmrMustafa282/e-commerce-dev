@@ -5,6 +5,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { promisify } from "util";
 import { PrismaClient } from "@prisma/client";
+import { Email } from "../utils/email.js";
 
 const prisma = new PrismaClient();
 
@@ -109,8 +110,10 @@ export const protect = catchAsync(async (req, res, next) => {
  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
  // 3) Check if user still exists
-  const currentUser = await prisma.user.findUnique({ where: { id: decoded.id } });
-  
+ const currentUser = await prisma.user.findUnique({
+  where: { id: decoded.id },
+ });
+
  if (!currentUser) {
   return next(
    new AppError("The user belonging to this token does no longer exist.", 401)
@@ -140,14 +143,14 @@ export const restrictTo = (...roles) => {
 export const updatePassword = catchAsync(async (req, res, next) => {
  // 1) Get user from collection
  const user = await prisma.user.findUnique({ where: { id: req.user.id } });
- let { password , newPassword} = req.body;
+ let { password, newPassword } = req.body;
  // 2) Check if POSTed current password is correct
  if (!(await bcrypt.compare(password, user.password))) {
   return next(new AppError("Your current password is wrong.", 401));
  }
 
  // 3) If so, update password
- newPassword =await bcrypt.hash(password, 10);
+ newPassword = await bcrypt.hash(password, 10);
  await prisma.user.update({
   where: {
    id: user.id,
@@ -158,4 +161,183 @@ export const updatePassword = catchAsync(async (req, res, next) => {
  });
  user.password = undefined;
  createSendToken(user, 200, req, res);
+});
+
+export const forgotPassword = catchAsync(async (req, res, next) => {
+ // 1) Get user based on POSTed email
+ const user = await prisma.user.findUnique({
+  where: { email: req.body.email },
+ });
+ if (!user) {
+  return next(new AppError("There is no user with email address.", 404));
+ }
+
+ // 2) Generate the random reset token
+ const resetToken = crypto.randomBytes(32).toString("hex");
+ user.passwordResetToken = crypto
+  .createHash("sha256")
+  .update(resetToken)
+  .digest("hex");
+ user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000);
+ await prisma.user.update({
+  where: {
+   email: req.body.email,
+  },
+  data: user,
+ });
+
+ // 3) Send it to user's email
+ try {
+  const resetURL = {
+   url: `${req.protocol}://${req.get("host")}/auth/reset-password/`,
+   token: resetToken,
+  };
+  await new Email(user, resetURL).sendPasswordRest();
+
+  res.status(200).json({
+   status: "success",
+   message: "Token sent to email!",
+  });
+ } catch (err) {
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await prisma.user.update({
+   where: {
+    email: req.body.email,
+   },
+   data: user,
+  });
+  console.log(err);
+  return next(
+   new AppError("There was an error sending the email. Try again later!"),
+   500
+  );
+ }
+});
+
+export const resetPassword = catchAsync(async (req, res, next) => {
+ // 1) Get user based on the token
+ const hashedToken = crypto
+  .createHash("sha256")
+  .update(req.params.token)
+  .digest("hex");
+
+ const user = await prisma.user.findFirst({
+  where: {
+   passwordResetToken: hashedToken,
+   passwordResetExpires: {
+    gt: new Date(),
+   },
+  },
+ });
+
+ // 2) If token has not expired, and there is user, set the new password
+ if (!user) {
+  return next(new AppError("Token is invalid or has expired", 400));
+ }
+ user.password = await bcrypt.hash(req.body.password, 10);
+ user.passwordResetToken = undefined;
+ user.passwordResetExpires = undefined;
+
+ await prisma.user.update({
+  where: {
+   email: user.email,
+  },
+  data: user,
+ });
+
+ // 3) Update changedPasswordAt property for the user
+ // 4) Log the user in, send JWT
+ // createSendToken(user, 200, req, res);
+ res.status(200).json({
+  status: "success",
+ });
+});
+
+export const sendConfirmation = catchAsync(async (req, res, next) => {
+ // 1) Get user based on current user id
+ // const user = await User.findOne({email:req.body.email});
+ // if (!user) {
+ //   return next(new AppError('There is no user with that email address', 404));
+ // }
+ const { user } = req;
+ if (user.isConfirmed) {
+  return next(new AppError("THIS USER IS ALREADY CONFIRMED", 400));
+ }
+ // 2) Generate the random reset token
+ const confirmToken = crypto.randomBytes(32).toString("hex");
+ user.emailConfirmToken = crypto
+  .createHash("sha256")
+  .update(confirmToken)
+  .digest("hex");
+ user.emailConfirmExpires = new Date(Date.now() + 10 * 60 * 1000);
+ await prisma.user.update({
+  where: {
+   email: req.user.email,
+  },
+  data: user,
+ });
+ // 3) Send it to user's email
+ const URL = {
+  url: `${req.protocol}://${req.get(
+   "host"
+  )}/api/v1/users/confirmEmail/${confirmToken}`,
+  host: `${req.protocol}://${req.get("host")}`,
+ };
+
+ // const message = `Confirm your email? Submit a POST request to: ${confirmURL}`;
+ try {
+  await new Email(user, URL).sendAccountConfirmation();
+  res.status(200).json({
+   status: "success",
+   massage: "Token sent to email!",
+  });
+ } catch (err) {
+  user.emailConfirmToken = undefined;
+  user.emailConfirmExpires = undefined;
+  await prisma.user.update({
+   where: {
+    email: req.body.email,
+   },
+   data: user,
+  });
+
+  return next(
+   new AppError("There was an error sending the email,Try again later!", 500)
+  );
+ }
+});
+
+// not portectd for now but i think it should be
+export const confirmEmail = catchAsync(async (req, res, next) => {
+ // 1) Get user based on the token
+ const hashedToken = crypto
+  .createHash("sha256")
+  .update(req.params.token)
+  .digest("hex");
+  const user = await prisma.user.findFirst({
+   where: {
+    emailConfirmToken: hashedToken,
+    emailConfirmExpires: {
+     gt: new Date(),
+    },
+   },
+  });
+ // 2) if token has not expired, and there is user, set the new password
+ if (!user) {
+  return next(new AppError("Token is invalid or has expired", 400));
+ }
+console.log(user)
+ user.isConfirmed = true;
+ user.emailConfirmToken = undefined;
+ user.emailConfirmExpires = undefined;
+ await prisma.user.update({
+  where: {
+   email: user.email,
+  },
+  data: user,
+ });
+ // createSendToken(user, 200, req, res, 'account');
+   res.redirect("/me");
+  // res.json('done')
 });
