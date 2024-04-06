@@ -10,7 +10,7 @@ import {
  restrictTo,
 } from "./../controllers/authController.js";
 import {
- deletUser,
+ deleteUser,
  deleteMe,
  getAllUsers,
  getMe,
@@ -44,6 +44,6 @@ router.use(restrictTo("admin"));
 
 router.route("/").get(getAllUsers);
 
-router.route("/:id").get(getUser).patch(updateUser).delete(deletUser);
+router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
 export default router;

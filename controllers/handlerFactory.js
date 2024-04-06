@@ -15,24 +15,18 @@ export const getAll = (Model, searchOptions) =>
    if (searchOptions) {
      searchArray = searchOptions.map((option) => ({ [option]  : {contains: search} }))
    }
-
-   const doc = await prisma.user.findMany({
+   const doc = await prisma[Model].findMany({
     where: {
      OR: searchArray ,
-    },
+     },
     orderBy: {
-     email: sortDirection, // [only for test]
-     // updatedAt: 'asc', [my doc didnt have it yet]
-    },
+     updatedAt: sortDirection, 
+     },
     skip: startIndex,
     take: limit,
    });
 
     const total = await prisma[Model].count();
-    if (searchOptions[0] === 'username') {
-      doc.forEach((d)=> d.password = undefined)
-    }
-
    res.status(200).json({
     doc,
     total,
@@ -107,7 +101,8 @@ export const deleteOne = (Model) =>
 
 export const updateOne = (Model) =>
  catchAsync(async (req, res, next) => {
-  try {
+   try {
+    // console.log(req.body) [fix update billboard]
    const doc = await prisma[Model].update({
     where: { id: req.params.id },
     data: req.body,

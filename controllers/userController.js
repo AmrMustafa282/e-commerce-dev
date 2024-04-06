@@ -87,11 +87,38 @@ export const getMe = (req, res, next) => {
  next();
 };
 
-export const getAllUsers = getAll('user',["username","role","email"]);
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  const startIndex = parseInt(req.query.startIndex) || 0;
+  const limit = parseInt(req.query.limit) || 16;
+  const sortDirection = req.query.order === "asc" ? "asc" : "desc";
+  const search = req.query.search || "";
+  const users = await prisma.user.findMany({
+   where: {
+      OR: [
+        { username: { contains: search } },
+        { role: { contains: search } },
+        { email: { contains: search } },
+      ],
+   },
+   orderBy: {
+    updatedAt: sortDirection,
+    },
+   include:{orders:true},
+   skip: startIndex,
+   take: limit,
+  });
+
+  const total = await prisma.user.count();
+  res.status(200).json({
+   users,
+   total,
+  });
+});
+
 export const getUser = getOne('user');
 
 // Do NOT update passwords with this!!!!
 export const updateUser = updateOne('user');
-export const deletUser = deleteOne('user');
+export const deleteUser = deleteOne('user');
 
 

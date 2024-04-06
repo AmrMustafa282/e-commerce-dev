@@ -11,7 +11,7 @@ model User {
   id       String      @id @default(uuid())
   username String
   email    String   @unique
-  role     String @default("admin") // updated
+  role     String @default("user") 
   isActive Boolean @default(true)
   isConfirmed Boolean @default(false)
   password String
@@ -85,6 +85,10 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   productId String  // Foreign Key to Product
   product   Product @relation(fields: [productId], references: [id])
+  amount    Decimal @default(1)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
 
   @@index([orderId])
   @@index([productId])
@@ -113,7 +117,7 @@ model Color {
 model Image {
   id          String   @id @default(uuid())
   productId   String   // Foreign Key to Product
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade) // [unrefrenced]
   url         String   // URL of the image
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
