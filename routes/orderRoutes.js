@@ -8,6 +8,7 @@ import {
  updateOrder,
  deleteOrder,
  createOrder,
+ getCheckoutSession,
 } from "../controllers/orderController.js";
 
 import {
@@ -17,6 +18,8 @@ import {
 } from "../controllers/orderItemController.js";
 
 router.use(protect);
+router.get("/checkout-session/:orderId", getCheckoutSession);
+
 router.route("/").post(createOrder);
 router.route("/:id").get(getOrder).patch(updateOrder).delete(deleteOrder);
 

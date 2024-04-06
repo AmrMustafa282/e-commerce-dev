@@ -67,7 +67,11 @@ export const login = catchAsync(async (req, res, next) => {
  const user = await prisma.user.findUnique({
   where: {
    email,
-  },
+   },
+   include: {
+     orders: {
+     include: {orderItems: true}
+   }}
  });
 
  if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -327,7 +331,7 @@ export const confirmEmail = catchAsync(async (req, res, next) => {
  if (!user) {
   return next(new AppError("Token is invalid or has expired", 400));
  }
-console.log(user)
+// console.log(user)
  user.isConfirmed = true;
  user.emailConfirmToken = undefined;
  user.emailConfirmExpires = undefined;
