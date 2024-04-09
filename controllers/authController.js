@@ -17,13 +17,13 @@ const signToken = (user) => {
 
 const createSendToken = (user, statusCode, req, res) => {
  const token = signToken(user);
- res.cookie("jwt", token, {
-  expires: new Date(
-   Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-  ),
-  httpOnly: true,
-  secure: req.secure || req.headers["x-forwarded-proto"] === "https",
- });
+//  res.cookie("jwt", token, {
+//   expires: new Date(
+//    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+//   ),
+//   httpOnly: true,
+//   secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+//  });
 
  user.password = undefined;
 
@@ -100,8 +100,8 @@ export const protect = catchAsync(async (req, res, next) => {
   req.headers.authorization.startsWith("Bearer")
  ) {
   token = req.headers.authorization.split(" ")[1];
- } else if (req.cookies.jwt) {
-  token = req.cookies.jwt;
+ } else if (req.cookies._auth) {
+  token = req.cookies._auth;
  }
 
  if (!token) {
