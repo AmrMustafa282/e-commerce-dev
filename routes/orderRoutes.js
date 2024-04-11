@@ -9,6 +9,7 @@ import {
  deleteOrder,
  createOrder,
  getCheckoutSession,
+ getUserOrder,
 } from "../controllers/orderController.js";
 
 import {
@@ -21,6 +22,7 @@ router.use(protect);
 router.get("/checkout-session/:orderId", getCheckoutSession);
 
 router.route("/").post(createOrder);
+router.route("/me/:userId").get(getUserOrder);
 router.route("/:id").get(getOrder).patch(updateOrder).delete(deleteOrder);
 
 router.route("/:id").post(createOrderItem);

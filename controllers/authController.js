@@ -17,13 +17,13 @@ const signToken = (user) => {
 
 const createSendToken = (user, statusCode, req, res) => {
  const token = signToken(user);
-//  res.cookie("jwt", token, {
-//   expires: new Date(
-//    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-//   ),
-//   httpOnly: true,
-//   secure: req.secure || req.headers["x-forwarded-proto"] === "https",
-//  });
+ //  res.cookie("jwt", token, {
+ //   expires: new Date(
+ //    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+ //   ),
+ //   httpOnly: true,
+ //   secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+ //  });
 
  user.password = undefined;
 
@@ -67,11 +67,14 @@ export const login = catchAsync(async (req, res, next) => {
  const user = await prisma.user.findUnique({
   where: {
    email,
+  },
+  include: {
+   orders: {
+    include: {
+       orderItems: true
+    },
    },
-   include: {
-     orders: {
-     include: {orderItems: true}
-   }}
+  },
  });
 
  if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -101,8 +104,10 @@ export const protect = catchAsync(async (req, res, next) => {
  ) {
   token = req.headers.authorization.split(" ")[1];
  } else if (req.cookies._auth) {
-  token = req.cookies._auth;
+    token = req.cookies._auth;
  }
+   // console.log(req.cookies)
+
 
  if (!token) {
   return next(
@@ -319,19 +324,19 @@ export const confirmEmail = catchAsync(async (req, res, next) => {
   .createHash("sha256")
   .update(req.params.token)
   .digest("hex");
-  const user = await prisma.user.findFirst({
-   where: {
-    emailConfirmToken: hashedToken,
-    emailConfirmExpires: {
-     gt: new Date(),
-    },
+ const user = await prisma.user.findFirst({
+  where: {
+   emailConfirmToken: hashedToken,
+   emailConfirmExpires: {
+    gt: new Date(),
    },
-  });
+  },
+ });
  // 2) if token has not expired, and there is user, set the new password
  if (!user) {
   return next(new AppError("Token is invalid or has expired", 400));
  }
-// console.log(user)
+ // console.log(user)
  user.isConfirmed = true;
  user.emailConfirmToken = undefined;
  user.emailConfirmExpires = undefined;
@@ -342,6 +347,6 @@ export const confirmEmail = catchAsync(async (req, res, next) => {
   data: user,
  });
  // createSendToken(user, 200, req, res, 'account');
-   res.redirect("/me");
-  // res.json('done')
+ res.redirect("/me");
+ // res.json('done')
 });

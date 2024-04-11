@@ -9,4 +9,14 @@ export default defineConfig({
    "@": path.resolve(__dirname, "./src"),
   },
  },
+ server: {
+  proxy: {
+   "/api": {
+    target: "http://localhost:8000",
+    // target: "https://bytebard-hfri.onrender.com",
+    // changeOrigin: true, // Add this line if necessary
+    secure: true,
+   },
+  },
+ },
 });

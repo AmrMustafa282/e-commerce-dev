@@ -123,7 +123,8 @@ export const getAllOrders = catchAsync(async (req, res, next) => {
 export const getOrder = catchAsync(async (req, res, next) => {
  const order = await prisma.order.findUnique({
   where: { id: req.params.id },
-  include: { user: true, orderItems: true },
+   include: {
+     user: true, orderItems: true },
  });
 
  if (!order) {
@@ -143,6 +144,46 @@ export const getOrder = catchAsync(async (req, res, next) => {
   },
  });
 });
+
+// fix this for getting products related to orderItems
+export const getUserOrder = catchAsync(async (req, res, next) => {
+ const orders = await prisma.order.findMany({
+  where: { userId: req.params.userId },
+  include: {
+   user: true,
+   orderItems: {
+     include: {
+       product: true,
+      },
+      where: {
+       productId: { not: null }, // Filter out order items with null products
+      },
+   },
+  },
+ });
+
+ if (!orders || orders.length === 0) {
+  return next(new AppError("No document found with that ID", 404));
+ }
+
+ if (req.user.id !== orders[0].userId && req.user.role !== "admin") {
+  return next(new AppError("You don't have permission to do this action", 403));
+ }
+
+ orders.forEach((order) => {
+  // Removing sensitive data from user object
+  order.user.password = undefined;
+ });
+
+ res.status(200).json({
+  status: "success",
+  data: {
+   orders,
+  },
+ });
+});
+
+
 
 // [reqsricted for same user and admin]
 export const deleteOrder = catchAsync(async (req, res, next) => {

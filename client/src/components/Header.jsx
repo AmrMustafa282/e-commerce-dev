@@ -5,6 +5,8 @@ import { ModeToggle } from "./toggleTheme";
 import { Button } from "./ui/button";
 import { NavigationMenuDemo } from "./Navigation";
 import { signoutSuccess } from "@/redux/user/userSlice";
+import { ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
  const { currentUser } = useSelector((state) => state.user);
@@ -12,22 +14,27 @@ const Header = () => {
  const signOut = useSignOut();
  const handelLogout = () => {
   signOut();
-   dispatch(signoutSuccess());
-   window.location.assign('/')
+  dispatch(signoutSuccess());
+  window.location.assign("/");
  };
-  const handelLogin = () => {
-    window.location.assign('/login')
-  }
+ const handelLogin = () => {
+  window.location.assign("/login");
+ };
 
  return (
   <div className="py-2  w-full">
    <div className="container mx-auto h-full flex justify-between items-center">
     <h1 className="font-bold text-2xl">STORE</h1>
     <NavigationMenuDemo />
-    <div className="md:flex gap-4 hidden">
+    <div className="flex items-center justify-center gap-4">
      <ModeToggle />
      {currentUser ? (
-      <Button onClick={handelLogout}>Logout</Button>
+      <>
+       <Link to="/cart" className="border p-2 rounded-lg">
+        <ShoppingCart className=""/>
+       </Link>
+       <Button onClick={handelLogout}>Logout</Button>
+      </>
      ) : (
       <Button onClick={handelLogin}>SignIn</Button>
      )}
