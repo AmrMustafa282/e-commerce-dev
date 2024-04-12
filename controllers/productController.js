@@ -8,6 +8,7 @@ import {
  deleteOne,
  updateOne,
  createOne,
+ deleteAll,
 } from "./handlerFactory.js";
 import multer from "multer";
 import sharp from "sharp";
@@ -46,7 +47,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
   .resize(500, 500)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
-  .toFile(`public/img/product/${req.body.imageCover}`);
+  .toFile(`client/public/img/product/${req.body.imageCover}`);
 
  // 2) Images
 
@@ -59,7 +60,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`public/img/product/${filename}`);
+    .toFile(`client/public/img/product/${filename}`);
    req.body.images.push(filename);
   })
  );
@@ -140,3 +141,4 @@ export const createProduct = catchAsync(async (req, res, next) => {
 export const getProduct = getOne(model);
 export const updateProduct = updateOne(model);
 export const deleteProduct = deleteOne(model);
+export const deleteAllProduct = deleteAll(model);

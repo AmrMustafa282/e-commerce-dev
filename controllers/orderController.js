@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { catchAsync } from "./../utils/catchAsync.js";
 import { AppError } from "../utils/appError.js";
+import { deleteAll } from "./handlerFactory.js";
 import Stripe from "stripe";
 
 const prisma = new PrismaClient();
@@ -11,12 +12,12 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
  const order = await prisma.order.findFirst({
   where: { id: req.params.orderId },
   include: {
-   orderItems :true,
+   orderItems: true,
   },
  });
-  // 2) Create checkout session  [npm i stripe]
-  // console.log(order)
- 
+ // 2) Create checkout session  [npm i stripe]
+ // console.log(order)
+
  const session = await stripe.checkout.sessions.create({
   payment_method_types: ["card"],
   success_url: `${req.protocol}://${req.get("host")}/success`,
@@ -31,12 +32,12 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
     quantity: 1,
     price_data: {
      currency: "usd",
-    //  unit_amount:
-    //   order.orderItems.reduce((acc, item) => {
-    //    const itemPrice = item.amount * item.product.price;
-    //    return acc + itemPrice;
-      //   }) * 100,
-      unit_amount: 100 ,
+     //  unit_amount:
+     //   order.orderItems.reduce((acc, item) => {
+     //    const itemPrice = item.amount * item.product.price;
+     //    return acc + itemPrice;
+     //   }) * 100,
+     unit_amount: 100,
      product_data: {
       name: `${order.id} Order`,
       description: order.address,
@@ -64,19 +65,16 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
  });
 });
 
-
-
 const createBookingCheckout = async (session) => {
-  try {
-    
-    const orderId = session.client_reference_id;
-    await prisma.order.update({
-     where: { id: orderId }, 
-     data: { isPaid: true },
-    });
-  } catch (error) {
-    console.log(error)
-  }
+ try {
+  const orderId = session.client_reference_id;
+  await prisma.order.update({
+   where: { id: orderId },
+   data: { isPaid: true },
+  });
+ } catch (error) {
+  console.log(error);
+ }
 };
 
 export const webhookCheckout = (req, res, next) => {
@@ -97,10 +95,6 @@ export const webhookCheckout = (req, res, next) => {
 
  res.status(200).json({ received: true });
 };
-
-
-
-
 
 // [admin only]
 export const getAllOrders = catchAsync(async (req, res, next) => {
@@ -123,8 +117,10 @@ export const getAllOrders = catchAsync(async (req, res, next) => {
 export const getOrder = catchAsync(async (req, res, next) => {
  const order = await prisma.order.findUnique({
   where: { id: req.params.id },
-   include: {
-     user: true, orderItems: true },
+  include: {
+   user: true,
+   orderItems: true,
+  },
  });
 
  if (!order) {
@@ -152,12 +148,12 @@ export const getUserOrder = catchAsync(async (req, res, next) => {
   include: {
    user: true,
    orderItems: {
-     include: {
-       product: true,
-      },
-      where: {
-       productId: { not: null }, // Filter out order items with null products
-      },
+    include: {
+     product: true,
+    },
+    where: {
+     productId: { not: null }, // Filter out order items with null products
+    },
    },
   },
  });
@@ -182,8 +178,6 @@ export const getUserOrder = catchAsync(async (req, res, next) => {
   },
  });
 });
-
-
 
 // [reqsricted for same user and admin]
 export const deleteOrder = catchAsync(async (req, res, next) => {
@@ -253,3 +247,5 @@ export const updateOrder = catchAsync(async (req, res, next) => {
   },
  });
 });
+
+export const deleteAllOrders = deleteAll("order");

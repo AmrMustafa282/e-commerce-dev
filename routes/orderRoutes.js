@@ -10,10 +10,12 @@ import {
  createOrder,
  getCheckoutSession,
  getUserOrder,
+ deleteAllOrders,
 } from "../controllers/orderController.js";
 
 import {
  createOrderItem,
+ deleteAllOrderItems,
  deleteOrderItem,
  updateOrderItem,
 } from "../controllers/orderItemController.js";
@@ -21,11 +23,12 @@ import {
 router.use(protect);
 router.get("/checkout-session/:orderId", getCheckoutSession);
 
-router.route("/").post(createOrder);
+router.route("/").post(createOrder).delete(deleteAllOrders);
 router.route("/me/:userId").get(getUserOrder);
 router.route("/:id").get(getOrder).patch(updateOrder).delete(deleteOrder);
 
 router.route("/:id").post(createOrderItem);
+router.route("/deleteItems").delete(deleteAllOrderItems);
 router.route("/:id/:itemId").patch(updateOrderItem).delete(deleteOrderItem);
 
 router.use(restrictTo("admin"));

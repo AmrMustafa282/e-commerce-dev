@@ -20,28 +20,30 @@ const multerFilter = (req, file, cb) => {
 
 const upload = multer({
  storage: multerStorage,
-//  fileFilter: multerFilter,
+ fileFilter: multerFilter,
 });
 
 
 
 export const uploadBillboardPhoto = upload.single("image");
 
+
 export const resizeBillboardPhoto = catchAsync(async (req, res, next) => {
- if (!req.file) return next();
+  if (!req.file) return next();
+
  req.file.filename = `billboard-${req.body.label}-${Date.now()}.jpeg`;
  await sharp(req.file.buffer)
   .resize(1200, 490)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
-  .toFile(`public/img/billboard/${req.file.filename}`);
+  .toFile(`client/public/img/billboard/${req.file.filename}`);
  next();
 });
 
 export const createBillboard = catchAsync(async (req, res, next) => {
 //  console.log(req.file);
  const { label } = req.body;
- const imageUrl = `public/img/billboard/${req.file.filename}`; // Assuming the image has been uploaded and resized
+ const imageUrl = req.file.filename; // Assuming the image has been uploaded and resized
 
  const billboard = await prisma.billboard.create({
   data: {

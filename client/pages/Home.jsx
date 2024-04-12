@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import {
- Card,
- CardContent,
- CardDescription,
- CardFooter,
- CardHeader,
- CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Expand , ShoppingCart } from "lucide-react";
+
+// import test from "/img/product/product-cover-1712366464909.jpeg";
 const Home = () => {
  //  const auth = useAuthUser();
  const [products, setProducts] = useState([]);
@@ -26,24 +21,24 @@ const Home = () => {
  useEffect(() => {
   fetchProducts();
  }, []);
-  
-  const loadImage = (imageName) => import(`./${imageName}`).default;
-
- //  console.log(products[8].images[0].url);
 
  return (
   <>
    {products.length > 0 ? (
     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-     {products.map((product) => (
+     {products.map((product, index) => (
       <Card key={product.id} className="w-full">
        <CardContent>
-        <div>
+        <div className="overflow-hidden relative">
          <img
-          src={loadImage(`/img/product/${product.images[0]?.url}`)}
-          alt=""
+          src={`/img/product/${product.images[0]?.url}`}
+          alt={"product.name"}
+          className="hover:scale-110 transition-all duration-300 "
          />
-         {/* <img src={cover} alt="" /> */}
+         <div className="absolute bottom-3 w-full items-center justify-center flex gap-6  ">
+          <Expand className="h-10 w-10 hover:scale-[1.08] duration-300 transition-all"/>
+          <ShoppingCart className="h-10 w-10 hover:scale-[1.08] duration-300 transition-all"/>
+         </div>
         </div>
        </CardContent>
        <CardFooter className="flex flex-col items-start">

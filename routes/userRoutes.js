@@ -42,7 +42,7 @@ router.patch("/confirmEmail/:token", confirmEmail);
 // router.get("/confirmEmail/:token", confirmEmail);
 
 // this is gonna work as a Middelware so, anything after this is gonne be protected
-router.use(protect);
+router.use(protect); 
 
 router.patch("/updateMyPassword/", updatePassword);
 

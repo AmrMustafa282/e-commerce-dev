@@ -98,6 +98,21 @@ export const deleteOne = (Model) =>
    next(error);
   }
  });
+export const deleteAll = (Model) =>
+ catchAsync(async (req, res, next) => {
+  try {
+     await prisma[Model].deleteMany({});
+
+  
+
+   res.status(204).json({
+    status: "success",
+    data: null,
+   });
+  } catch (error) {
+   next(error);
+  }
+ });
 
 export const updateOne = (Model) =>
  catchAsync(async (req, res, next) => {

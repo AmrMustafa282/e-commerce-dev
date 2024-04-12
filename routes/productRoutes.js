@@ -10,6 +10,7 @@ import {
  createProduct,
  uploadProductImages,
  resizeProductImages,
+ deleteAllProduct,
 } from "../controllers/productController.js";
 
 router.route("/").get(getAllProducts);
@@ -18,7 +19,10 @@ router.route("/:id").get(getProduct);
 router.use(protect);
 router.use(restrictTo("admin"));
 
-router.route("/").post(uploadProductImages, resizeProductImages, createProduct);
+router
+ .route("/")
+ .post(uploadProductImages, resizeProductImages, createProduct)
+ .delete(deleteAllProduct);
 router.route("/:id").patch(updateProduct).delete(deleteProduct);
 
 export default router;

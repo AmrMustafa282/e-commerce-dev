@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { catchAsync } from "./../utils/catchAsync.js";
+import { deleteAll } from "./handlerFactory.js";
 
 const prisma = new PrismaClient();
 
@@ -77,3 +78,5 @@ export const deleteOrderItem = catchAsync(async (req, res, next) => {
   next(error);
  }
 });
+
+export const deleteAllOrderItems = deleteAll("orderItem");
