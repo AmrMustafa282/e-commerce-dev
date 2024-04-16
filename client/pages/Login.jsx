@@ -25,22 +25,26 @@ const Login = (props) => {
   try {
    dispatch(signInStart());
    const response = await axios.post(
-     "http://localhost:8000/api/v1/users/login",
-     values
+    "http://localhost:8000/api/v1/users/login",
+    values
    );
+   const options = {
+    email: values.email,
+    username: response.data.data.user.username,
+   };
+   if (response.data.data.user.role === "admin") {
+    options.role = "admin";
+   }
    signIn({
-     auth: {
-       token: response.data.token,
-      },
-    userState: {
-     email: values.email,
-     username: response.data.data.user.username,
+    auth: {
+     token: response.data.token,
     },
-  });
-  dispatch(signInSuccess(response.data));
-  nav("/");
-} catch (err) {
-    dispatch(signInFailure());
+    userState: options,
+   });
+   dispatch(signInSuccess(response.data));
+   nav("/");
+  } catch (err) {
+   dispatch(signInFailure());
    if (err && err instanceof AxiosError) setError(err.response?.data.message);
    else if (err && err instanceof Error) setError(err.message);
 

@@ -44,7 +44,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
  // 1) Cover Image
  req.body.imageCover = `product-cover-${Date.now()}.jpeg`;
  await sharp(req.files.imageCover[0].buffer)
-  .resize(500, 500)
+  .resize(800, 800)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
   .toFile(`client/public/img/product/${req.body.imageCover}`);
@@ -57,7 +57,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
    const filename = `product-img-${Date.now()}-${i + 1}.jpeg`;
 
    await sharp(file.buffer)
-    .resize(500, 500)
+    .resize(800, 800)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
     .toFile(`client/public/img/product/${filename}`);

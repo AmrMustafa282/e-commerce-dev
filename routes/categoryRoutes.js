@@ -8,10 +8,12 @@ import {
  updateCategory,
  deleteCategory,
  createCategory,
+ getCategoryByName,
 } from "../controllers/categoryController.js";
 
 router.route("/").get(getAllCategories);
-router.route("/:id").get(getCategory);
+router.route("/:name").get(getCategoryByName);
+// router.route("/:id").get(getCategory);
 
 router.use(protect);
 router.use(restrictTo("admin"));

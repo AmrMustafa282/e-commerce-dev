@@ -20,6 +20,6 @@ router.use(protect);
 router.use(restrictTo("admin"));
 
 router.route("/").post(uploadBillboardPhoto,resizeBillboardPhoto,createBillboard);
-router.route("/:id").patch(updateBillboard).delete(deleteBillboard);
+router.route("/:id").patch(uploadBillboardPhoto,resizeBillboardPhoto,updateBillboard).delete(deleteBillboard);
 
 export default router;

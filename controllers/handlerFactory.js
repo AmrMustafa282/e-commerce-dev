@@ -60,6 +60,30 @@ export const getOne = (Model) =>
    next(error);
   }
  });
+export const getOneByKey = (Model,key) =>
+ catchAsync(async (req, res, next) => {
+  try {
+   const doc = await prisma[Model].findFirst({
+    where: { [key]: req.params[key] },
+   });
+
+   if (!doc) {
+    return next(new AppError("No document found with that ID"));
+   }
+    if (doc.password) {
+     doc.password = undefined;
+    }
+
+   res.status(200).json({
+    status: "success",
+    data: {
+     data: doc,
+    },
+   });
+  } catch (error) {
+   next(error);
+  }
+ });
 
 export const createOne = (Model) =>
  catchAsync(async (req, res, next) => {
