@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { catchAsync } from "./../utils/catchAsync.js";
-import {  getOne, deleteOne, updateOne, getOneByKey } from "./handlerFactory.js";
+import { getOne, deleteOne, updateOne, getOneByKey } from "./handlerFactory.js";
 
 const prisma = new PrismaClient();
 const model = "category";
@@ -25,15 +25,18 @@ export const createCategory = catchAsync(async (req, res, next) => {
 
 export const getAllCategories = catchAsync(async (req, res, next) => {
  const categories = await prisma.category.findMany({
-   include: {
+  include: {
+     billboard: true,
      products: {
        include: {
-         images: true,
          size: true,
          color: true,
-         category:true
+         category: true,
+         images:true
+      }
     }
-  } ,billboard: true},
+   },
+   orderBy:{createdAt:'asc'}
  });
 
  res.status(200).json({
@@ -44,18 +47,18 @@ export const getCategory = getOne(model);
 export const getCategoryByName = catchAsync(async (req, res, next) => {
  try {
   const category = await prisma.category.findFirst({
-    where: { name: req.params.name },
-    include: {
-      billboard: true,
-      products: {
-        include: {
-          color:true,
-          size:true,
-          images:true,
-          category:true,
-        }
-      }
-    }
+   where: { name: req.params.name },
+   include: {
+    billboard: true,
+    products: {
+     include: {
+      color: true,
+      size: true,
+      images: true,
+      category: true,
+     },
+    },
+   },
   });
 
   if (!category) {
@@ -64,7 +67,7 @@ export const getCategoryByName = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
    status: "success",
-   category
+   category,
   });
  } catch (error) {
   next(error);
