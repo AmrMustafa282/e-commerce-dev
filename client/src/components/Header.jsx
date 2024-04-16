@@ -11,7 +11,8 @@ import { Button } from "./ui/button";
 
 const Header = () => {
  const { currentUser } = useSelector((state) => state.user);
- const { categories } = useSelector((state) => state.product);
+  let { categories } = useSelector((state) => state.product);
+// categories = categories.slice(1)
  const [tab, setTab] = useState("overview");
  const location = useLocation();
  const auth = useAuthUser();

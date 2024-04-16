@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Button } from "./../../src/components/ui/button";
+import { Button } from "../../src/components/ui/button";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -51,7 +51,7 @@ const CreateBillboard = () => {
  };
  return (
   <>
-   <div className="py-4 border-b flex justify-between items-end">
+   <div className="py-4 border-b ">
     <h1 className="font-bold text-4xl">Create billboard</h1>
     <p className="text-gray-700">Add a new billboard</p>
    </div>

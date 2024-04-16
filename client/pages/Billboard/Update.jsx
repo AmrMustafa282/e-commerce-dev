@@ -1,7 +1,7 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-import { Button } from "./../../src/components/ui/button";
+import { Button } from "../../src/components/ui/button";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -38,9 +38,9 @@ const UpdateBillboard = () => {
    toast.error(error);
   }
  };
-   const handleLabelChange = (event) => {
-    setLabel(event.target.value);
-   };
+ const handleLabelChange = (event) => {
+  setLabel(event.target.value);
+ };
  const handleImageChange = (event) => {
   const uploadedImage = event.target.files[0];
   setImage(uploadedImage);

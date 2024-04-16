@@ -21,8 +21,8 @@ const Home = () => {
   try {
    const res = await axios.get("/api/v1/categories");
    setCategories(res.data.categories);
-   const firstCat = res.data.categories.reverse()[0].name;
-   dispatch(loadData(res.data.categories.slice(1,2)));
+    const firstCat = res.data.categories[0].name;
+   dispatch(loadData(res.data.categories.slice(1)));
    const products = await axios.get(`/api/v1/categories/${firstCat}`);
   //  console.log(products.data);
    setData([products.data.category]);

@@ -10,8 +10,14 @@ import Cart from "../pages/Cart";
 import Category from "../pages/Category";
 import Dashboard from "../pages/Dashboard";
 import Restrict from "./components/Restrict";
-import UpdateBillboard from "../pages/Billboard/UpdateBillboard";
-import CreateBillboard from "../pages/Billboard/CreateBillboard";
+import UpdateBillboard from "../pages/Billboard/Update";
+import CreateBillboard from "../pages/Billboard/Create";
+import UpdateCategory from "../pages/Categories/Update";
+import CreateCategory from "../pages/Categories/Create";
+import CreateColor from "../pages/Colors/Create";
+import UpdateColor from "../pages/Colors/Update";
+import CreateSize from "../pages/Sizes/Create";
+import UpdateSize from "../pages/Sizes/Update";
 
 function App() {
  // const [products, setProducts] = useState([])
@@ -46,8 +52,38 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route element={<Restrict />}>
        <Route path="/dashboard" element={<Dashboard />} />
-       <Route path="/dashboard/billboard/create" element={<CreateBillboard />} />
-       <Route path="/dashboard/billboard/:billboardId" element={<UpdateBillboard />} />
+       <Route
+        path="/dashboard/billboard/create"
+        element={<CreateBillboard />}
+       />
+       <Route
+        path="/dashboard/billboard/:billboardId"
+        element={<UpdateBillboard />}
+       />
+       <Route
+        path="/dashboard/category/create"
+        element={<CreateCategory />}
+       />
+       <Route
+        path="/dashboard/category/:categoryId"
+        element={<UpdateCategory />}
+       />
+       <Route
+        path="/dashboard/color/create"
+        element={<CreateColor />}
+       />
+       <Route
+        path="/dashboard/color/:colorId"
+        element={<UpdateColor />}
+       />
+       <Route
+        path="/dashboard/size/create"
+        element={<CreateSize />}
+       />
+       <Route
+        path="/dashboard/size/:sizeId"
+        element={<UpdateSize />}
+       />
       </Route>
      </Route>
     </Routes>
