@@ -18,79 +18,60 @@ import CreateColor from "../pages/Colors/Create";
 import UpdateColor from "../pages/Colors/Update";
 import CreateSize from "../pages/Sizes/Create";
 import UpdateSize from "../pages/Sizes/Update";
+import CreateProduct from "../pages/Products/Create";
+import UpdateProduct from "../pages/Products/Update";
 
 function App() {
- // const [products, setProducts] = useState([])
- // const [data, setData] = useState([])
-
- //   const dispatch = useDispatch();
-
- //   const fetchProducts = async () => {
- //    try {
- //     const res = await axios.get("/api/v1/categories");
- //      setData(res.data.categories)
- //      setProducts(res.data[0].categories.products)
- //      console.log(res.data.categories)
- //     dispatch(loadData(res.data.categories));
- //    } catch (error) {
- //     console.error("Error fetching products:", error);
- //    }
- //   };
-
- //   useEffect(() => {
- //    fetchProducts();
- //   }, []);
- return (
-  <>
-   <Layout>
-    <Routes>
-     <Route path="/login" element={<Login />} />
-     <Route path="/sign-up" element={<SignUp />} />
-     <Route path="/" element={<Home />} />
-     <Route path="/:categoryName" element={<Category />} />
-     <Route element={<AuthOutlet fallbackPath="/login" />}>
-      <Route path="/cart" element={<Cart />} />
-      <Route element={<Restrict />}>
-       <Route path="/dashboard" element={<Dashboard />} />
-       <Route
-        path="/dashboard/billboard/create"
-        element={<CreateBillboard />}
-       />
-       <Route
-        path="/dashboard/billboard/:billboardId"
-        element={<UpdateBillboard />}
-       />
-       <Route
-        path="/dashboard/category/create"
-        element={<CreateCategory />}
-       />
-       <Route
-        path="/dashboard/category/:categoryId"
-        element={<UpdateCategory />}
-       />
-       <Route
-        path="/dashboard/color/create"
-        element={<CreateColor />}
-       />
-       <Route
-        path="/dashboard/color/:colorId"
-        element={<UpdateColor />}
-       />
-       <Route
-        path="/dashboard/size/create"
-        element={<CreateSize />}
-       />
-       <Route
-        path="/dashboard/size/:sizeId"
-        element={<UpdateSize />}
-       />
-      </Route>
-     </Route>
-    </Routes>
-   </Layout>
-   <Toaster position="top-center" richColors />
-  </>
- );
+  return (
+    <>
+      <Layout>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/:categoryName" element={<Category />} />
+          <Route element={<AuthOutlet fallbackPath="/login" />}>
+            <Route path="/cart" element={<Cart />} />
+            <Route element={<Restrict />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route
+                path="/dashboard/billboard/create"
+                element={<CreateBillboard />}
+              />
+              <Route
+                path="/dashboard/billboard/:billboardId"
+                element={<UpdateBillboard />}
+              />
+              <Route
+                path="/dashboard/category/create"
+                element={<CreateCategory />}
+              />
+              <Route
+                path="/dashboard/category/:categoryId"
+                element={<UpdateCategory />}
+              />
+              <Route path="/dashboard/color/create" element={<CreateColor />} />
+              <Route
+                path="/dashboard/color/:colorId"
+                element={<UpdateColor />}
+              />
+              <Route path="/dashboard/size/create" element={<CreateSize />} />
+              <Route path="/dashboard/size/:sizeId" element={<UpdateSize />} />
+              <Route
+                path="/dashboard/product/create"
+                element={<CreateProduct />}
+              />
+              <Route
+                path="/dashboard/product/:productId"
+                element={<UpdateProduct />}
+              />
+            </Route>
+          </Route>
+        </Routes>
+      </Layout>
+      <Toaster position="top-center" richColors />
+    </>
+  );
 }
 
 export default App;
