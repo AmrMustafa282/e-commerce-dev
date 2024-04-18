@@ -39,7 +39,7 @@ const CreateCategory = () => {
       console.log(res.data);
       setTimeout(() => {
         nav("/dashboard?tab=categories");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       toast.error(error);
     }

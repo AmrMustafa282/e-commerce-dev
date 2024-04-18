@@ -55,9 +55,9 @@ const UpdateProduct = () => {
       formData.append("price", price);
     }
 
-    // formData.append("isFeatured", isFeatured);
+    formData.append("isFeatured", isFeatured);
 
-    // formData.append("isArchived", isArchived);
+    formData.append("isArchived", isArchived);
 
     if (categoryId) {
       formData.append("categoryId", categoryId);
@@ -82,7 +82,7 @@ const UpdateProduct = () => {
       console.log(res.data);
       setTimeout(() => {
         nav("/dashboard?tab=products");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       toast.error(error);
     }
@@ -104,11 +104,11 @@ const UpdateProduct = () => {
 
     // Check if the number of uploaded images exceeds the limit
     if (
-      images.length === 3 ||
-      uploadedImages > 3 ||
-      images.length + uploadedImages.length > 3
+      images.length === 10 ||
+      uploadedImages > 10 ||
+      images.length + uploadedImages.length > 10
     ) {
-      toast.error("You can only upload a maximum of 3 images.");
+      toast.error("You can only upload a maximum of 10 images.");
       return;
     }
 
@@ -253,8 +253,8 @@ const UpdateProduct = () => {
       {product && (
         <>
           <div className="py-4 border-b ">
-            <h1 className="font-bold text-4xl">Create Product</h1>
-            <p className="text-gray-700">Add a new product</p>
+            <h1 className="font-bold text-4xl">Updated Product</h1>
+            <p className="text-gray-700">Updated an existing product</p>
           </div>
           <form className="my-4" onSubmit={handleSubmit}>
             <Label htmlFor="name" className="font-semibold text-md">
@@ -420,7 +420,7 @@ const UpdateProduct = () => {
               </div>
               <div className="flex-1">
                 <Label htmlFor="coverImage" className="font-semibold text-md">
-                  Alternative images(max-3)
+                  Alternative images(max-10)
                 </Label>
                 <Input
                   onChange={handleImagesChange}
@@ -432,7 +432,7 @@ const UpdateProduct = () => {
                 {imagesPreview && (
                   <div className="flex flex-wrap justify-start items-center gap-2">
                     {imagesPreview.map((imagePreview, index) => (
-                      <div key={index} className="relative">
+                      <div key={index} className="relative w-[200px]">
                         <img
                           src={imagePreview}
                           alt={`Uploaded ${index}`}

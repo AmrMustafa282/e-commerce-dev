@@ -20,58 +20,51 @@ import CreateSize from "../pages/Sizes/Create";
 import UpdateSize from "../pages/Sizes/Update";
 import CreateProduct from "../pages/Products/Create";
 import UpdateProduct from "../pages/Products/Update";
+import ProductDetails from "../pages/ProductDetails";
 
 function App() {
-  return (
-    <>
-      <Layout>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/:categoryName" element={<Category />} />
-          <Route element={<AuthOutlet fallbackPath="/login" />}>
-            <Route path="/cart" element={<Cart />} />
-            <Route element={<Restrict />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route
-                path="/dashboard/billboard/create"
-                element={<CreateBillboard />}
-              />
-              <Route
-                path="/dashboard/billboard/:billboardId"
-                element={<UpdateBillboard />}
-              />
-              <Route
-                path="/dashboard/category/create"
-                element={<CreateCategory />}
-              />
-              <Route
-                path="/dashboard/category/:categoryId"
-                element={<UpdateCategory />}
-              />
-              <Route path="/dashboard/color/create" element={<CreateColor />} />
-              <Route
-                path="/dashboard/color/:colorId"
-                element={<UpdateColor />}
-              />
-              <Route path="/dashboard/size/create" element={<CreateSize />} />
-              <Route path="/dashboard/size/:sizeId" element={<UpdateSize />} />
-              <Route
-                path="/dashboard/product/create"
-                element={<CreateProduct />}
-              />
-              <Route
-                path="/dashboard/product/:productId"
-                element={<UpdateProduct />}
-              />
-            </Route>
-          </Route>
-        </Routes>
-      </Layout>
-      <Toaster position="top-center" richColors />
-    </>
-  );
+ return (
+  <>
+   <Layout>
+    <Routes>
+     <Route path="/login" element={<Login />} />
+     <Route path="/sign-up" element={<SignUp />} />
+     <Route path="/" element={<Home />} />
+     <Route path="/product/:productId" element={<ProductDetails />} />
+     <Route path="/:categoryName" element={<Category />} />
+     <Route element={<AuthOutlet fallbackPath="/login" />}>
+      <Route path="/cart" element={<Cart />} />
+      <Route element={<Restrict />}>
+       <Route path="/dashboard" element={<Dashboard />} />
+       <Route
+        path="/dashboard/billboard/create"
+        element={<CreateBillboard />}
+       />
+       <Route
+        path="/dashboard/billboard/:billboardId"
+        element={<UpdateBillboard />}
+       />
+       <Route path="/dashboard/category/create" element={<CreateCategory />} />
+       <Route
+        path="/dashboard/category/:categoryId"
+        element={<UpdateCategory />}
+       />
+       <Route path="/dashboard/color/create" element={<CreateColor />} />
+       <Route path="/dashboard/color/:colorId" element={<UpdateColor />} />
+       <Route path="/dashboard/size/create" element={<CreateSize />} />
+       <Route path="/dashboard/size/:sizeId" element={<UpdateSize />} />
+       <Route path="/dashboard/product/create" element={<CreateProduct />} />
+       <Route
+        path="/dashboard/product/:productId"
+        element={<UpdateProduct />}
+       />
+      </Route>
+     </Route>
+    </Routes>
+   </Layout>
+   <Toaster position="top-center" richColors />
+  </>
+ );
 }
 
 export default App;
