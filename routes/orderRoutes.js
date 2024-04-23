@@ -20,6 +20,7 @@ import {
  updateOrderItem,
 } from "../controllers/orderItemController.js";
 
+// router.route("/deleteItems").delete(deleteAllOrderItems);
 router.use(protect);
 router.get("/checkout-session/:orderId", getCheckoutSession);
 

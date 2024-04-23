@@ -59,17 +59,8 @@ const Home = () => {
           alt={"product.name"}
           className=" group-hover:scale-105 transition-all duration-300 w-[316px] h-[475px]"
          />
-         {/* <div className="absolute bottom-2 w-full flex items-center justify-center gap-6  group-hover:opacity-100 opacity-0 transition-all duration-300">
-          <Expand className="h-8 w-8 hover:scale-[1.08] duration-300 transition-all" />
-          <ShoppingCart className="h-8 w-8 hover:scale-[1.08] duration-300 transition-all" />
-         </div> */}
         </div>
        </CardContent>
-       {/* <CardFooter className="flex flex-col items-start">
-                <h2 className="text-2xl font-semibold">{product.name}</h2>
-                <p>{product.category.name}</p>
-                <h3 className="my-3 text-2xl">${product.price}</h3>
-              </CardFooter> */}
       </Card>
      ))}
     </div>

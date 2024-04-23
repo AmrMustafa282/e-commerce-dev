@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { AppError } from "./../utils/appError.js";
 import { catchAsync } from "./../utils/catchAsync.js";
-import { deleteOne, deleteAll } from "./handlerFactory.js";
+import { deleteOne, deleteAll, getAll } from "./handlerFactory.js";
 import multer from "multer";
 import sharp from "sharp";
 
@@ -86,6 +86,11 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     category: true,
     size: true,
     color: true,
+    // relatedProducts: {
+    //  include: {
+    //   products: true
+    //  },
+    // },
    },
    // skip: startIndex,
    // take: limit,
@@ -113,6 +118,7 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
     category: true,
     size: true,
     color: true,
+    relatedProducts: true,
    },
   });
 
@@ -128,19 +134,55 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
 });
 
 export const createProduct = catchAsync(async (req, res, next) => {
- const { categoryId, name, price, sizeId, colorId } = req.body;
+ let {
+  categoryId,
+  name,
+  description,
+  price,
+  sizeId,
+  colorId,
+  relatedProductsId,
+  relatedProductsName,
+ } = req.body;
  const isFeatured = req.body.isFeatured === "true";
  const isArchived = req.body.isArchived === "true";
- // console.log(req.body);
+
+ if (!relatedProductsId) {
+  const relatedProducts = await prisma.relatedProducts.create({
+   data: {
+    name: relatedProductsName || name,
+   },
+  });
+  relatedProductsId = relatedProducts.id;
+ }
+
  const product = await prisma.product.create({
   data: {
    categoryId,
    sizeId,
    colorId,
    name,
+   description, //[fix]
    price,
    isFeatured,
    isArchived,
+   relatedProductsId,
+  },
+ });
+
+ const relatedProd = await prisma.relatedProducts.findUnique({
+  where: {
+   id: relatedProductsId,
+  },
+  include: {
+   products: {
+    include: {
+     images: true,
+     color: true,
+     size: true,
+     category: true,
+    },
+   },
   },
  });
 
@@ -164,39 +206,64 @@ export const createProduct = catchAsync(async (req, res, next) => {
   status: "success",
   data: {
    product,
+   relatedProd,
   },
  });
 });
 
 export const getProduct = catchAsync(async (req, res, next) => {
- try {
-  const product = await prisma.product.findFirst({
-   where: { id: req.params.id },
-   include: {
-    category: true,
-    images: true,
-    size: true,
-    color: true,
+ const product = await prisma.product.findFirst({
+  where: { id: req.params.id },
+  include: {
+   category: true,
+   images: true,
+   size: true,
+   color: true,
+   relatedProducts: {
+    include: {
+     products: {
+      include: {
+       color: true,
+      },
+     },
+    },
    },
-  });
+  },
+ });
 
-  if (!product) {
-   return next(new AppError("No product found with that ID"));
-  }
-  res.status(200).json({
-   status: "success",
-   product,
-  });
- } catch (error) {
-  next(error);
+ if (!product) {
+  return next(new AppError("No product found with that ID"));
  }
+ res.status(200).json({
+  status: "success",
+  product,
+ });
 });
 export const updateProduct = catchAsync(async (req, res, next) => {
- let { images, imageCover, isFeatured, isArchived, ...rest } = req.body;
+ let {
+  images,
+  imageCover,
+  isFeatured,
+  isArchived,
+  relatedProductsId,
+  relatedProductsName,
+  ...rest
+ } = req.body;
  isFeatured = req.body.isFeatured === "true";
  isArchived = req.body.isArchived === "true";
  rest.isFeatured = isFeatured;
  rest.isArchived = isArchived;
+
+ if (!relatedProductsId && relatedProductsName) {
+  const relatedProducts = await prisma.relatedProducts.create({
+   data: {
+    name: relatedProductsName || rest.name,
+   },
+  });
+  relatedProductsId = relatedProducts.id;
+  rest.relatedProductsId = relatedProductsId;
+ }
+
  const product = await prisma.product.update({
   where: { id: req.params.id },
   data: rest,
@@ -235,5 +302,19 @@ export const updateProduct = catchAsync(async (req, res, next) => {
  });
 });
 
+export const relatedProducts = catchAsync(async (req, res, next) => {
+ const relatedProducts = await prisma.relatedProducts.findMany({
+  include: {
+   products: true,
+  },
+ });
+
+ res.status(200).json({
+  relatedProducts,
+ });
+});
+
 export const deleteProduct = deleteOne(model);
 export const deleteAllProduct = deleteAll(model);
+
+export const deleteRelation = deleteOne("relatedProducts");

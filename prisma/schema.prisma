@@ -50,6 +50,7 @@ model Product {
   categoryId  String    
   category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name        String
+  description String
   price       Decimal
   isFeatured  Boolean   @default(false)
   isArchived  Boolean   @default(false)
@@ -57,6 +58,8 @@ model Product {
   size        Size      @relation(fields: [sizeId], references: [id])
   colorId     String    
   color       Color     @relation(fields: [colorId], references: [id])
+  relatedProductsId String     
+  relatedProducts RelatedProducts     @relation(fields: [relatedProductsId], references: [id])
   images      Image[]   
   orderItems  OrderItem[] 
   createdAt   DateTime  @default(now())
@@ -66,6 +69,7 @@ model Product {
   @@index([categoryId])
   @@index([sizeId])
   @@index([colorId])
+  @@index([relatedProductsId])
 }
 
 model Order {
@@ -129,4 +133,8 @@ model Image {
   @@index([productId])
 }
 
-
+model RelatedProducts{
+  id String @id @default(uuid())
+  name String @default("name")
+  products Product[] 
+}

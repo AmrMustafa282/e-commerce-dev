@@ -18,13 +18,17 @@ import {
 import { useEffect } from "react";
 import { Trash } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 
 const CreateProduct = () => {
  const [categories, setCategories] = useState([]);
  const [sizes, setSizes] = useState([]);
  const [colors, setColors] = useState([]);
+ const [relatedProducts, setRelatedProducts] = useState([]);
 
  const [name, setName] = useState("");
+ const [description, setDescription] = useState("");
  const [price, setPrice] = useState(0);
  const [isFeatured, setIsFeatured] = useState(false);
  const [isArchived, setIsArchived] = useState(false);
@@ -33,6 +37,9 @@ const CreateProduct = () => {
  const [colorId, setColorId] = useState("");
  const [imageCover, setImageCover] = useState(null);
  const [images, setImages] = useState([]);
+ const [relatedProductsId, setRelatedProductsId] = useState("");
+ const [relatedProductsName, setRelatedProductsName] = useState("");
+ const [newRelation, setNewRelation] = useState(false);
 
  const [imageCoverPreview, setImageCoverPreview] = useState(null);
  const [imagesPreview, setImagesPreview] = useState([]);
@@ -45,6 +52,7 @@ const CreateProduct = () => {
 
   if (
    !name ||
+   !description ||
    !price ||
    !categoryId ||
    !sizeId ||
@@ -56,18 +64,21 @@ const CreateProduct = () => {
   }
 
   formData.append("name", name);
+  formData.append("description", description);
   formData.append("price", price);
   formData.append("isFeatured", isFeatured);
   formData.append("isArchived", isArchived);
   formData.append("categoryId", categoryId);
   formData.append("sizeId", sizeId);
   formData.append("colorId", colorId);
+  formData.append("relatedProductsId", relatedProductsId);
+  formData.append("relatedProductsName", relatedProductsName);
   formData.append("imageCover", imageCover);
   images.forEach((image) => {
    formData.append("images", image);
   });
+
   try {
-   console.log(formData);
    const res = await axios.post("/api/v1/products", formData);
    if (res.status === 201) {
     toast.success("Product created");
@@ -132,6 +143,19 @@ const CreateProduct = () => {
   setImageCoverPreview(null);
   setImageCover(null);
  };
+ const handelDeleteRelatoin = async (id) => {
+  try {
+   const res = await axios.delete(`/api/v1/products/relations/${id}`);
+   if (res.status === 204) {
+    setRelatedProducts(
+     relatedProducts.filter((relation) => relation.id !== id)
+    );
+    toast.success("Relation deleted");
+   }
+  } catch (error) {
+   toast.warning("There are products in this relation");
+  }
+ };
 
  const fetchCategories = async () => {
   try {
@@ -163,11 +187,22 @@ const CreateProduct = () => {
    console.log(err);
   }
  };
+ const fetchRelatedProducts = async () => {
+  try {
+   const res = await axios.get("/api/v1/products/related");
+   if (res.status === 200) {
+    setRelatedProducts(res.data.relatedProducts);
+   }
+  } catch (err) {
+   console.log(err);
+  }
+ };
 
  useEffect(() => {
   fetchCategories();
   fetchColors();
   fetchSizes();
+  fetchRelatedProducts();
  }, []);
 
  return (
@@ -188,6 +223,17 @@ const CreateProduct = () => {
      className="mt-4 mb-8"
      placeholder="product name"
     />
+    <Label htmlFor="description" className="font-semibold text-md">
+     Description
+    </Label>
+    <Textarea
+     onChange={(e) => {
+      setDescription(e.target.value);
+     }}
+     id="description"
+     className="mt-4 mb-8"
+     placeholder="product description"
+    />
     <Label htmlFor="price" className="font-semibold text-md">
      Price
     </Label>
@@ -200,25 +246,90 @@ const CreateProduct = () => {
      className="mt-4 mb-8"
      placeholder="0"
     />
-    <Label htmlFor="categoryId" className="font-semibold text-md">
-     Category
-    </Label>
-    <div className="mt-4 mb-8">
-     <Select id="categoryId" onValueChange={(val) => setCategoryId(val)}>
-      <SelectTrigger className="">
-       <SelectValue placeholder="Select a category" />
-      </SelectTrigger>
-      <SelectContent>
-       <SelectGroup>
-        {categories.length > 0 &&
-         categories.map((category) => (
-          <SelectItem key={category.id} value={category.id}>
-           {category.name}
-          </SelectItem>
-         ))}
-       </SelectGroup>
-      </SelectContent>
-     </Select>
+
+    <div className="flex justify-between gap-12">
+     <div className="flex-1">
+      <Label htmlFor="categoryId" className="font-semibold text-md">
+       Category
+      </Label>
+      <div className="mt-4 mb-8">
+       <Select id="categoryId" onValueChange={(val) => setCategoryId(val)}>
+        <SelectTrigger className="">
+         <SelectValue placeholder="Select a category" />
+        </SelectTrigger>
+        <SelectContent>
+         <SelectGroup>
+          {categories.length > 0 &&
+           categories.map((category) => (
+            <SelectItem key={category.id} value={category.id}>
+             {category.name}
+            </SelectItem>
+           ))}
+         </SelectGroup>
+        </SelectContent>
+       </Select>
+      </div>
+     </div>
+     <div className="flex-1">
+      <div className="flex gap-4">
+       <Label htmlFor="relation" className="font-semibold text-md">
+        Relation (optional)
+       </Label>
+       <div className="flex items-center space-x-2">
+        <Switch
+         id="airplane-mode"
+         checked={newRelation}
+         onCheckedChange={(e) => {
+          setRelatedProductsId("");
+          setRelatedProductsName("");
+          setNewRelation(e);
+         }}
+        />
+        <Label htmlFor="airplane-mode">New</Label>
+       </div>
+      </div>
+      <div className="mt-4 mb-8">
+       {newRelation ? (
+        <Input
+         onChange={(e) => {
+          setRelatedProductsName(e.target.value);
+         }}
+         id="relation"
+         className="mt-4 mb-8"
+         placeholder="Relation name"
+        />
+       ) : (
+        <Select
+         id="relation"
+         onValueChange={(val) => setRelatedProductsId(val)}
+        >
+         <SelectTrigger className="">
+          <SelectValue placeholder="Select a relation" />
+         </SelectTrigger>
+         <SelectContent>
+          <SelectGroup>
+           {relatedProducts.length > 0 &&
+            relatedProducts.map((relation) => (
+             <div className="flex justify-between">
+              <SelectItem key={relation.id} value={relation.id}>
+               {relation.name}
+              </SelectItem>
+              <Button
+               variant="destructive"
+               onClick={() => handelDeleteRelatoin(relation.id)}
+               className="p-1 m-1"
+               type="button"
+              >
+               <Trash />
+              </Button>
+             </div>
+            ))}
+          </SelectGroup>
+         </SelectContent>
+        </Select>
+       )}
+      </div>
+     </div>
     </div>
     <div className="flex justify-between gap-12">
      <div className="flex-1">

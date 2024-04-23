@@ -12,10 +12,13 @@ import {
   resizeProductImages,
   deleteAllProduct,
   getFeaturedProducts,
+  relatedProducts,
+  deleteRelation,
 } from "../controllers/productController.js";
 
 router.route("/").get(getAllProducts);
 router.route("/featured").get(getFeaturedProducts);
+router.route("/related").get(relatedProducts);
 router.route("/:id").get(getProduct);
 
 router.use(protect);
@@ -30,4 +33,5 @@ router
   .patch(uploadProductImages, resizeProductImages, updateProduct)
   .delete(deleteProduct);
 
+router.route("/relations/:id").delete(deleteRelation);
 export default router;

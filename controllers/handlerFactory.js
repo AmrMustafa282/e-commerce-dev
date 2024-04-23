@@ -11,22 +11,24 @@ export const getAll = (Model, searchOptions) =>
    const limit = parseInt(req.query.limit) || 16;
    const sortDirection = req.query.order === "asc" ? "asc" : "desc";
    const search = req.query.search || "";
-    let searchArray =[]
+   let searchArray = [];
    if (searchOptions) {
-     searchArray = searchOptions.map((option) => ({ [option]  : {contains: search} }))
+    searchArray = searchOptions.map((option) => ({
+     [option]: { contains: search },
+    }));
    }
    const doc = await prisma[Model].findMany({
     where: {
-     OR: searchArray ,
-     },
+     OR: searchArray,
+    },
     orderBy: {
-     updatedAt: sortDirection, 
-     },
+     updatedAt: sortDirection,
+    },
     skip: startIndex,
     take: limit,
    });
 
-    const total = await prisma[Model].count();
+   const total = await prisma[Model].count();
    res.status(200).json({
     doc,
     total,
@@ -46,9 +48,9 @@ export const getOne = (Model) =>
    if (!doc) {
     return next(new AppError("No document found with that ID"));
    }
-    if (doc.password) {
-     doc.password = undefined;
-    }
+   if (doc.password) {
+    doc.password = undefined;
+   }
 
    res.status(200).json({
     status: "success",
@@ -60,7 +62,7 @@ export const getOne = (Model) =>
    next(error);
   }
  });
-export const getOneByKey = (Model,key) =>
+export const getOneByKey = (Model, key) =>
  catchAsync(async (req, res, next) => {
   try {
    const doc = await prisma[Model].findFirst({
@@ -70,9 +72,9 @@ export const getOneByKey = (Model,key) =>
    if (!doc) {
     return next(new AppError("No document found with that ID"));
    }
-    if (doc.password) {
-     doc.password = undefined;
-    }
+   if (doc.password) {
+    doc.password = undefined;
+   }
 
    res.status(200).json({
     status: "success",
@@ -124,10 +126,10 @@ export const deleteOne = (Model) =>
  });
 export const deleteAll = (Model) =>
  catchAsync(async (req, res, next) => {
-  try {
-     await prisma[Model].deleteMany({});
-
   
+   console.log('test')
+   try {
+   await prisma[Model].deleteMany({});
 
    res.status(204).json({
     status: "success",
@@ -140,8 +142,8 @@ export const deleteAll = (Model) =>
 
 export const updateOne = (Model) =>
  catchAsync(async (req, res, next) => {
-   try {
-    // console.log(req.body) [fix update billboard]
+  try {
+   // console.log(req.body) [fix update billboard]
    const doc = await prisma[Model].update({
     where: { id: req.params.id },
     data: req.body,
