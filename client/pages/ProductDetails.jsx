@@ -18,6 +18,7 @@ const ProductDetails = () => {
  //  const { scrollTo } = useCarousel;
  const { productId } = params;
  const [product, setProduct] = useState(null);
+ const [currentSize, setCurrentSize] = useState(null);
  const [index, setIndex] = useState(0);
 
  const fetchProduct = async (id = productId) => {
@@ -25,6 +26,7 @@ const ProductDetails = () => {
    const res = await axios.get(`/api/v1/products/${id}`);
    if (res.status === 200) {
     setProduct(res.data.product);
+    setCurrentSize(res.data.product.productSizes[0].size);
    }
   } catch (error) {
    console.error("Error fetching product:", error);
@@ -34,7 +36,6 @@ const ProductDetails = () => {
  useEffect(() => {
   fetchProduct();
  }, []);
-
 
  return (
   <>
@@ -77,9 +78,7 @@ const ProductDetails = () => {
         <h1 className="font-bold text-4xl mb-8">{product.name}</h1>
         <span className="w-20 h-2 bg-black block" />
         <h2 className="font-semibold text-3xl my-8">£{product.price}</h2>
-        <p className="text-lg text-gray-500 mb-6">
-          {product.description}
-               </p>
+        <p className="text-lg text-gray-500 mb-6">{product.description}</p>
         <p className="text-lg text-gray-500 mb-2">
          CHECK IN-STORE AVAILABILITY
         </p>
@@ -88,14 +87,29 @@ const ProductDetails = () => {
         </p>
         <hr className="my-8" />
         <span className="text-2xl font-semibold ">
-         Size : <span className="font-normal">{product.size.name}</span>
+         Size :{" "}
+         <span className="font-normal">
+          {currentSize.name}
+         </span>
         </span>
         <div className="flex gap-4">
-         <>
-          <div className="w-fit px-6 py-4 mt-4 mb-8 bg-black text-white font-extrabold text-2xl">
-           {product.size.value}
-          </div>
-         </>
+         {product.productSizes?.map((e) => (
+          <button
+           type="button"
+           onClick={() => setCurrentSize(e.size)}
+           className="relative  cursor-pointer w-12 h-16 mt-4 mb-8 bg-black text-white font-bold text-xl rounded-md"
+          >
+           <div
+            className="h-2 w-0  absolute -bottom-3   duration-300 animate-hGrow transition-all"
+            style={
+             currentSize.id === e.size.id
+              ? { width: "100%", background: "black" }
+              : {}
+            }
+           ></div>
+           {e.size.value}
+          </button>
+         ))}
         </div>
 
         <span className="text-2xl font-semibold ">

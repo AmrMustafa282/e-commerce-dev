@@ -26,7 +26,7 @@ export const createSize = catchAsync(async (req, res, next) => {
 
 export const getAllSizes = catchAsync(async (req, res, next) => {
  const sizes = await prisma.size.findMany({
-  include: { products: true },
+  // include: { productSizes:true },
  });
 
  res.status(200).json({

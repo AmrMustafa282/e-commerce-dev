@@ -53,22 +53,21 @@ model Product {
   description String
   price       Decimal
   isFeatured  Boolean   @default(false)
-  isArchived  Boolean   @default(false)
-  sizeId      String    
-  size        Size      @relation(fields: [sizeId], references: [id])
+  isArchived  Boolean   @default(false)     
   colorId     String    
   color       Color     @relation(fields: [colorId], references: [id])
   relatedProductsId String     
   relatedProducts RelatedProducts     @relation(fields: [relatedProductsId], references: [id])
   images      Image[]   
+  productSizes  ProductSize[]
   orderItems  OrderItem[] 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   
   @@index([categoryId])
-  @@index([sizeId])
   @@index([colorId])
+  // @@index([sizeId])
   @@index([relatedProductsId])
 }
 
@@ -102,16 +101,6 @@ model OrderItem {
   @@index([productId])
 }
 
-model Size {
-  id          String    @id @default(uuid())
-  name        String
-  value       String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  // @@index([storeId])
-}
 
 model Color {
   id          String   @id @default(uuid())
@@ -122,6 +111,25 @@ model Color {
   updatedAt   DateTime  @updatedAt
 }
 
+model Size {
+  id          String      @id @default(uuid())
+  name        String
+  value       String
+  productSizes ProductSize[]  
+  updatedAt   DateTime    @updatedAt
+}
+
+model ProductSize {
+  id          String      @id @default(uuid())
+  size        Size        @relation(fields: [sizeId], references: [id])
+  sizeId      String      
+  product     Product     @relation(fields: [productId], references: [id],onDelete: Cascade)
+  productId   String      
+  updatedAt   DateTime    @updatedAt
+
+  @@index([sizeId])
+  @@index([productId])
+}
 model Image {
   id          String   @id @default(uuid())
   productId   String   // Foreign Key to Product

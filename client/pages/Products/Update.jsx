@@ -36,8 +36,9 @@ const UpdateProduct = () => {
  const [isFeatured, setIsFeatured] = useState(null);
  const [isArchived, setIsArchived] = useState(null);
  const [categoryId, setCategoryId] = useState("");
- const [sizeId, setSizeId] = useState("");
+ //  const [sizeId, setSizeId] = useState("");
  const [colorId, setColorId] = useState("");
+ const [productSizes, setProductSizes] = useState([]);
  const [imageCover, setImageCover] = useState(null);
  const [images, setImages] = useState([]);
  const [relatedProductsId, setRelatedProductsId] = useState("");
@@ -60,6 +61,9 @@ const UpdateProduct = () => {
   if (price) {
    formData.append("price", price);
   }
+  if (productSizes.length < 1) {
+   return toast.warning("Porduct must have at least one size");
+  }
 
   formData.append("isFeatured", isFeatured);
 
@@ -71,9 +75,6 @@ const UpdateProduct = () => {
   if (categoryId) {
    formData.append("categoryId", categoryId);
   }
-  if (sizeId) {
-   formData.append("sizeId", sizeId);
-  }
   if (colorId) {
    formData.append("colorId", colorId);
   }
@@ -81,6 +82,9 @@ const UpdateProduct = () => {
   formData.append("imageCover", imageCover);
   images.forEach((image) => {
    formData.append("images", image);
+  });
+  productSizes.forEach((size) => {
+   formData.append("productSizes", JSON.stringify(size));
   });
   try {
    console.log(formData);
@@ -225,6 +229,7 @@ const UpdateProduct = () => {
    const res = await axios.get(`/api/v1/products/${productId}`);
    const prod = res.data.product;
    setProduct(prod);
+   setProductSizes(prod.productSizes.map((e) => e.size));
 
    // Convert image names to URLs
    const imageCoverUrl = `/img/product/${prod.images[0].url}`;
@@ -280,7 +285,10 @@ const UpdateProduct = () => {
   fetchSizes();
   fetchRelatedProducts();
  }, []);
- // console.log(product);
+ //  console.log(productSizes[0].size.id===sizes[0].id);
+ //  console.log(sizes[0]);
+ console.log(productSizes);
+
  return (
   <>
    {product && (
@@ -394,7 +402,7 @@ const UpdateProduct = () => {
             <SelectGroup>
              {relatedProducts.length > 0 &&
               relatedProducts.map((relation) => (
-               <div className="flex justify-between">
+               <div className="flex justify-between" key={relation.id}>
                 <SelectItem key={relation.id} value={relation.id}>
                  {relation.name}
                 </SelectItem>
@@ -418,24 +426,34 @@ const UpdateProduct = () => {
       <div className="flex justify-between gap-12">
        <div className="flex-1">
         <Label htmlFor="sizeId" className="font-semibold text-md">
-         Size
+         Sizes
         </Label>
-        <div className="mt-4 mb-8">
-         <Select id="sizeId" onValueChange={(val) => setSizeId(val)}>
-          <SelectTrigger className="">
-           <SelectValue placeholder={product.size.name} />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectGroup>
-            {sizes.length > 0 &&
-             sizes.map((size) => (
-              <SelectItem key={size.id} value={size.id}>
-               {size.name}
-              </SelectItem>
-             ))}
-           </SelectGroup>
-          </SelectContent>
-         </Select>
+        <div className="mt-4 mb-8 flex gap-2 flex-wrap">
+         {sizes.map((size, index) => (
+          <div key={size.id}>
+           <Label
+            htmlFor={size.id}
+            onClick={() => {
+             if (!productSizes.find((item) => item.id === size.id)) {
+              setProductSizes((prev) => [...prev, size]);
+             } else {
+              setProductSizes(productSizes.filter((s) => s.id !== size.id));
+             }
+            }}
+           >
+            <div
+             className="px-4 py-2 border rounded-sm cursor-pointer hover:bg-gray-300 duration-300"
+             style={
+              productSizes.find((item) => item.id === size.id)
+               ? { background: "#ccc" }
+               : {}
+             }
+            >
+             {size.value}
+            </div>
+           </Label>
+          </div>
+         ))}
         </div>
        </div>
        <div className="flex-1">

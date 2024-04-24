@@ -84,7 +84,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
    include: {
     images: true,
     category: true,
-    size: true,
+    productSizes: true,
     color: true,
     // relatedProducts: {
     //  include: {
@@ -116,7 +116,7 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
    include: {
     images: true,
     category: true,
-    size: true,
+    productSizes: true,
     color: true,
     relatedProducts: true,
    },
@@ -134,12 +134,14 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
 });
 
 export const createProduct = catchAsync(async (req, res, next) => {
+ console.log(req.body);
  let {
   categoryId,
   name,
   description,
   price,
-  sizeId,
+  // sizeId,
+  productSizes,
   colorId,
   relatedProductsId,
   relatedProductsName,
@@ -156,13 +158,15 @@ export const createProduct = catchAsync(async (req, res, next) => {
   relatedProductsId = relatedProducts.id;
  }
 
+ productSizes = productSizes.map((size) => JSON.parse(size));
+
  const product = await prisma.product.create({
   data: {
    categoryId,
-   sizeId,
+   //  sizeId,
    colorId,
    name,
-   description, //[fix]
+   description,
    price,
    isFeatured,
    isArchived,
@@ -179,7 +183,7 @@ export const createProduct = catchAsync(async (req, res, next) => {
     include: {
      images: true,
      color: true,
-     size: true,
+     productSizes: true,
      category: true,
     },
    },
@@ -201,6 +205,14 @@ export const createProduct = catchAsync(async (req, res, next) => {
    },
   });
  }
+ for (const i in productSizes) {
+  await prisma.productSize.create({
+   data: {
+    productId: product.id,
+    sizeId: productSizes[i].id,
+   },
+  });
+ }
 
  res.status(201).json({
   status: "success",
@@ -217,8 +229,13 @@ export const getProduct = catchAsync(async (req, res, next) => {
   include: {
    category: true,
    images: true,
-   size: true,
+   productSizes: true,
    color: true,
+   productSizes: {
+    include: {
+     size: true,
+    },
+   },
    relatedProducts: {
     include: {
      products: {
@@ -247,12 +264,19 @@ export const updateProduct = catchAsync(async (req, res, next) => {
   isArchived,
   relatedProductsId,
   relatedProductsName,
+  productSizes,
   ...rest
  } = req.body;
  isFeatured = req.body.isFeatured === "true";
  isArchived = req.body.isArchived === "true";
  rest.isFeatured = isFeatured;
  rest.isArchived = isArchived;
+
+  // handel one item case
+ if (!Array.isArray(productSizes)) {
+  productSizes = [productSizes];
+ }
+ productSizes = productSizes.map((size) => JSON.parse(size));
 
  if (!relatedProductsId && relatedProductsName) {
   const relatedProducts = await prisma.relatedProducts.create({
@@ -266,11 +290,27 @@ export const updateProduct = catchAsync(async (req, res, next) => {
 
  const product = await prisma.product.update({
   where: { id: req.params.id },
-  data: rest,
+  data: {
+   ...rest,
+  },
   include: {
    images: true,
   },
  });
+
+ await prisma.productSize.deleteMany({
+  where: { productId: product.id },
+ });
+
+ for (let i = 0; i < productSizes.length; i++) {
+  await prisma.productSize.create({
+   // where: { id: product.images[i + 1].id },
+   data: {
+    productId: product.id,
+    sizeId: productSizes[i].id,
+   },
+  });
+ }
 
  await prisma.image.deleteMany({
   where: { productId: product.id },

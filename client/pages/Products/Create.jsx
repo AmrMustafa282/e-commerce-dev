@@ -33,7 +33,8 @@ const CreateProduct = () => {
  const [isFeatured, setIsFeatured] = useState(false);
  const [isArchived, setIsArchived] = useState(false);
  const [categoryId, setCategoryId] = useState("");
- const [sizeId, setSizeId] = useState("");
+ //  const [sizeId, setSizeId] = useState("");
+ const [productSizes, setProductSizes] = useState([]);
  const [colorId, setColorId] = useState("");
  const [imageCover, setImageCover] = useState(null);
  const [images, setImages] = useState([]);
@@ -55,10 +56,11 @@ const CreateProduct = () => {
    !description ||
    !price ||
    !categoryId ||
-   !sizeId ||
+   //  !sizeId ||
    !colorId ||
    !imageCover ||
-   !images
+   !images ||
+   productSizes.length < 1
   ) {
    return toast.warning("Some fields are missing!");
   }
@@ -69,13 +71,17 @@ const CreateProduct = () => {
   formData.append("isFeatured", isFeatured);
   formData.append("isArchived", isArchived);
   formData.append("categoryId", categoryId);
-  formData.append("sizeId", sizeId);
+  // formData.append("sizeId", sizeId);
+  // formData.append("sizes", productSizes);
   formData.append("colorId", colorId);
   formData.append("relatedProductsId", relatedProductsId);
   formData.append("relatedProductsName", relatedProductsName);
   formData.append("imageCover", imageCover);
   images.forEach((image) => {
    formData.append("images", image);
+  });
+  productSizes.forEach((size) => {
+   formData.append("productSizes", JSON.stringify(size));
   });
 
   try {
@@ -310,7 +316,7 @@ const CreateProduct = () => {
           <SelectGroup>
            {relatedProducts.length > 0 &&
             relatedProducts.map((relation) => (
-             <div className="flex justify-between">
+             <div className="flex justify-between" key={relation.id}>
               <SelectItem key={relation.id} value={relation.id}>
                {relation.name}
               </SelectItem>
@@ -334,24 +340,32 @@ const CreateProduct = () => {
     <div className="flex justify-between gap-12">
      <div className="flex-1">
       <Label htmlFor="sizeId" className="font-semibold text-md">
-       Size
+       Sizes
       </Label>
-      <div className="mt-4 mb-8">
-       <Select id="sizeId" onValueChange={(val) => setSizeId(val)}>
-        <SelectTrigger className="">
-         <SelectValue placeholder="Select a size" />
-        </SelectTrigger>
-        <SelectContent>
-         <SelectGroup>
-          {sizes.length > 0 &&
-           sizes.map((size) => (
-            <SelectItem key={size.id} value={size.id}>
-             {size.name}
-            </SelectItem>
-           ))}
-         </SelectGroup>
-        </SelectContent>
-       </Select>
+      <div className="mt-4 mb-8 flex gap-2 flex-wrap">
+       {sizes.map((size) => (
+        <div key={size.id}>
+         <Label htmlFor={size.id}>
+          <div
+           className="px-4 py-2 border rounded-sm cursor-pointer hover:bg-gray-300 duration-300"
+           style={productSizes.includes(size) ? { background: "#ccc" } : {}}
+          >
+           {size.value}
+          </div>
+         </Label>
+         <Checkbox
+          id={size.id}
+          className="hidden"
+          onCheckedChange={(val) => {
+           if (val) {
+            setProductSizes((prev) => [...prev, size]);
+           } else {
+            setProductSizes(productSizes.filter((s) => s.id !== size.id));
+           }
+          }}
+         />
+        </div>
+       ))}
       </div>
      </div>
      <div className="flex-1">
