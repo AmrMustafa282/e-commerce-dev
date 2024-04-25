@@ -229,7 +229,6 @@ export const getProduct = catchAsync(async (req, res, next) => {
   include: {
    category: true,
    images: true,
-   productSizes: true,
    color: true,
    productSizes: {
     include: {
@@ -272,7 +271,7 @@ export const updateProduct = catchAsync(async (req, res, next) => {
  rest.isFeatured = isFeatured;
  rest.isArchived = isArchived;
 
-  // handel one item case
+ // handel one item case
  if (!Array.isArray(productSizes)) {
   productSizes = [productSizes];
  }

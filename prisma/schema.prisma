@@ -20,6 +20,7 @@ model User {
   emailConfirmToken String @default("")
   emailConfirmExpires DateTime @default(now())
   orders   Order[] @relation("UserToOrder")
+  reviews    Review[] 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -59,6 +60,7 @@ model Product {
   relatedProductsId String     
   relatedProducts RelatedProducts     @relation(fields: [relatedProductsId], references: [id])
   images      Image[]   
+  reviews      Review[]   
   productSizes  ProductSize[]
   orderItems  OrderItem[] 
   createdAt   DateTime  @default(now())
@@ -140,6 +142,32 @@ model Image {
 
   @@index([productId])
 }
+model Review {
+  id          String   @id @default(uuid())
+  productId   String   // Foreign Key to Product
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId      String   // Foreign Key to User
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text        String   @default("")
+  rating      Int      
+  upvoteCount Int      @default(0)
+  upvotes     Upvote[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model Upvote {
+  id        String  @id @default(uuid())
+  reviewId  String
+  review    Review  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@unique([reviewId, userId])
+}
+
 
 model RelatedProducts{
   id String @id @default(uuid())

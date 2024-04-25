@@ -107,7 +107,7 @@ export const createOne = (Model) =>
 
 export const deleteOne = (Model) =>
  catchAsync(async (req, res, next) => {
-  try {
+
    const doc = await prisma[Model].delete({
     where: { id: req.params.id },
    });
@@ -120,9 +120,7 @@ export const deleteOne = (Model) =>
     status: "success",
     data: null,
    });
-  } catch (error) {
-   next(error);
-  }
+ 
  });
 export const deleteAll = (Model) =>
  catchAsync(async (req, res, next) => {
