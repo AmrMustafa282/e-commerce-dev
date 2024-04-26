@@ -55,7 +55,6 @@ const ProductDetails = () => {
  const [index, setIndex] = useState(0);
  const [text, setText] = useState("");
  const [rating, setRating] = useState(0);
- const [isOpen, setIsOpen] = React.useState(false); // State to control the dialog
 
  const userId = useSelector((state) => state.user.currentUser.data.user.id);
 
@@ -67,7 +66,7 @@ const ProductDetails = () => {
     setProduct(res.data.product);
     setCurrentSize(res.data.product.productSizes[0].size);
    }
-   nav(`/product/${id}`);
+   //  nav(`/product/${id}`);
    fetchReviews(id);
   } catch (error) {
    console.error("Error fetching product:", error);
@@ -134,27 +133,27 @@ const ProductDetails = () => {
   });
   let updatedReview = res.data.review;
   if (res.status === 200) {
-  setReviews(
-   reviews.map((review) => {
-    if (review.id === updatedReview.id) {
-     review.text = updatedReview.text;
-     review.rating = updatedReview.rating;
-    }
-    return review;
-   })
-  );
+   setReviews(
+    reviews.map((review) => {
+     if (review.id === updatedReview.id) {
+      review.text = updatedReview.text;
+      review.rating = updatedReview.rating;
+     }
+     return review;
+    })
+   );
   }
  };
  // console.log(reviews[0])
  useEffect(() => {
   fetchProduct();
- }, []);
+ }, [productId]);
 
  return (
   <>
    {product && (
     <div className=" my-12">
-     <div className="flex flex-col items-center gap-4 md:flex-row justify-center ">
+     <div className="flex flex-col  gap-4 md:flex-row mb-12">
       <div className="flex-1 ">
        <Carousel
         className=" w-[558px] h-[837px] overflow-hidden"
@@ -186,7 +185,7 @@ const ProductDetails = () => {
         <CarouselScrollTo index={index} />
        </Carousel>
       </div>
-      <div className="flex-1  mt-0 flex flex-col justify-evenly">
+      <div className="flex-1 mt-4 flex flex-col justify-between ">
        <div>
         <h1 className="font-bold text-4xl mb-8">{product.name}</h1>
         <span className="w-20 h-2 bg-black block" />
@@ -234,7 +233,7 @@ const ProductDetails = () => {
            key={product.id}
            style={{ backgroundColor: `${product.color.value}` }}
            className="cursor-pointer hover:scale-105 duration-300 transition-all w-fit px-6 py-8 my-4  text-white font-extrabold text-2xl"
-           onClick={() => fetchProduct(product.id)}
+           onClick={() => nav(`/product/${product.id}`)}
           ></Button>
          ))}
         </div>
@@ -254,7 +253,7 @@ const ProductDetails = () => {
        />
       ))}
      </div>
-     <div className="flex flex-col gap-4 mb-12 mt-20  container">
+     <div className="flex flex-col gap-4 mb-12 mt-20 container ">
       <Dialog>
        <DialogTrigger asChild>
         <Button variant="outline">Add Review</Button>
@@ -299,7 +298,7 @@ const ProductDetails = () => {
       {reviews &&
        reviews.map((review) => (
         <div key={review.id}>
-         <div className="flex items-center gap-4">
+         <div className="flex items-center gap-4 ">
           <Avatar>
            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
            <AvatarFallback>CN</AvatarFallback>

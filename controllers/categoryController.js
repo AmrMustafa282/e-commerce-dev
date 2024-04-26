@@ -55,7 +55,11 @@ export const getCategoryByName = catchAsync(async (req, res, next) => {
      where: { isArchived: false },
      include: {
       color: true,
-      productSizes: true,
+      productSizes: {
+       include: {
+        size: true,
+       },
+      },
       images: true,
       category: true,
      },

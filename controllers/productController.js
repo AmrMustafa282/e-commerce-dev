@@ -92,8 +92,8 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     //  },
     // },
    },
-   // skip: startIndex,
-   // take: limit,
+   //  skip: startIndex,
+   //  take: limit,
   });
 
   const total = await prisma.product.count();
@@ -110,9 +110,9 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
  try {
   const products = await prisma.product.findMany({
    where: { isFeatured: true, isArchived: false },
-   orderBy: {
-    updatedAt: "asc",
-   },
+  //  orderBy: {
+  //   updatedAt: "desc",
+  //  },
    include: {
     images: true,
     category: true,
