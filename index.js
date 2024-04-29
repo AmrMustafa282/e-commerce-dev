@@ -32,6 +32,7 @@ app.use(express.json());
 // ); // we want it not in json but in a row formate
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, '/client/dist')))
 // app.use(express.urlencoded({
 //   extended: true,
 // }))
@@ -50,6 +51,10 @@ app.use("/api/v1/images", imageRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/reviews", reviewRoutes);
+
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client','dist', 'index.html'))
+})
 
 app.use((err, req, res, next) => {
  const statusCode = err.statusCode || 500;
