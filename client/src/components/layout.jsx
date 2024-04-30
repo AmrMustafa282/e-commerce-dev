@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 
-const layout = ({ children }) => {
+const Layout = ({ children }) => {
  return (
   <div className="min-h-screen">
    <Header />
@@ -10,4 +10,4 @@ const layout = ({ children }) => {
  );
 };
 
-export default layout;
+export default Layout;
