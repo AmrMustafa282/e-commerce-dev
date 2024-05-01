@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider store={authStore}>
    <PersistGate persistor={persistor}>
     <Provider store={reduxStore}>
-     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <BrowserRouter>
        <App />
       </BrowserRouter>

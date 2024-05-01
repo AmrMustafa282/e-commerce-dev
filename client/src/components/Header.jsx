@@ -5,14 +5,15 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { ModeToggle } from "./toggleTheme";
 // import { NavigationMenuDemo } from "./Navigation";
 import { signoutSuccess } from "@/redux/user/userSlice";
-import { ShoppingCart, Settings } from "lucide-react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { ShoppingCart, Settings, Heart } from "lucide-react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 
 const Header = () => {
+ const nav = useNavigate();
  const { currentUser } = useSelector((state) => state.user);
-  let { categories } = useSelector((state) => state.product);
-// categories = categories.slice(1)
+ let { categories } = useSelector((state) => state.product);
+ // categories = categories.slice(1)
  const [tab, setTab] = useState("overview");
  const location = useLocation();
  const auth = useAuthUser();
@@ -32,7 +33,6 @@ const Header = () => {
   if (urlParams.get("tab")) setTab(urlParams.get("tab"));
  }, [location.search]);
 
-  
  return (
   <div className="py-2  w-full border-b">
    <div className="container mx-auto h-full flex justify-between items-center">
@@ -111,6 +111,9 @@ const Header = () => {
     </div>
     <div className="flex items-center justify-center gap-4">
      <ModeToggle />
+     <Button size="icon" variant="outline" onClick={() => nav("/wishlist")}>
+      <Heart />
+     </Button>
      {currentUser ? (
       <>
        <Link to="/cart" className="border p-2 rounded-lg">

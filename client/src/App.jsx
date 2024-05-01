@@ -21,6 +21,7 @@ import UpdateSize from "../pages/Sizes/Update";
 import CreateProduct from "../pages/Products/Create";
 import UpdateProduct from "../pages/Products/Update";
 import ProductDetails from "../pages/ProductDetails";
+import Wishlist from "../pages/Wishlist";
 
 function App() {
  return (
@@ -30,6 +31,7 @@ function App() {
      <Route path="/login" element={<Login />} />
      <Route path="/sign-up" element={<SignUp />} />
      <Route path="/" element={<Home />} />
+     <Route path="/wishlist" element={<Wishlist />} />
      <Route path="/product/:productId" element={<ProductDetails />} />
      <Route path="/:categoryName" element={<Category />} />
      <Route element={<AuthOutlet fallbackPath="/login" />}>

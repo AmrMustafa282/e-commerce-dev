@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -42,9 +42,10 @@ import { Button } from "@/components/ui/button";
 import { formater } from "@/lib/formater";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
-import { ArrowBigUp, MoreHorizontal, Star } from "lucide-react";
+import { ArrowBigUp, MoreHorizontal, Star, Heart } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 const ProductDetails = () => {
  const params = useParams();
  //  const { scrollTo } = useCarousel;
@@ -56,9 +57,11 @@ const ProductDetails = () => {
  const [text, setText] = useState("");
  const [rating, setRating] = useState(0);
 
- const userId = useSelector((state) => state.user.currentUser.data.user.id);
+ const userId = useSelector((state) => state.user.currentUser?.data.user.id);
+ const { products: wishlist } = useSelector((state) => state.wishlist);
 
  let nav = useNavigate();
+ const dispatch = useDispatch();
  const fetchProduct = async (id = productId) => {
   try {
    const res = await axios.get(`/api/v1/products/${id}`);
@@ -83,6 +86,9 @@ const ProductDetails = () => {
   }
  };
  const handleUpvote = async (reviewId) => {
+  if (!userId) {
+   return toast.warning("Login to create a upvote!");
+  }
   try {
    const res = await axios.put(`/api/v1/reviews/${reviewId}`);
    const updatedReview = res.data.review;
@@ -103,6 +109,9 @@ const ProductDetails = () => {
   return upvotes.find((upvote) => upvote.userId == userId);
  };
  const createReview = async () => {
+  if (!userId) {
+   return toast.warning("Login to create a review!");
+  }
   if (!text || !rating) {
    return toast.warning("Review or rating is missing!");
   }
@@ -146,6 +155,11 @@ const ProductDetails = () => {
  };
 
  const addToCart = async () => {
+  if (!userId) {
+   toast.warning("Login to add product to your cart!");
+   nav("/login");
+   return;
+  }
   const res = await axios.post("/api/v1/orders/");
   if (res.status === 201) {
    const res2 = await axios.post(
@@ -200,7 +214,27 @@ const ProductDetails = () => {
       </div>
       <div className="flex-1 mt-4 flex flex-col justify-between ">
        <div>
-        <h1 className="font-bold text-4xl mb-8">{product.name}</h1>
+        <div className="flex items-start justify-between">
+         <h1 className="font-bold text-4xl mb-8">{product.name}</h1>
+         <Button
+          size="icon"
+          variant="ghost"
+          onClick={() =>
+           wishlist?.find((p) => p.id === product.id)
+            ? dispatch(removeFromWishlist(product.id))
+            : dispatch(addToWishlist(product))
+          }
+         >
+          <Heart
+           className="w-10 h-10"
+           style={
+            wishlist?.find((p) => p.id === product.id)
+             ? { fill: "red", color: "red" }
+             : {}
+           }
+          />
+         </Button>
+        </div>
         <span className="w-20 h-2 bg-black block" />
         <h2 className="font-semibold text-3xl my-8">
          {formater(product.price)}

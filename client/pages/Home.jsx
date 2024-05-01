@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadData } from "@/redux/product/productSlice";
 import { useNavigate } from "react-router-dom";
 import {
@@ -26,9 +26,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Heart } from "lucide-react";
+import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 const Home = () => {
  const nav = useNavigate();
  const dispatch = useDispatch();
+ const { products: wishlist } = useSelector((state) => state.wishlist);
  const [billboard, setBillboard] = useState(null);
  const [fullproducts, setFullProducts] = useState([]);
  const [products, setProducts] = useState([]);
@@ -143,6 +146,7 @@ const Home = () => {
   }
   setProducts(filteredProducts);
  };
+ console.log(wishlist);
 
  useEffect(() => {
   fetchRoot();
@@ -204,7 +208,7 @@ const Home = () => {
           <h2 className="mb-4">Categories</h2>
           <div className="flex gap-2 flex-wrap mb-">
            {categories.map((cat) => (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2" key={cat.id}>
              <Button
               type="button"
               variant="outline"
@@ -287,21 +291,38 @@ const Home = () => {
       </Sheet>
      </div>
      <div className="flex gap-4 flex-wrap mb-12 ">
-      {products.map((product, index) => (
+      {products.map((product) => (
        <Card
         key={product.id}
         className="w-[316px] h-[475px] group cursor-pointer rounded-sm"
-        onClick={() => {
-         nav(`/product/${product.id}`);
-        }}
        >
         <CardContent className="p-0 ">
          <div className="overflow-hidden relative ">
           <img
+           onClick={() => {
+            nav(`/product/${product.id}`);
+           }}
            src={`/img/product/${product.images[0]?.url}`}
            alt={"product.name"}
            className=" group-hover:scale-105 transition-all duration-300 w-[316px] h-[475px]"
           />
+          <button
+           onClick={() =>
+            wishlist?.find((p) => p.id === product.id)
+             ? dispatch(removeFromWishlist(product.id))
+             : dispatch(addToWishlist(product))
+           }
+           className="absolute bottom-2 right-[45%] opacity-0 group-hover:opacity-100 group-hover:bottom-6 hover:scale-105 duration-300"
+          >
+           <Heart
+            className="w-8 h-8"
+            style={
+             wishlist?.find((p) => p.id === product.id)
+              ? { fill: "red", color: "red" }
+              : {}
+            }
+           />
+          </button>
          </div>
         </CardContent>
        </Card>
