@@ -16,7 +16,7 @@ export default defineConfig({
     // target: "https://bytebard-hfri.onrender.com",
     // changeOrigin: true, // Add this line if necessary
     secure: true,
-     },
+   },
   },
  },
 });

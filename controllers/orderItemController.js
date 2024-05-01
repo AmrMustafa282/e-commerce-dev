@@ -5,36 +5,42 @@ import { deleteAll } from "./handlerFactory.js";
 const prisma = new PrismaClient();
 
 export const createOrderItem = catchAsync(async (req, res, next) => {
- const { productId } = req.body;
-  const orderId = req.params.id;
-  
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
-    include:{orderItems: true}
-  })
+ const productId = req.params.productId;
+ const orderId = req.params.id;
+ const size = req.body.size;
 
-  for (const i in order.orderItems) {
-    if (order.orderItems[i].productId === productId)
-    {
-      const addedItem = await prisma.orderItem.update({
-       where: { id: "c7fabc89-95bb-4656-8d86-2b8c59af4b51" },
-       data: { amount: +order.orderItems[i].amount + 1 },
-      });
-      return res.status(201).json({
-        status: "success",
-        data: {
-         addedItem,
-        },
-       });
-      
-      }
+ const order = await prisma.order.findUnique({
+  where: { id: orderId },
+  include: { orderItems: true },
+ });
+
+ for (const i in order.orderItems) {
+  if (
+   order.orderItems[i].productId === productId &&
+   order.orderItems[i].size === size
+  ) {
+   const addedItem = await prisma.orderItem.update({
+    where: { id: order.orderItems[i].id },
+    data: {
+     amount: {
+      increment: 1,
+     },
+    },
+   });
+   return res.status(201).json({
+    status: "success",
+    data: {
+     addedItem,
+    },
+   });
   }
-
+ }
 
  const orderItem = await prisma.orderItem.create({
   data: {
    productId,
    orderId,
+   size,
   },
  });
 

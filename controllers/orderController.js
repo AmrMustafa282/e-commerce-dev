@@ -91,6 +91,7 @@ export const webhookCheckout = (req, res, next) => {
  }
 
  if (event.type === "checkout.session.completed")
+  //  if (event.type === "payment_intent.succeeded")
   createBookingCheckout(event.data.object);
 
  res.status(200).json({ received: true });
@@ -103,8 +104,8 @@ export const getAllOrders = catchAsync(async (req, res, next) => {
 
  const orders = await prisma.order.findMany({
   include: { user: true, orderItems: true },
-  skip: startIndex,
-  take: limit,
+  // skip: startIndex,
+  // take: limit,
  });
 
  orders.map((order) => (order.user.password = undefined));
@@ -141,41 +142,30 @@ export const getOrder = catchAsync(async (req, res, next) => {
  });
 });
 
-// fix this for getting products related to orderItems
 export const getUserOrder = catchAsync(async (req, res, next) => {
- const orders = await prisma.order.findMany({
-  where: { userId: req.params.userId },
+ const order = await prisma.order.findFirst({
+  where: { userId: req.user.id, isPaid: false },
   include: {
-   user: true,
    orderItems: {
     include: {
-     product: true,
-    },
-    where: {
-     productId: { not: null }, // Filter out order items with null products
+     product: {
+      include: {
+       images: true,
+       color: true,
+      },
+     },
     },
    },
   },
  });
 
- if (!orders || orders.length === 0) {
+ if (!order) {
   return next(new AppError("No document found with that ID", 404));
  }
 
- if (req.user.id !== orders[0].userId && req.user.role !== "admin") {
-  return next(new AppError("You don't have permission to do this action", 403));
- }
-
- orders.forEach((order) => {
-  // Removing sensitive data from user object
-  order.user.password = undefined;
- });
-
  res.status(200).json({
   status: "success",
-  data: {
-   orders,
-  },
+  order,
  });
 });
 
@@ -205,19 +195,26 @@ export const deleteOrder = catchAsync(async (req, res, next) => {
 
 // [reqsricted for same user only]
 export const createOrder = catchAsync(async (req, res, next) => {
- if (req.user.id !== req.body.userId) {
-  return next(new AppError("You dont have permission to do this action"));
- }
-
- const order = await prisma.order.create({
-  data: req.body,
+ let order;
+ const openOrder = await prisma.order.findFirst({
+  where: {
+   userId: req.user.id,
+   isPaid: false,
+  },
  });
+ if (!openOrder) {
+  order = await prisma.order.create({
+   data: {
+    userId: req.user.id,
+   },
+  });
+ } else {
+  order = openOrder;
+ }
 
  res.status(201).json({
   status: "success",
-  data: {
-   data: order,
-  },
+  order,
  });
 });
 

@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";

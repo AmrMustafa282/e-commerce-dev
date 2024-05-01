@@ -144,6 +144,19 @@ const ProductDetails = () => {
    );
   }
  };
+
+ const addToCart = async () => {
+  const res = await axios.post("/api/v1/orders/");
+  if (res.status === 201) {
+   const res2 = await axios.post(
+    `/api/v1/orders/${res.data.order.id}/${productId}`,
+    { size: currentSize.name }
+   );
+   if (res2.status === 201) {
+    toast.success("Product has been added to your cart");
+   }
+  }
+ };
  // console.log(reviews[0])
  useEffect(() => {
   fetchProduct();
@@ -238,7 +251,9 @@ const ProductDetails = () => {
          ))}
         </div>
        </div>
-       <Button className="w-full ">ADD TO CART</Button>
+       <Button className="w-full " onClick={addToCart}>
+        ADD TO CART
+       </Button>
       </div>
      </div>
      <div className="flex mt-4">

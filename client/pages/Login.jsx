@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "../src/components/ui/input";
+import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";

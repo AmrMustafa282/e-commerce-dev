@@ -14,7 +14,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
-// import { webhookCheckout } from "./controllers/orderController.js";
+import { webhookCheckout } from "./controllers/orderController.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,11 +25,11 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-// app.use(
-//  "/webhook-checkout",
-//  express.raw({ type: "application/json" }),
-//  webhookCheckout
-// ); // we want it not in json but in a row formate
+app.use(
+ "/webhook-checkout",
+ express.raw({ type: "application/json" }),
+ webhookCheckout
+); // we want it not in json but in a row formate
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, '/client/dist')))

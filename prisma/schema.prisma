@@ -79,8 +79,8 @@ model Order {
   user       User     @relation("UserToOrder", fields: [userId], references: [id])
   orderItems OrderItem[] 
   isPaid     Boolean   @default(false)
-  phone      String    @default("")
-  address    String    @default("")
+  // phone      String    @default("") // delete
+  // address    String    @default("") // delete
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -95,6 +95,7 @@ model OrderItem {
   productId String  // Foreign Key to Product
   product   Product @relation(fields: [productId], references: [id])
   amount    Decimal @default(1)
+  size      String 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
