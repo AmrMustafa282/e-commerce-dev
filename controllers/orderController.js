@@ -245,4 +245,19 @@ export const updateOrder = catchAsync(async (req, res, next) => {
  });
 });
 
+export const deleteCompoletedOrders = catchAsync(async (req, res, next) => {
+ if (req.user.role !== "admin") {
+  return next(new AppError("You dont have permission to do this action"));
+ }
+ await prisma.order.deleteMany({
+  where: {
+   isPaid: true,
+   status: "recived",
+  },
+ });
+ res.status(204).json({
+  status: "success",
+  data: null,
+ });
+});
 export const deleteAllOrders = deleteAll("order");

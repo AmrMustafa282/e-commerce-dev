@@ -44,7 +44,6 @@ const Cart = () => {
    setItems(items.filter((item) => item.id !== itemId));
   }
  };
- const handelAddToWishlist = async () => {};
  const handelUpdateQuantity = async (type, itemId, amount) => {
   if (type === "-") {
    const res = await axios.patch(`/api/v1/orders/${order.id}/${itemId}`, {

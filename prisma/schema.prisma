@@ -79,6 +79,7 @@ model Order {
   user       User     @relation("UserToOrder", fields: [userId], references: [id])
   orderItems OrderItem[] 
   isPaid     Boolean   @default(false)
+  status     String    @default("pending...")
   // phone      String    @default("") // delete
   // address    String    @default("") // delete
   createdAt DateTime  @default(now())
