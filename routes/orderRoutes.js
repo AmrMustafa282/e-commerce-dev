@@ -22,8 +22,8 @@ import {
 } from "../controllers/orderItemController.js";
 
 // router.route("/deleteItems").delete(deleteAllOrderItems);
-// router.use(protect);
 router.get("/checkout-session/:orderId", getCheckoutSession);
+router.use(protect);
 
 router.route("/").post(createOrder).delete(deleteAllOrders);
 router.route("/me").get(getUserOrder);
