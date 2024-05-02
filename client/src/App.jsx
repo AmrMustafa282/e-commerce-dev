@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
-import Layout from "./components/Layout";
+// import Layout from "@/components/Layout";
 import Cart from "../pages/Cart";
 import Category from "../pages/Category";
 import Dashboard from "../pages/Dashboard";
@@ -26,44 +26,38 @@ import Wishlist from "../pages/Wishlist";
 function App() {
  return (
   <>
-   <Layout>
-    <Routes>
-     <Route path="/login" element={<Login />} />
-     <Route path="/sign-up" element={<SignUp />} />
-     <Route path="/" element={<Home />} />
-     <Route path="/wishlist" element={<Wishlist />} />
-     <Route path="/product/:productId" element={<ProductDetails />} />
-     <Route path="/:categoryName" element={<Category />} />
-     <Route element={<AuthOutlet fallbackPath="/login" />}>
-      <Route path="/cart" element={<Cart />} />
-      <Route element={<Restrict />}>
-       <Route path="/dashboard" element={<Dashboard />} />
-       <Route
-        path="/dashboard/billboard/create"
-        element={<CreateBillboard />}
-       />
-       <Route
-        path="/dashboard/billboard/:billboardId"
-        element={<UpdateBillboard />}
-       />
-       <Route path="/dashboard/category/create" element={<CreateCategory />} />
-       <Route
-        path="/dashboard/category/:categoryId"
-        element={<UpdateCategory />}
-       />
-       <Route path="/dashboard/color/create" element={<CreateColor />} />
-       <Route path="/dashboard/color/:colorId" element={<UpdateColor />} />
-       <Route path="/dashboard/size/create" element={<CreateSize />} />
-       <Route path="/dashboard/size/:sizeId" element={<UpdateSize />} />
-       <Route path="/dashboard/product/create" element={<CreateProduct />} />
-       <Route
-        path="/dashboard/product/:productId"
-        element={<UpdateProduct />}
-       />
-      </Route>
+   {/* <Layout> */}
+   <Routes>
+    <Route path="/login" element={<Login />} />
+    <Route path="/sign-up" element={<SignUp />} />
+    <Route path="/" element={<Home />} />
+    <Route path="/wishlist" element={<Wishlist />} />
+    <Route path="/product/:productId" element={<ProductDetails />} />
+    <Route path="/:categoryName" element={<Category />} />
+    <Route element={<AuthOutlet fallbackPath="/login" />}>
+     <Route path="/cart" element={<Cart />} />
+     <Route element={<Restrict />}>
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/billboard/create" element={<CreateBillboard />} />
+      <Route
+       path="/dashboard/billboard/:billboardId"
+       element={<UpdateBillboard />}
+      />
+      <Route path="/dashboard/category/create" element={<CreateCategory />} />
+      <Route
+       path="/dashboard/category/:categoryId"
+       element={<UpdateCategory />}
+      />
+      <Route path="/dashboard/color/create" element={<CreateColor />} />
+      <Route path="/dashboard/color/:colorId" element={<UpdateColor />} />
+      <Route path="/dashboard/size/create" element={<CreateSize />} />
+      <Route path="/dashboard/size/:sizeId" element={<UpdateSize />} />
+      <Route path="/dashboard/product/create" element={<CreateProduct />} />
+      <Route path="/dashboard/product/:productId" element={<UpdateProduct />} />
      </Route>
-    </Routes>
-   </Layout>
+    </Route>
+   </Routes>
+   {/* </Layout> */}
    <Toaster position="top-center" richColors />
   </>
  );
