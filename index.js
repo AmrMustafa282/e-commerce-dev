@@ -17,7 +17,7 @@ import { fileURLToPath } from "url";
 import { webhookCheckout } from "./controllers/orderController.js";
 import Stripe from "stripe";
 dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.resolve();
@@ -27,31 +27,7 @@ app.use(
  "/webhook-checkout",
 
  express.raw({ type: "application/json" }),
- //  webhookCheckout
-
- (request, response) => {
-  const sig = request.headers["stripe-signature"];
-
-  let event;
-
-  try {
-   event = stripe.webhooks.constructEvent(
-    request.body,
-    sig,
-    process.env.STRIPE_WEBHOOK_SECRET
-   );
-  } catch (err) {
-   response.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle the event
-  if (event.type === "payment_intent.succeeded") {
-   console.log("PaymentIntent was successful!");
-  }
-
-  // Return a response to acknowledge receipt of the event
-  response.json({ received: true });
- }
+ webhookCheckout
 );
 // we want it not in json but in a row formate
 app.use(cors());
