@@ -70,7 +70,7 @@ const createBookingCheckout = async (session) => {
   const orderId = session.client_reference_id;
   await prisma.order.update({
    where: { id: orderId },
-   data: { status: "sent" },
+   data: { status: "sent", isPaid: true },
   });
  } catch (error) {
   console.log(error);
@@ -91,8 +91,8 @@ export const webhookCheckout = (req, res, next) => {
  }
 
  if (event.type === "checkout.session.completed")
-  //  if (event.type === "payment_intent.succeeded")
   createBookingCheckout(event.data.object);
+ //  if (event.type === "payment_intent.succeeded")
 
  res.status(200).json({ received: true });
 };

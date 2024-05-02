@@ -27,7 +27,7 @@ app.use(express.json());
 
 app.use(
  "/webhook-checkout",
- express.raw({ type: "application/json" }),
+ express.raw({ type: "*/*" }),
  webhookCheckout
 ); // we want it not in json but in a row formate
 
