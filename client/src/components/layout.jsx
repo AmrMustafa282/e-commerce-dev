@@ -1,9 +1,9 @@
-// import Header from "./Header";
+import Header from "./Header";
 
 const Layout = ({ children }) => {
  return (
   <div className="min-h-screen">
-   {/* <Header /> */}
+   <Header />
    <div className="container mx-auto">{children}</div>
   </div>
  );
