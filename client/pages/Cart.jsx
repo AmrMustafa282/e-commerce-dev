@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from "react-redux";
-import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 
 const Cart = () => {

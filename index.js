@@ -27,12 +27,44 @@ app.use(express.json());
 
 app.use(
  "/webhook-checkout",
- express.raw({ type: "*/*" }),
- webhookCheckout
-); // we want it not in json but in a row formate
+
+ express.raw({ type: "application/json" }),
+ //  webhookCheckout
+
+ (request, response) => {
+  const sig = request.headers["stripe-signature"];
+
+  let event;
+
+  try {
+   event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+   response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  switch (event.type) {
+   case "payment_intent.succeeded":
+    const paymentIntent = event.data.object;
+    console.log("PaymentIntent was successful!");
+    break;
+   case "payment_method.attached":
+    const paymentMethod = event.data.object;
+    console.log("PaymentMethod was attached to a Customer!");
+    break;
+   // ... handle other event types
+   default:
+    console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a response to acknowledge receipt of the event
+  response.json({ received: true });
+ }
+);
+// we want it not in json but in a row formate
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, '/client/dist')))
+app.use(express.static(path.join(__dirname, "/client/dist")));
 // app.use(express.urlencoded({
 //   extended: true,
 // }))
@@ -52,9 +84,9 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/reviews", reviewRoutes);
 
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client','dist', 'index.html'))
-})
+app.use("*", (req, res) => {
+ res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.use((err, req, res, next) => {
  const statusCode = err.statusCode || 500;
