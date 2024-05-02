@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 
-const Layouting = () => {
+const Layouting = ({ children }) => {
  return (
   <div className="min-h-screen">
    <Header />

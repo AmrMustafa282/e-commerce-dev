@@ -8,7 +8,6 @@ import Home from "../pages/Home";
 import Cart from "../pages/Cart";
 import Category from "../pages/Category";
 import Dashboard from "../pages/Dashboard";
-// import Layout from "./components/Layout";
 import Restrict from "./components/Restrict";
 import UpdateBillboard from "../pages/Billboard/Update";
 import CreateBillboard from "../pages/Billboard/Create";
