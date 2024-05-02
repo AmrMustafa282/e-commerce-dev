@@ -25,7 +25,7 @@ const Login = (props) => {
   try {
    dispatch(signInStart());
    const response = await axios.post(
-    "http://localhost:8000/api/v1/users/login",
+    "/api/v1/users/login",
     values
    );
    const options = {

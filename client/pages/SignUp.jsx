@@ -14,7 +14,7 @@ const SignUp = (props) => {
   setError("");
 
   try {
-   await axios.post("http://localhost:8000/api/v1/users/signup", values);
+   await axios.post("/api/v1/users/signup", values);
 
    nav("/login");
   } catch (err) {
