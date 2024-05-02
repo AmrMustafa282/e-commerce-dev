@@ -23,10 +23,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.resolve();
 
 const app = express();
-app.use(cors());
-app.use(cookieParser());
-app.use(express.json());
-
 app.use(
  "/webhook-checkout",
 
@@ -39,7 +35,7 @@ app.use(
   let event;
 
   try {
-   event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+   event = stripe.webhooks.constructEvent(request.body, sig, process.env.WEBHOOK_SECRET);
   } catch (err) {
    response.status(400).send(`Webhook Error: ${err.message}`);
   }
@@ -54,6 +50,9 @@ app.use(
  }
 );
 // we want it not in json but in a row formate
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "/client/dist")));
