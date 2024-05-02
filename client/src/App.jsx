@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
-// import Layout from "@/components/Layout";
+import Layout from "@/components/Layout";
 import Cart from "../pages/Cart";
 import Category from "../pages/Category";
 import Dashboard from "../pages/Dashboard";
@@ -26,7 +26,7 @@ import Wishlist from "../pages/Wishlist";
 function App() {
  return (
   <>
-   {/* <Layout> */}
+   <Layout>
    <Routes>
     <Route path="/login" element={<Login />} />
     <Route path="/sign-up" element={<SignUp />} />
@@ -57,7 +57,7 @@ function App() {
      </Route>
     </Route>
    </Routes>
-   {/* </Layout> */}
+   </Layout>
    <Toaster position="top-center" richColors />
   </>
  );
