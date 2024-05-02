@@ -146,7 +146,11 @@ const Home = () => {
   }
   setProducts(filteredProducts);
  };
- console.log(wishlist);
+
+ const currentFileUrl = import.meta.url;
+ const currentFileDir = new URL(currentFileUrl).pathname;
+ console.log(currentFileUrl);
+ console.log(currentFileDir);
 
  useEffect(() => {
   fetchRoot();

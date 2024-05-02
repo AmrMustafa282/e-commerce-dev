@@ -44,7 +44,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
   .resize(316, 475)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
-  .toFile(`client/public/img/product/${req.body.imageCover}`);
+  .toFile(`client/dist/img/product/${req.body.imageCover}`);
 
  // 2) Images
 
@@ -57,7 +57,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
     .resize(750, 1125)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`client/public/img/product/${filename}`);
+    .toFile(`client/dist/img/product/${filename}`);
    req.body.images.push(filename);
   })
  );
@@ -110,9 +110,9 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
  try {
   const products = await prisma.product.findMany({
    where: { isFeatured: true, isArchived: false },
-  //  orderBy: {
-  //   updatedAt: "desc",
-  //  },
+   //  orderBy: {
+   //   updatedAt: "desc",
+   //  },
    include: {
     images: true,
     category: true,
@@ -158,6 +158,9 @@ export const createProduct = catchAsync(async (req, res, next) => {
   relatedProductsId = relatedProducts.id;
  }
 
+ if (!Array.isArray(productSizes)) {
+  productSizes = [productSizes];
+ }
  productSizes = productSizes.map((size) => JSON.parse(size));
 
  const product = await prisma.product.create({
