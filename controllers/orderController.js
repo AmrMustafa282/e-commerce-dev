@@ -70,7 +70,7 @@ const createBookingCheckout = async (session) => {
   const orderId = session.client_reference_id;
   await prisma.order.update({
    where: { id: orderId },
-   data: { isPaid: true },
+   data: { status: "sent" },
   });
  } catch (error) {
   console.log(error);
