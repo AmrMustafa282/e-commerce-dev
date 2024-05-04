@@ -36,6 +36,8 @@ const Category = () => {
  const [fullproducts, setFullproducts] = useState([]);
  const [colors, setColors] = useState([]);
  const [sizes, setSizes] = useState([]);
+ const [loading, setLoading] = useState(false);
+
  const params = useParams();
  const nav = useNavigate();
  const dispatch = useDispatch();
@@ -51,6 +53,7 @@ const Category = () => {
  });
 
  const fetchCategory = async () => {
+  setLoading(true);
   try {
    const products = await axios.get(
     `/api/v1/categories/${params.categoryName}`
@@ -70,6 +73,8 @@ const Category = () => {
    setSizes(Array.from(uniqueSizes));
   } catch (error) {
    console.error("Error fetching products:", error);
+  } finally {
+   setLoading(false);
   }
  };
 
@@ -283,7 +288,7 @@ const Category = () => {
       ))}
      </div>
     </>
-   ) : !products ? (
+   ) : !loading ? (
     <h1>There are no available products!</h1>
    ) : (
     <div className="flex gap-4 flex-wrap mb-12">

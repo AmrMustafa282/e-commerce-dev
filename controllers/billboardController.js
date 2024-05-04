@@ -28,13 +28,17 @@ export const uploadBillboardPhoto = upload.single("image");
 export const resizeBillboardPhoto = catchAsync(async (req, res, next) => {
  if (!req.file) return next();
 
- req.file.filename = `billboard-${Date.now()}.jpeg`;
+ req.file.filename = `billboard-${Date.now()}.jpeg`; // [render timeout]
  await sharp(req.file.buffer)
   .resize(1200, 290)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
   .toFile(`client/public/img/billboard/${req.file.filename}`);
- // .toFile(`client/dist/img/billboard/${req.file.filename}`);
+ await sharp(req.file.buffer)
+  .resize(1200, 290)
+  .toFormat("jpeg")
+  .jpeg({ quality: 90 })
+  .toFile(`client/dist/img/billboard/${req.file.filename}`);
  next();
 });
 

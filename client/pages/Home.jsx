@@ -39,6 +39,7 @@ const Home = () => {
  const [categories, setCategories] = useState([]);
  const [colors, setColors] = useState([]);
  const [sizes, setSizes] = useState([]);
+ const [loading, setLoading] = useState(false);
 
  const [filter, setFilter] = useState({
   order: "recentlyAdded",
@@ -48,6 +49,7 @@ const Home = () => {
  });
 
  const fetchRoot = async () => {
+  setLoading(true);
   try {
    const res = await axios.get("/api/v1/categories");
    dispatch(loadData(res.data.categories));
@@ -67,6 +69,8 @@ const Home = () => {
    setProducts(products.data.products); // ref to show up
   } catch (error) {
    console.error("Error fetching products:", error);
+  } finally {
+   setLoading(false);
   }
  };
 
@@ -331,12 +335,12 @@ const Home = () => {
       ))}
      </div>
     </>
-   ) : !products ? (
+   ) : !loading ? (
     <h1>There are no available products!</h1>
    ) : (
     <div className="flex gap-4 flex-wrap mb-12">
      {[1, 2, 3, 4, 5, 6].map((skl) => (
-      <Skeleton className="w-[316px] h-[475px]" />
+      <Skeleton className="w-[316px] h-[475px]" key={skl} />
      ))}
     </div>
    )}
