@@ -8,7 +8,7 @@
   "test": "echo \"Error: no test specified\" && exit 1",
   "dev": "nodemon index.js",
   "start": "node index.js",
-  "build": "npm install && prisma generate && npm install --prefix client && npm run build --prefix client"
+  "build": "npm install && prisma generate && npm install --prefix client --production=false && npm run build --prefix client"
  },
  "keywords": [],
  "author": "",
