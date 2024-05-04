@@ -24,13 +24,13 @@ const Cart = () => {
   const res = await axios.get("/api/v1/orders/me");
   if (res.data.status === "success") {
    setOrder(res.data.order);
-   setItems(res.data.order.orderItems);
+   setItems(res.data.order?.orderItems);
   }
  };
 
  const handelCheckout = async () => {
   const stripe = await loadStripe(
-   "pk_test_51ONhCnDQFtpqFCDZnMTeC6FTUMaIJsDNFUUU4y2Xs6HQYGl5jXZ9jLMEnirrZHf2udC64xk8Wnc4MqofXn6QmI6d00vrHfaWe8"
+   "pk_test_51NZQSlFLivuJ6OmBvRNB2e5NGOV4zcDH67Cf3jorbmNFBW7SjRjHi03pbNdnQ9AO6qIhyis5mnslc56Fsce6bq4G002veZtrCA"
   );
   const res = await axios.get(`/api/v1/orders/checkout-session/${order.id}`);
   stripe.redirectToCheckout({

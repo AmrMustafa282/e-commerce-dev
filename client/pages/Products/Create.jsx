@@ -265,7 +265,7 @@ const CreateProduct = () => {
         </SelectTrigger>
         <SelectContent>
          <SelectGroup>
-          {categories.length > 0 &&
+          {categories?.length > 0 &&
            categories.map((category) => (
             <SelectItem key={category.id} value={category.id}>
              {category.name}
@@ -314,7 +314,7 @@ const CreateProduct = () => {
          </SelectTrigger>
          <SelectContent>
           <SelectGroup>
-           {relatedProducts.length > 0 &&
+           {relatedProducts?.length > 0 &&
             relatedProducts.map((relation) => (
              <div className="flex justify-between" key={relation.id}>
               <SelectItem key={relation.id} value={relation.id}>
@@ -343,7 +343,7 @@ const CreateProduct = () => {
        Sizes
       </Label>
       <div className="mt-4 mb-8 flex gap-2 flex-wrap">
-       {sizes.map((size) => (
+       {sizes?.map((size) => (
         <div key={size.id}>
          <Label htmlFor={size.id}>
           <div
@@ -379,7 +379,7 @@ const CreateProduct = () => {
         </SelectTrigger>
         <SelectContent>
          <SelectGroup>
-          {colors.length > 0 &&
+          {colors?.length > 0 &&
            colors.map((color) => (
             <SelectItem key={color.id} value={color.id}>
              {color.name}

@@ -32,8 +32,8 @@ router.get("/logout", logout);
 router.post("/forgotPassword", forgotPassword);
 router.patch("/resetPassword/:token", resetPassword);
 
-router.post("/sendConfirmation", protect, sendConfirmation); 
-router.patch("/confirmEmail/:token", confirmEmail);
+router.post("/sendConfirmation", sendConfirmation); 
+router.get("/confirmEmail/:token", confirmEmail);
 
 // router.post("/forgotPassword", forgotPassword);
 // router.patch("/resetPassword/:token", resetPassword);

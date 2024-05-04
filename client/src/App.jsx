@@ -22,6 +22,8 @@ import UpdateProduct from "../pages/Products/Update";
 import ProductDetails from "../pages/ProductDetails";
 import Wishlist from "../pages/Wishlist";
 import Layouting from "./components/Layouting";
+import ResetPassword from "../pages/ResetPassword";
+import ForgetPassword from "../pages/ForgetPassword";
 
 function App() {
  return (
@@ -30,6 +32,8 @@ function App() {
     <Routes>
      <Route path="/login" element={<Login />} />
      <Route path="/sign-up" element={<SignUp />} />
+     <Route path="/forget-password" element={<ForgetPassword />} />
+     <Route path="/reset-password/:token" element={<ResetPassword />} />
      <Route path="/" element={<Home />} />
      <Route path="/wishlist" element={<Wishlist />} />
      <Route path="/product/:productId" element={<ProductDetails />} />
@@ -64,7 +68,7 @@ function App() {
      </Route>
     </Routes>
    </Layouting>
-   <Toaster position="top-center" richColors />
+   <Toaster position="top-center" richColors closeButton />
   </>
  );
 }

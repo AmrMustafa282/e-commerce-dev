@@ -30,10 +30,11 @@ export const resizeBillboardPhoto = catchAsync(async (req, res, next) => {
 
  req.file.filename = `billboard-${Date.now()}.jpeg`;
  await sharp(req.file.buffer)
-  .resize(1200, 490)
+  .resize(1200, 290)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
-  .toFile(`client/dist/img/billboard/${req.file.filename}`);
+  .toFile(`client/public/img/billboard/${req.file.filename}`);
+ // .toFile(`client/dist/img/billboard/${req.file.filename}`);
  next();
 });
 

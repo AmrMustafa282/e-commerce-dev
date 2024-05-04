@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { MoreHorizontal, Plus, Trash, Trash2 } from "lucide-react";
+import { Check, CheckCheck, Trash2 } from "lucide-react";
 
-import {
- DropdownMenu,
- DropdownMenuContent,
- DropdownMenuItem,
- DropdownMenuLabel,
- DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
  AlertDialog,
  AlertDialogAction,
@@ -35,16 +28,27 @@ const Orders = () => {
    console.log("something went wrong while fetching the orders");
   }
  };
+
+ const handelRecived = async (order) => {
+  if (order.isPaid || order.status === "Sent") {
+   await axios.patch(`/api/v1/orders/${order.id}`, {
+    status: "Recived",
+   });
+  } else {
+   return;
+  }
+ };
  useEffect(() => {
   fetchOrders();
  }, []);
+
  const data = orders;
  const handelDelete = async (id) => {
   try {
    const res = await axios.delete(`/api/v1/orders/deleteCompletedOrders`);
    if (res.status === 204) {
     setOrders(
-     orders.filter((order) => order.isPaid && order.status !== "recived")
+     orders.filter((order) => order.isPaid && order.status !== "Recived")
     );
     toast.success("Compoleted orders has been deleted");
    } else {
@@ -113,13 +117,32 @@ const Orders = () => {
     </div>
    ),
   },
+  {
+   accessorKey: "recived",
+   header: () => <div>Recived</div>,
+   cell: ({ row }) => (
+    <Button
+     size="icon"
+     variant="ghost"
+     onClick={() => handelRecived(row.original)}
+    >
+     {row.getValue("isPaid") ? (
+      <CheckCheck
+       style={row.getValue("status") === "Recived" ? { color: "#0679FB" } : {}}
+      />
+     ) : (
+      <Check />
+     )}
+    </Button>
+   ),
+  },
  ];
 
  return (
   <>
    <div className="py-4 border-b flex justify-between items-end">
     <div>
-     <h1 className="font-bold text-4xl">Orders ({orders.length})</h1>
+     <h1 className="font-bold text-4xl">Orders ({orders?.length})</h1>
      <p className="text-gray-700">Overview of your orders</p>
     </div>
     <AlertDialog>

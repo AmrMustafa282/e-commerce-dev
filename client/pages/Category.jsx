@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Category = () => {
  const [data, setData] = useState([]);
@@ -131,8 +132,8 @@ const Category = () => {
 
  return (
   <>
-   {data.length > 0 && (
-    <div className="relative">
+   {data.length > 0 ? (
+    <div className="relative w-full h-[290px]">
      <img
       src={`/img/billboard/${data[0].billboard.imageUrl}`}
       alt="billboard"
@@ -142,6 +143,8 @@ const Category = () => {
       {data[0].billboard.label}
      </h1>
     </div>
+   ) : (
+    <Skeleton className="w-full h-[290px] mb-12" />
    )}
    {products.length > 0 ? (
     <>
@@ -280,8 +283,14 @@ const Category = () => {
       ))}
      </div>
     </>
+   ) : !products ? (
+    <h1>There are no available products!</h1>
    ) : (
-    <h1>Loading</h1>
+    <div className="flex gap-4 flex-wrap mb-12">
+     {[1, 2, 3, 4, 5, 6].map((skl) => (
+      <Skeleton className="w-[316px] h-[475px]" />
+     ))}
+    </div>
    )}
   </>
  );

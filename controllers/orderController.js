@@ -12,7 +12,16 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
  const order = await prisma.order.findFirst({
   where: { id: req.params.orderId },
   include: {
-   orderItems: true,
+   orderItems: {
+    include: {
+     product: {
+      include: {
+       images: true,
+      },
+     },
+    },
+   },
+   user: true,
   },
  });
  // 2) Create checkout session  [npm i stripe]
@@ -20,30 +29,41 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
 
  const session = await stripe.checkout.sessions.create({
   payment_method_types: ["card"],
-  success_url: `${req.protocol}://${req.get("host")}/success`,
+  success_url: `${req.protocol}://${req.get("host")}/`,
   cancel_url: `${req.protocol}://${req.get("host")}/fialed`,
   // customer_email: req.user.email,
   // client_reference_id: req.params.orderId,
-  customer_email: "amr@me.com",
+  customer_email: order.user.email,
   client_reference_id: req.params.orderId,
   mode: "payment",
   line_items: [
    {
-    quantity: 1,
+    quantity:1,
     price_data: {
-     currency: "usd",
-     //  unit_amount:
-     //   order.orderItems.reduce((acc, item) => {
-     //    const itemPrice = item.amount * item.product.price;
-     //    return acc + itemPrice;
-     //   }) * 100,
-     unit_amount: 100,
+     currency: "egp",
+     unit_amount:
+      order.orderItems.reduce((acc, item) => {
+       const itemPrice = parseInt(item.amount) * parseInt(item.product.price);
+       return acc + itemPrice;
+      }, 0) * 100,
+
+     // 100,
      product_data: {
-      name: `${order.id} Order`,
-      description: order.address,
-      images: [
-       //  `${req.protocol}://${req.get("host")}/img/tours/${tour.imageCover}`,
-      ],
+      name: order.orderItems.map((item) => item.product.name).join(" ,"),
+      description: order.orderItems
+       .map((item) => item.product.description)
+       .join(" ,"),
+      images:
+       //    order.orderItems.map(
+       //  (item) =>
+       //   `${req.protocol}://${req.get("host")}/img/products/${
+       //    item.product.images[0]
+       //   }`
+       // ),
+       [
+        "https://static.zara.net/assets/public/ef35/f816/b44a4a02b4b8/78103cb08cc3/08574500806-e1/08574500806-e1.jpg?ts=1703759618908&w=750",
+        "https://static.zara.net/assets/public/7dd5/b904/bbe7430eb666/2a16fbdb1feb/08574500806-a4/08574500806-a4.jpg?ts=1713195215620&w=750",
+       ],
      },
     },
    },
@@ -70,7 +90,7 @@ const createBookingCheckout = async (session) => {
   const orderId = session.client_reference_id;
   await prisma.order.update({
    where: { id: orderId },
-   data: { status: "sent", isPaid: true },
+   data: { status: "Sent", isPaid: true },
   });
  } catch (error) {
   console.log(error);
@@ -94,7 +114,6 @@ export const webhookCheckout = (req, res, next) => {
 
  if (event.type === "checkout.session.completed")
   createBookingCheckout(event.data.object);
- //  if (event.type === "payment_intent.succeeded")
 
  res.status(200).json({ received: true });
 };
@@ -161,9 +180,9 @@ export const getUserOrder = catchAsync(async (req, res, next) => {
   },
  });
 
- if (!order) {
-  return next(new AppError("No document found with that ID", 404));
- }
+ //  if (!order) {
+ //   return next(new AppError("No document found with that ID", 404));
+ //  }
 
  res.status(200).json({
   status: "success",
@@ -254,7 +273,7 @@ export const deleteCompoletedOrders = catchAsync(async (req, res, next) => {
  await prisma.order.deleteMany({
   where: {
    isPaid: true,
-   status: "recived",
+   status: "Recived",
   },
  });
  res.status(204).json({

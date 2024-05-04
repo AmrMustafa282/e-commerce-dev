@@ -84,7 +84,9 @@ const Billboards = () => {
         <DropdownMenuContent align="end">
          <DropdownMenuLabel>Actions</DropdownMenuLabel>
          <DropdownMenuItem>
-          <Link to={`/dashboard/billboard/${billboard.id}`} className=" w-full">Update</Link>
+          <Link to={`/dashboard/billboard/${billboard.id}`} className=" w-full">
+           Update
+          </Link>
          </DropdownMenuItem>
          {/* <DropdownMenuItem> */}
          <AlertDialogTrigger asChild>
@@ -119,7 +121,7 @@ const Billboards = () => {
   <>
    <div className="py-4 border-b flex justify-between items-end">
     <div>
-     <h1 className="font-bold text-4xl">Billboards ({billboards.length})</h1>
+     <h1 className="font-bold text-4xl">Billboards ({billboards?.length})</h1>
      <p className="text-gray-700">Overview of your store</p>
     </div>
     <Link to={"/dashboard/billboard/create"}>

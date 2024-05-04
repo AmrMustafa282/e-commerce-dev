@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Heart } from "lucide-react";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
+import { Skeleton } from "@/components/ui/skeleton";
 const Home = () => {
  const nav = useNavigate();
  const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const Home = () => {
   try {
    const res = await axios.get("/api/v1/categories");
    dispatch(loadData(res.data.categories));
-   const extractedCategories = res.data.categories.map(
+   const extractedCategories = res.data.categories?.map(
     ({ id, name, createdAt, updatedAt }) => ({
      id,
      name,
@@ -147,11 +148,6 @@ const Home = () => {
   setProducts(filteredProducts);
  };
 
- const currentFileUrl = import.meta.url;
- const currentFileDir = new URL(currentFileUrl).pathname;
- console.log(currentFileUrl);
- console.log(currentFileDir);
-
  useEffect(() => {
   fetchRoot();
   fetchColors();
@@ -159,8 +155,8 @@ const Home = () => {
  }, []);
  return (
   <div>
-   {billboard && (
-    <div className="relative">
+   {billboard ? (
+    <div className="relative w-full h-[290px]">
      <img
       src={`/img/billboard/${billboard.imageUrl}`}
       alt="billboard"
@@ -170,8 +166,10 @@ const Home = () => {
       {billboard.label}
      </h1>
     </div>
+   ) : (
+    <Skeleton className="w-full h-[290px] mb-12" />
    )}
-   {products.length > 0 ? (
+   {products?.length > 0 ? (
     <>
      <div className="mb-4">
       <Sheet>
@@ -237,7 +235,7 @@ const Home = () => {
           <h2 className="mb-4">Colors</h2>
           <div className="flex gap-2 flex-wrap ">
            {colors.map((color) => (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2" key={color.id}>
              <Button
               type="button"
               style={{ background: `${color.value}` }}
@@ -261,7 +259,7 @@ const Home = () => {
           <h2 className="mb-4">Sizes</h2>
           <div className="flex gap-2 flex-wrap mb-">
            {sizes.map((size) => (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2" key={size.id}>
              <Button
               type="button"
               variant="outline"
@@ -333,8 +331,14 @@ const Home = () => {
       ))}
      </div>
     </>
+   ) : !products ? (
+    <h1>There are no available products!</h1>
    ) : (
-    <h1>Loading</h1>
+    <div className="flex gap-4 flex-wrap mb-12">
+     {[1, 2, 3, 4, 5, 6].map((skl) => (
+      <Skeleton className="w-[316px] h-[475px]" />
+     ))}
+    </div>
    )}
   </div>
  );

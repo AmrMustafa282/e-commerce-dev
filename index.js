@@ -15,9 +15,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { webhookCheckout } from "./controllers/orderController.js";
-import Stripe from "stripe";
 dotenv.config();
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.resolve();

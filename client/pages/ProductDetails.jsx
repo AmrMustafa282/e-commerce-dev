@@ -46,6 +46,7 @@ import { ArrowBigUp, MoreHorizontal, Star, Heart } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
+import { Skeleton } from "@/components/ui/skeleton";
 const ProductDetails = () => {
  const params = useParams();
  //  const { scrollTo } = useCarousel;
@@ -67,10 +68,9 @@ const ProductDetails = () => {
    const res = await axios.get(`/api/v1/products/${id}`);
    if (res.status === 200) {
     setProduct(res.data.product);
+    setReviews(res.data.product.reviews);
     setCurrentSize(res.data.product.productSizes[0].size);
    }
-   //  nav(`/product/${id}`);
-   fetchReviews(id);
   } catch (error) {
    console.error("Error fetching product:", error);
   }
@@ -178,7 +178,7 @@ const ProductDetails = () => {
 
  return (
   <>
-   {product && (
+   {product ? (
     <div className=" my-12">
      <div className="flex flex-col  gap-4 md:flex-row mb-12">
       <div className="flex-1 ">
@@ -400,10 +400,6 @@ const ProductDetails = () => {
                </AlertDialogContent>
               </AlertDialog>
              </DropdownMenu>
-
-             {/* <DialogTrigger asChild>
-              <Button variant="outline">Add Review</Button>
-             </DialogTrigger> */}
              <DialogContent className="sm:max-w-[60vw]">
               <DialogHeader>
                <DialogTitle>Review</DialogTitle>
@@ -477,6 +473,105 @@ const ProductDetails = () => {
         </div>
        ))}
      </div>
+    </div>
+   ) : (
+    // product && (
+    <div className=" my-12">
+     <div className="flex flex-col  gap-4 md:flex-row mb-12">
+      <div className="flex-1 ">
+       <Carousel
+        className=" w-[558px] h-[837px] overflow-hidden"
+        opts={{
+         align: "start",
+         loop: true,
+         dragFree: true,
+        }}
+       >
+        <CarouselContent className="">
+         {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+          <CarouselItem className="" key={index}>
+           <div className="p-1">
+            <Card className="w-[558px] h-[837px] group cursor-pointer">
+             <CardContent className="p-0">
+              <Skeleton className="w-full h-screen" />
+             </CardContent>
+            </Card>
+           </div>
+          </CarouselItem>
+         ))}
+        </CarouselContent>
+        <CarouselScrollTo index={index} />
+       </Carousel>
+      </div>
+      <div className="flex-1 mt-4 flex flex-col justify-between ">
+       <div>
+        <div className="flex items-start justify-between">
+         <Skeleton className="w-full h-12 mr-8" />
+         <Button size="icon" variant="ghost">
+          <Heart className="w-10 h-10" />
+         </Button>
+        </div>
+        <span className="w-20 h-2 bg-black block" />
+        <Skeleton className="w-40 h-10 mb-4 mt-12" />
+
+        <Skeleton className="w-full h-8 mt-8" />
+        <Skeleton className="w-full h-8 my-4" />
+        <Skeleton className="w-96 h-8 mb-4 mt-8" />
+
+        <Skeleton className="w-96 h-8 my-4" />
+
+        <hr className="my-8" />
+        <Skeleton className="w-40 h-10 my-4" />
+        <div className="flex gap-4">
+         {[1, 2, 3].map((e) => (
+          <Skeleton className="w-10 h-10 my-4" key={e} />
+         ))}
+        </div>
+
+        <span className="text-2xl font-semibold ">
+         {/* Color : <span className="font-normal">{product.color.name}</span> */}
+        </span>
+        <div className="flex gap-4">
+         {[1, 2, 3, 4].map((index) => (
+          <Skeleton className="w-10 h-12 my-4" key={index} />
+         ))}
+        </div>
+       </div>
+       <Skeleton className="w-full h-12  " />
+      </div>
+     </div>
+     <div className="flex mt-4">
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+       <Skeleton className="w-[105px] h-[158px] mx-2" key={index} />
+      ))}
+     </div>
+    </div>
+    // )
+   )}
+   {!reviews && (
+    <div className="flex flex-col gap-4 mb-12 mt-20 container ">
+     <Skeleton className="w-full h-8" />
+
+     <hr />
+     {[1].map((index) => (
+      <div key={index}>
+       <div className="flex items-center gap-4 ">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <Skeleton className="w-56 h-8" />
+       </div>
+       <div className="flex my-1">
+        {[1, 2, 3, 4, 5].map((e) => (
+         <Star key={e} />
+        ))}
+       </div>
+       <Skeleton className="w-full h-6 my-3" />
+       <div className="flex items-center gap-4 my-2">
+        <Skeleton className="w-8 h-8" />
+        <Skeleton className="w-8 h-8" />
+       </div>
+       <hr className="mt-2" />
+      </div>
+     ))}
     </div>
    )}
   </>

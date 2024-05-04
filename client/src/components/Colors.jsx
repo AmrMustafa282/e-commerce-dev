@@ -132,7 +132,7 @@ const Colors = () => {
   <>
    <div className="py-4 border-b flex justify-between items-end">
     <div>
-     <h1 className="font-bold text-4xl">Colors ({colors.length})</h1>
+     <h1 className="font-bold text-4xl">Colors ({colors?.length})</h1>
      <p className="text-gray-700">Overview of your colors</p>
     </div>
     <Link to={"/dashboard/color/create"}>

@@ -235,7 +235,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
  // 3) Send it to user's email
  try {
   const resetURL = {
-   url: `${req.protocol}://${req.get("host")}/auth/reset-password/`,
+   url: `${req.protocol}://${req.get("host")}/reset-password/`,
    token: resetToken,
   };
   await new Email(user, resetURL).sendPasswordRest();
@@ -301,15 +301,15 @@ export const resetPassword = catchAsync(async (req, res, next) => {
 });
 
 export const sendConfirmation = catchAsync(async (req, res, next) => {
- // 1) Get user based on current user id
- // const user = await User.findOne({email:req.body.email});
- // if (!user) {
- //   return next(new AppError('There is no user with that email address', 404));
- // }
- const { user } = req;
- if (user.isConfirmed) {
-  return next(new AppError("THIS USER IS ALREADY CONFIRMED", 400));
+ const { email } = req.body;
+
+ const user = await prisma.user.findUnique({
+  where: { email },
+ });
+ if (!user) {
+  return next(AppError("This email doesn't belong to any user", 404));
  }
+
  // 2) Generate the random reset token
  const confirmToken = crypto.randomBytes(32).toString("hex");
  user.emailConfirmToken = crypto
@@ -319,7 +319,7 @@ export const sendConfirmation = catchAsync(async (req, res, next) => {
  user.emailConfirmExpires = new Date(Date.now() + 10 * 60 * 1000);
  await prisma.user.update({
   where: {
-   email: req.user.email,
+   email,
   },
   data: user,
  });
@@ -343,7 +343,7 @@ export const sendConfirmation = catchAsync(async (req, res, next) => {
   user.emailConfirmExpires = undefined;
   await prisma.user.update({
    where: {
-    email: req.body.email,
+    email,
    },
    data: user,
   });
@@ -384,6 +384,6 @@ export const confirmEmail = catchAsync(async (req, res, next) => {
   data: user,
  });
  // createSendToken(user, 200, req, res, 'account');
- res.redirect("/me");
+ res.redirect("/login");
  // res.json('done')
 });

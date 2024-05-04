@@ -11,8 +11,9 @@ import {
  signInFailure,
  signInSuccess,
 } from "@/redux/user/userSlice";
+import { toast } from "sonner";
 
-const Login = (props) => {
+const Login = () => {
  const dispatch = useDispatch();
  const nav = useNavigate();
  const [error, setError] = useState("");
@@ -24,14 +25,28 @@ const Login = (props) => {
 
   try {
    dispatch(signInStart());
-   const response = await axios.post(
-    "/api/v1/users/login",
-    values
-   );
+   const response = await axios.post("/api/v1/users/login", values);
    const options = {
     email: values.email,
     username: response.data.data.user.username,
    };
+
+   if (!response.data.data.user.isConfirmed) {
+    try {
+     const res = await axios.post("/api/v1/users/sendConfirmation", {
+      email: values.email,
+     });
+     if (res.data.status === "success") {
+      toast.warning(
+       "Verify your account first, we have sent verification to your email!"
+      );
+     }
+    } catch (error) {
+     toast.error(error);
+    }
+    dispatch(signInFailure());
+    return;
+   }
    if (response.data.data.user.role === "admin") {
     options.role = "admin";
    }

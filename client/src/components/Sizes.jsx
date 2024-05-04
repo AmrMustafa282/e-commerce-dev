@@ -131,7 +131,7 @@ const Sizes = () => {
   <>
    <div className="py-4 border-b flex justify-between items-end">
     <div>
-     <h1 className="font-bold text-4xl">Sizes ({sizes.length})</h1>
+     <h1 className="font-bold text-4xl">Sizes ({sizes?.length})</h1>
      <p className="text-gray-700">Overview of your sizes</p>
     </div>
     <Link to={"/dashboard/size/create"}>
