@@ -40,31 +40,16 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
  }
  // 1) Cover Image [to handel render timeout ]
  req.body.imageCover = `product-cover-${Date.now()}.jpeg`;
+
  await sharp(req.files.imageCover[0].buffer)
   .resize(316, 475)
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
-  .toFile(`client/public/img/product/${req.body.imageCover}`),
-  await sharp(req.files.imageCover[0].buffer)
-   .resize(316, 475)
-   .toFormat("jpeg")
-   .jpeg({ quality: 90 })
-   .toFile(`client/dist/img/product/${req.body.imageCover}`),
+  .toFile(`client/dist/img/product/${req.body.imageCover}`),
   // 2) Images
 
   (req.body.images = []);
- await Promise.all(
-  req.files.images.map(async (file, i) => {
-   const filename = `product-img-${Date.now()}-${i + 1}.jpeg`;
 
-   await sharp(file.buffer)
-    .resize(750, 1125)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`client/public/img/product/${filename}`);
-   req.body.images.push(filename);
-  })
- );
  await Promise.all(
   req.files.images.map(async (file, i) => {
    const filename = `product-img-${Date.now()}-${i + 1}.jpeg`;
