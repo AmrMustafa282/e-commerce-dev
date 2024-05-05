@@ -232,7 +232,11 @@ export const getProduct = catchAsync(async (req, res, next) => {
   where: { id: req.params.id },
   include: {
    category: true,
-   images: true,
+   images: {
+    orderBy: {
+     url: "asc",
+    },
+   },
    color: true,
    productSizes: {
     include: {
@@ -266,7 +270,7 @@ export const getProduct = catchAsync(async (req, res, next) => {
  });
 });
 export const updateProduct = catchAsync(async (req, res, next) => {
-  console.log(req.body.images)
+ console.log(req.body.images);
  let {
   images,
   imageCover,
@@ -348,7 +352,6 @@ export const updateProduct = catchAsync(async (req, res, next) => {
   },
  });
 });
-
 export const relatedProducts = catchAsync(async (req, res, next) => {
  const relatedProducts = await prisma.relatedProducts.findMany({
   include: {
