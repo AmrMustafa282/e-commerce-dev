@@ -266,6 +266,7 @@ export const getProduct = catchAsync(async (req, res, next) => {
  });
 });
 export const updateProduct = catchAsync(async (req, res, next) => {
+  console.log(req.body.images)
  let {
   images,
   imageCover,
@@ -325,17 +326,14 @@ export const updateProduct = catchAsync(async (req, res, next) => {
   where: { productId: product.id },
  });
  await prisma.image.create({
-  // where: { id: product.images[0].id },
   data: {
    productId: product.id,
    url: req.body.imageCover,
   },
  });
 
- // console.log("iamges", product.images.length);
- for (let i = 0; i < req.body.images.length; i++) {
+ for (const i in req.body.images) {
   await prisma.image.create({
-   // where: { id: product.images[i + 1].id },
    data: {
     productId: product.id,
     url: req.body.images[i],

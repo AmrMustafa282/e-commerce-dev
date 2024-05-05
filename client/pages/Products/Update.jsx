@@ -87,12 +87,12 @@ const UpdateProduct = () => {
    formData.append("productSizes", JSON.stringify(size));
   });
   try {
-   console.log(formData);
+  //  console.log(formData);
    const res = await axios.patch(`/api/v1/products/${productId}`, formData);
    if (res.status === 201) {
     toast.success("Product updated");
    }
-   console.log(res.data);
+  //  console.log(res.data);
    setTimeout(() => {
     nav("/dashboard?tab=products");
    }, 1000);
@@ -157,7 +157,8 @@ const UpdateProduct = () => {
    reader.readAsDataURL(uploadedImages[i]);
   }
  };
-
+ console.log(images);
+ console.log(imagesPreview);
  const handleDeleteImages = (index) => {
   // Retrieve the image file extension
   const imageType = images[index].name.split(".").pop().toLowerCase();
@@ -287,7 +288,7 @@ const UpdateProduct = () => {
  }, []);
  //  console.log(productSizes[0].size.id===sizes[0].id);
  //  console.log(sizes[0]);
- console.log(productSizes);
+//  console.log(productSizes);
 
  return (
   <>
