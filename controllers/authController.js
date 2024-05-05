@@ -110,7 +110,7 @@ export const protect = catchAsync(async (req, res, next) => {
 
  if (!token) {
   return next(
-   new AppError("You are not logged in! Please log in to get access.", 401)
+   new AppError("Your session has expired, Please login again.", 401)
   );
  }
 

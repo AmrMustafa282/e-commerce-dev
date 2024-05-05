@@ -4,13 +4,11 @@ import axios from "axios";
 import { Heart, Minus, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 
 const Cart = () => {
- const nav = useNavigate();
  const dispatch = useDispatch();
  const { products: wishlist } = useSelector((state) => state.wishlist);
 
@@ -74,6 +72,10 @@ const Cart = () => {
    }
   }
  };
+
+ //  const handelWishlistAction = async (item) => {
+
+ //  };
  useEffect(() => {
   getOrder();
  }, []);
@@ -127,9 +129,9 @@ const Cart = () => {
            size="icon"
            variant="ghost"
            onClick={() =>
-            wishlist?.find((p) => p.id === item.product.id)
-             ? dispatch(removeFromWishlist(item.product.id))
-             : dispatch(addToWishlist(item.product))
+            wishlist?.find((p) => p.id === product.id)
+             ? dispatch(removeFromWishlist(product.id))
+             : dispatch(addToWishlist(product))
            }
           >
            <Heart

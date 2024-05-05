@@ -19,7 +19,7 @@ const Overview = () => {
    value: states?.sales,
   },
   {
-   text: "Products In Stock",
+   text: "Products In Store",
    icon: <Layers3 />,
    value: states?.products,
   },
