@@ -31,9 +31,18 @@ const Orders = () => {
 
  const handelRecived = async (order) => {
   if (order.isPaid || order.status === "Sent") {
-   await axios.patch(`/api/v1/orders/${order.id}`, {
-    status: "Recived",
-   });
+   try {
+    const res = await axios.patch(`/api/v1/orders/${order.id}`, {
+     status: "Recived",
+    });
+    if (res.data.status === "success") {
+     setOrders(
+      orders.map((ord) => (ord.id === order.id ? res.data.order : ord))
+     );
+    }
+   } catch (error) {
+    return toast.error(error);
+   }
   } else {
    return;
   }

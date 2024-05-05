@@ -38,7 +38,7 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
   mode: "payment",
   line_items: [
    {
-    quantity:1,
+    quantity: 1,
     price_data: {
      currency: "egp",
      unit_amount:
@@ -255,14 +255,15 @@ export const updateOrder = catchAsync(async (req, res, next) => {
 
  const updatedOrder = await prisma.order.update({
   where: { id: req.params.id },
+  include: {
+   user: true,
+  },
   data: req.body,
  });
 
  res.status(200).json({
   status: "success",
-  data: {
-   data: updatedOrder,
-  },
+  order: updatedOrder,
  });
 });
 
