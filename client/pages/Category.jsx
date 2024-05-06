@@ -138,8 +138,9 @@ const Category = () => {
  return (
   <>
    {data.length > 0 ? (
-    <div className="relative w-full h-[290px]">
+    <div className="relative w-full h-[300px]">
      <img
+      loading="lazy"
       src={`/img/billboard/${data[0].billboard.imageUrl}`}
       alt="billboard"
       className="w-full mt-4 mb-12"
@@ -258,6 +259,7 @@ const Category = () => {
         <CardContent className="p-0 ">
          <div className="overflow-hidden relative ">
           <img
+           loading="lazy"
            onClick={() => {
             nav(`/product/${product.id}`);
            }}
@@ -292,7 +294,7 @@ const Category = () => {
     <h1>There are no available products!</h1>
    ) : (
     <div className="flex gap-4 flex-wrap mb-12">
-     {[1, 2, 3, 4, 5, 6].map((skl) => (
+     {[1, 2, 3, 4, 5, 6, 7, 8].map((skl) => (
       <Skeleton className="w-[316px] h-[475px]" />
      ))}
     </div>

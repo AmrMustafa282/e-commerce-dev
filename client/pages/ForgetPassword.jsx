@@ -8,9 +8,11 @@ import { toast } from "sonner";
 
 const ForgetPassword = () => {
  const [email, setEmail] = useState("");
+ const [loading, setLoadin] = useState(false);
 
  const handelSubmit = async (e) => {
   e.preventDefault();
+  setLoadin(true);
   if (!email) {
    return toast.error("No email provided!");
   }
@@ -33,6 +35,8 @@ const ForgetPassword = () => {
    });
   } catch (error) {
    toast.error("An error occurred");
+  } finally {
+   setLoadin(false);
   }
   // if (res.data.status === "success") {
   //  toast.success("Check your email for verfication");
@@ -56,7 +60,7 @@ const ForgetPassword = () => {
         placeholder="user@mail.com"
         type="email"
        />
-       <Button>Send Confirmation</Button>
+       <Button disabled={loading}>Send Confirmation</Button>
        <p className="mt-8">
         Doesn't have an account yet?{" "}
         <Link to="/sign-up" className="underline text-blue-600">

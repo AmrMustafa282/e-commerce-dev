@@ -5,21 +5,21 @@ import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const SignUp = (props) => {
  const nav = useNavigate();
- const [error, setError] = useState("");
  const onSubmit = async (values) => {
   console.log("Values: ", values);
-  setError("");
 
   try {
    await axios.post("/api/v1/users/signup", values);
 
    nav("/login");
   } catch (err) {
-   if (err && err instanceof AxiosError) setError(err.response?.data.message);
-   else if (err && err instanceof Error) setError(err.message);
+   if (err && err instanceof AxiosError)
+    toast.error(err.response?.data.message);
+   else if (err && err instanceof Error) toast.error(err.message);
 
    console.log("Error: ", err);
   }
@@ -40,7 +40,7 @@ const SignUp = (props) => {
     <div className="bg-white px-12 pb-12 pt-4 rounded-lg shadow-lg">
      <form onSubmit={formik.handleSubmit}>
       <h1 className="my-4 text-center font-semibold text-3xl">SignUp</h1>
-      <p>{error}</p>
+
       <div className="flex flex-col gap-4 w-full min-w-96">
        <Input
         name="username"

@@ -14,10 +14,12 @@ const UpdateBillboard = () => {
  const [label, setLabel] = useState("");
  const [image, setImage] = useState(null);
  const [imagePreview, setImagePreview] = useState(null);
+ const [loading, setLoading] = useState(false);
 
  const nav = useNavigate();
 
  const handleSubmit = async () => {
+  setLoading(true);
   //  event.preventDefault();
 
   const formData = new FormData();
@@ -36,6 +38,8 @@ const UpdateBillboard = () => {
    }, 1000);
   } catch (error) {
    toast.error(error);
+  } finally {
+   setLoading(false);
   }
  };
  const handleLabelChange = (event) => {
@@ -81,9 +85,16 @@ const UpdateBillboard = () => {
      className="mt-4 mb-8 "
     />
     {imagePreview && (
-     <img src={imagePreview} alt="Uploaded" className="max-w-full mb-4" />
+     <img
+      loading="lazy"
+      src={imagePreview}
+      alt="Uploaded"
+      className="max-w-full mb-4"
+     />
     )}{" "}
-    <Button onClick={handleSubmit}>Save</Button>
+    <Button onClick={handleSubmit} disabled={loading}>
+     Save
+    </Button>
    </div>
   </>
  );

@@ -5,9 +5,34 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { ModeToggle } from "./toggleTheme";
 // import { NavigationMenuDemo } from "./Navigation";
 import { signoutSuccess } from "@/redux/user/userSlice";
-import { ShoppingCart, Settings, Heart } from "lucide-react";
+import {
+ ShoppingCart,
+ Settings,
+ Heart,
+ User,
+ User2,
+ AlignJustify,
+} from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import {
+ DropdownMenu,
+ DropdownMenuContent,
+ DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import {
+ Sheet,
+ SheetClose,
+ SheetContent,
+ SheetDescription,
+ SheetFooter,
+ SheetHeader,
+ SheetTitle,
+ SheetTrigger,
+} from "@/components/ui/sheet";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Label } from "./ui/label";
+import { Separator } from "./ui/separator";
 
 const Header = () => {
  const nav = useNavigate();
@@ -35,8 +60,8 @@ const Header = () => {
 
  return (
   <div className="py-2  w-full border-b">
-   <div className="container mx-auto h-full flex justify-between items-center">
-    <div className="flex gap-6 items-center justify-center">
+   <div className="container mx-auto h-full flex justify-between items-center ">
+    <div className="md:flex gap-6 items-center justify-center hidden">
      <Link to={"/"} className="font-bold text-2xl ">
       STORE
      </Link>
@@ -95,7 +120,7 @@ const Header = () => {
       </div>
      ) : (
       categories && (
-       <div className="flex gap-3">
+       <div className="md:flex gap-3 hidden">
         {categories.map((category) => (
          <Link
           to={`/${category.name}`}
@@ -109,8 +134,8 @@ const Header = () => {
       )
      )}
     </div>
-    <div className="flex items-center justify-center gap-4">
-     <ModeToggle />
+    <div className="md:flex items-center justify-center gap-4 hidden">
+     {/* <ModeToggle /> */}
      <Button size="icon" variant="outline" onClick={() => nav("/wishlist")}>
       <Heart />
      </Button>
@@ -124,12 +149,231 @@ const Header = () => {
          <Settings className="" />
         </Link>
        )}
-
-       <Button onClick={handelLogout}>Logout</Button>
+       <DropdownMenu>
+        <DropdownMenuTrigger
+         asChild
+         className="p-2 border box-content rounded-lg"
+        >
+         <User />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+         <DropdownMenuItem onClick={() => setTheme("light")}>
+          Profile
+         </DropdownMenuItem>
+         <DropdownMenuItem onClick={handelLogout}>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+       </DropdownMenu>
       </>
      ) : (
       <Button onClick={handelLogin}>SignIn</Button>
      )}
+    </div>
+    <div className="md:hidden flex justify-between items-center w-full">
+     <Link to={"/"} className="font-bold text-2xl ">
+      STORE
+     </Link>
+     <Sheet>
+      <SheetTrigger asChild>
+       <AlignJustify />
+      </SheetTrigger>
+      <SheetContent side="top">
+       <div>
+        <div className=" ">
+         <Link to={"/"} className="font-bold text-2xl ">
+          STORE
+         </Link>
+         {/* <NavigationMenuDemo /> */}
+
+         {location.pathname.includes("dashboard") ? (
+          <div className="flex flex-col gap-3 text-gray-700 mt-3  ">
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=overview"}
+             style={
+              tab === "overview" || undefined
+               ? { background: "#F3F4F6", color: "black" }
+               : {}
+             }
+            >
+             Overview
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=billboards"}
+             style={
+              tab === "billboards"
+               ? { background: "#F3F4F6", color: "black" }
+               : {}
+             }
+            >
+             Billboards
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=categories"}
+             style={
+              tab === "categories"
+               ? { background: "#F3F4F6", color: "black" }
+               : {}
+             }
+            >
+             Categories
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=sizes"}
+             style={
+              tab === "sizes" ? { background: "#F3F4F6", color: "black" } : {}
+             }
+            >
+             Sizes
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=colors"}
+             style={
+              tab === "colors" ? { background: "#F3F4F6", color: "black" } : {}
+             }
+            >
+             Colors
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=products"}
+             style={
+              tab === "products"
+               ? { background: "#F3F4F6", color: "black" }
+               : {}
+             }
+            >
+             Products
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=orders"}
+             style={
+              tab === "orders" ? { background: "#F3F4F6", color: "black" } : {}
+             }
+            >
+             Orders
+            </Link>
+           </SheetClose>
+           <SheetClose asChild>
+            <Link
+             className="px-4 p-2 rounded-lg"
+             to={"/dashboard?tab=settings"}
+             style={
+              tab === "settings"
+               ? { background: "#F3F4F6", color: "black" }
+               : {}
+             }
+            >
+             Settings
+            </Link>
+           </SheetClose>
+          </div>
+         ) : (
+          categories && (
+           <div className="flex flex-col gap-3 text-gray-700 mt-3 ">
+            {categories?.map((category) => (
+             <SheetClose asChild key={category.id}>
+              <Link
+               to={`/${category.name}`}
+               className="font-semibold bg-gray-100 px-4 p-2 rounded-lg"
+              >
+               {category.name}
+              </Link>
+             </SheetClose>
+            ))}
+           </div>
+          )
+         )}
+        </div>
+        <Separator className="my-4 " />
+       </div>
+
+       <div>
+        <h2 className="my-6 text-xl font-semibold">Taps</h2>
+        <div className="flex flex-col  justify-center gap-4">
+         {/* <ModeToggle /> */}
+         <SheetClose asChild>
+          <Link
+           className="p-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100"
+           tp={"/wishlist"}
+          >
+           <Label>Wishlist</Label>
+           <Heart />
+          </Link>
+         </SheetClose>
+         {currentUser ? (
+          <>
+           {" "}
+           <SheetClose asChild>
+            <Link to="/cart">
+             <div className="py-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100">
+              <Label>Cart</Label>
+              <ShoppingCart />
+             </div>
+            </Link>
+           </SheetClose>
+           {auth.role === "admin" && (
+            <SheetClose asChild>
+             <Link to="/dashboard?tab=overview">
+              <div className="py-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100">
+               <Label>Dashboard</Label>
+               <Settings />
+              </div>
+             </Link>
+            </SheetClose>
+           )}
+           <DropdownMenu>
+            <DropdownMenuTrigger
+             asChild
+             //  className="p-2 border box-content rounded-lg"
+            >
+             <div className="p-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100">
+              <Label>Account</Label>
+              <User />
+             </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+             <DropdownMenuItem onClick={() => {}}>
+              <SheetClose>Profile</SheetClose>
+             </DropdownMenuItem>
+             <DropdownMenuItem onClick={handelLogout}>
+              <SheetClose>Logout</SheetClose>
+             </DropdownMenuItem>
+            </DropdownMenuContent>
+           </DropdownMenu>
+          </>
+         ) : (
+          <Button onClick={handelLogin}>SignIn</Button>
+         )}
+        </div>
+       </div>
+
+       <SheetFooter>
+        <SheetClose asChild>
+         <Button type="button" className="mt-12">
+          Close
+         </Button>
+        </SheetClose>
+       </SheetFooter>
+      </SheetContent>
+     </Sheet>
     </div>
    </div>
   </div>

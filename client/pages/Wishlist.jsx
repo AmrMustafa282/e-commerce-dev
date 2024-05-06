@@ -19,6 +19,7 @@ const Wishlist = () => {
        <CardContent className="p-0 ">
         <div className="overflow-hidden relative ">
          <img
+          loading="lazy"
           onClick={() => {
            nav(`/product/${product.id}`);
           }}

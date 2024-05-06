@@ -13,19 +13,26 @@ const ResetPassword = () => {
   password: "",
   passwordConfirm: "",
  });
+ const [loading, setLoading] = useState(false);
  console.log(formData);
  const handelSubmit = async (e) => {
   e.preventDefault();
+  setLoading(true);
   if (formData.password !== formData.passwordConfirm) {
    return toast.error("Password doesn't match");
   }
-
-  const res = await axios.patch(`/api/v1/users/resetPassword/${token}`, {
-   password: formData.password,
-  });
-  if (res.data.status === "success") {
-   toast.success("Password reset successfully");
-   nav("/login");
+  try {
+   const res = await axios.patch(`/api/v1/users/resetPassword/${token}`, {
+    password: formData.password,
+   });
+   if (res.data.status === "success") {
+    toast.success("Password reset successfully");
+    nav("/login");
+   }
+  } catch (error) {
+   toast.error(error);
+  } finally {
+    setLoading(false)
   }
  };
 
@@ -55,7 +62,7 @@ const ResetPassword = () => {
         placeholder="Password Confirm"
         type="password"
        />
-       <Button>Confirm</Button>
+       <Button disabled={loading}>Confirm</Button>
        <p className="mt-8">
         Doesn't have an account yet?{" "}
         <Link to="/sign-up" className="underline text-blue-600">

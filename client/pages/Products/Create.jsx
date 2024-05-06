@@ -44,13 +44,15 @@ const CreateProduct = () => {
 
  const [imageCoverPreview, setImageCoverPreview] = useState(null);
  const [imagesPreview, setImagesPreview] = useState([]);
+ const [loading, setLoading] = useState(false);
+
  const formData = new FormData();
 
  const nav = useNavigate();
 
  const handleSubmit = async (event) => {
   event.preventDefault();
-
+  setLoading(true);
   if (
    !name ||
    !description ||
@@ -95,6 +97,8 @@ const CreateProduct = () => {
    }, 1000);
   } catch (error) {
    toast.error(error);
+  } finally {
+   setLoading(false);
   }
  };
  const handleImageCoverChange = (event) => {
@@ -440,6 +444,7 @@ const CreateProduct = () => {
       {imageCoverPreview && (
        <div className="relative max-w-[200px]">
         <img
+         loading="lazy"
          src={imageCoverPreview}
          alt="Uploaded"
          className="max-w-[200px] max-h-[200px]"
@@ -470,6 +475,7 @@ const CreateProduct = () => {
         {imagesPreview.map((imagePreview, index) => (
          <div key={index} className="relative w-[200px]">
           <img
+           loading="lazy"
            src={imagePreview}
            alt={`Uploaded ${index}`}
            className="max-w-[200px] max-h-[200px] mb-4"
@@ -488,7 +494,7 @@ const CreateProduct = () => {
       )}
      </div>
     </div>
-    <Button type="submit" className="w-full mt-12 mb-8">
+    <Button type="submit" className="w-full mt-12 mb-8" disabled={loading}>
      Create
     </Button>
    </form>

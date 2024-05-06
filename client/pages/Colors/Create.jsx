@@ -11,11 +11,14 @@ import { Label } from "@/components/ui/label";
 const CreateColor = () => {
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
+   const [loading, setLoading] = useState(false);
+
 
   const nav = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       if (!name || !value) {
         return toast.warning("Name or value is missing!");
@@ -33,6 +36,8 @@ const CreateColor = () => {
       }, 1000);
     } catch (error) {
       toast.error(error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -44,37 +49,39 @@ const CreateColor = () => {
   };
 
   return (
-    <>
-      <div className="py-4 border-b">
-        <h1 className="font-bold text-4xl">Create Color</h1>
-        <p className="text-gray-700">Add a new color</p>
-      </div>
-      <form className="my-4" onSubmit={handleSubmit}>
-        <Label htmlFor="name" className="font-semibold text-md">
-          Name
-        </Label>
-        <Input
-          onChange={handleNameChange}
-          type="text"
-          id="name"
-          name="name"
-          className="mt-4 mb-8"
-          placeholder="color name"
-        />
-        <Label htmlFor="value" className="font-semibold text-md">
-          Value
-        </Label>
-        <Input
-          onChange={handleValueChange}
-          type="text"
-          id="value"
-          name="value"
-          className="mt-4 mb-8"
-          placeholder="color (#FFFFFF)"
-        />
-        <Button type="submit">Create</Button>
-      </form>
-    </>
+   <>
+    <div className="py-4 border-b">
+     <h1 className="font-bold text-4xl">Create Color</h1>
+     <p className="text-gray-700">Add a new color</p>
+    </div>
+    <form className="my-4" onSubmit={handleSubmit}>
+     <Label htmlFor="name" className="font-semibold text-md">
+      Name
+     </Label>
+     <Input
+      onChange={handleNameChange}
+      type="text"
+      id="name"
+      name="name"
+      className="mt-4 mb-8"
+      placeholder="color name"
+     />
+     <Label htmlFor="value" className="font-semibold text-md">
+      Value
+     </Label>
+     <Input
+      onChange={handleValueChange}
+      type="text"
+      id="value"
+      name="value"
+      className="mt-4 mb-8"
+      placeholder="color (#FFFFFF)"
+     />
+     <Button type="submit" disabled={loading}>
+      Create
+     </Button>
+    </form>
+   </>
   );
 };
 

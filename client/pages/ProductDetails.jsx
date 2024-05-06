@@ -57,6 +57,7 @@ const ProductDetails = () => {
  const [index, setIndex] = useState(0);
  const [text, setText] = useState("");
  const [rating, setRating] = useState(0);
+ const [loading, setLoading] = useState(false);
 
  const userId = useSelector((state) => state.user.currentUser?.data.user.id);
  const { products: wishlist } = useSelector((state) => state.wishlist);
@@ -155,20 +156,27 @@ const ProductDetails = () => {
  };
 
  const addToCart = async () => {
+  setLoading(true);
   if (!userId) {
    toast.warning("Login to add product to your cart!");
    nav("/login");
    return;
   }
-  const res = await axios.post("/api/v1/orders/");
-  if (res.status === 201) {
-   const res2 = await axios.post(
-    `/api/v1/orders/${res.data.order.id}/${productId}`,
-    { size: currentSize.name }
-   );
-   if (res2.status === 201) {
-    toast.success("Product has been added to your cart");
+  try {
+   const res = await axios.post("/api/v1/orders/");
+   if (res.status === 201) {
+    const res2 = await axios.post(
+     `/api/v1/orders/${res.data.order.id}/${productId}`,
+     { size: currentSize.name }
+    );
+    if (res2.status === 201) {
+     toast.success("Product has been added to your cart");
+    }
    }
+  } catch (error) {
+   toast.error(error);
+  } finally {
+   setLoading(false);
   }
  };
  // console.log(reviews[0])
@@ -198,6 +206,7 @@ const ProductDetails = () => {
              <CardContent className="p-0">
               <div className="overflow-hidden relative">
                <img
+                loading="lazy"
                 src={`/img/product/${image.url}`}
                 alt={product.name}
                 className="w-full h-full"
@@ -285,7 +294,7 @@ const ProductDetails = () => {
          ))}
         </div>
        </div>
-       <Button className="w-full " onClick={addToCart}>
+       <Button className="w-full " onClick={addToCart} disabled={loading}>
         ADD TO CART
        </Button>
       </div>
@@ -293,6 +302,7 @@ const ProductDetails = () => {
      <div className="flex mt-4">
       {product.images.slice(1).map((image, i) => (
        <img
+        loading="lazy"
         key={i}
         src={`/img/product/${image.url}`}
         alt={product.name}

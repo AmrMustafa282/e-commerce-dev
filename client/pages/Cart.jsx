@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
+import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
 
 const Cart = () => {
  const dispatch = useDispatch();
@@ -14,26 +16,38 @@ const Cart = () => {
 
  const [order, setOrder] = useState(null);
  const [items, setItems] = useState(null);
+
+ const [paiedOrders, setPaiedOrders] = useState(null);
+
  let [totalPrice, setTotalPrice] = useState(0);
  let [totalItems, setTotalItems] = useState(0);
  let [shippingFee, setShippingFee] = useState(0);
+ const [loading, setLoading] = useState(false);
 
- const getOrder = async () => {
+ const getOrders = async () => {
   const res = await axios.get("/api/v1/orders/me");
   if (res.data.status === "success") {
-   setOrder(res.data.order);
-   setItems(res.data.order?.orderItems);
+   setOrder(res.data.currentOrder);
+   setItems(res.data.currentOrder?.orderItems);
+   setPaiedOrders(res.data.paiedOrders);
   }
  };
 
  const handelCheckout = async () => {
+  setLoading(true);
   const stripe = await loadStripe(
    "pk_test_51NZQSlFLivuJ6OmBvRNB2e5NGOV4zcDH67Cf3jorbmNFBW7SjRjHi03pbNdnQ9AO6qIhyis5mnslc56Fsce6bq4G002veZtrCA"
   );
-  const res = await axios.get(`/api/v1/orders/checkout-session/${order.id}`);
-  stripe.redirectToCheckout({
-   sessionId: res.data.session.id,
-  });
+  try {
+   const res = await axios.get(`/api/v1/orders/checkout-session/${order.id}`);
+   stripe.redirectToCheckout({
+    sessionId: res.data.session.id,
+   });
+  } catch (error) {
+   toast.error(error);
+  } finally {
+   setLoading(false);
+  }
  };
  const handelRemoveFromCart = async (itemId) => {
   const res = await axios.delete(`/api/v1/orders/${order.id}/${itemId}`);
@@ -77,7 +91,7 @@ const Cart = () => {
 
  //  };
  useEffect(() => {
-  getOrder();
+  getOrders();
  }, []);
  useEffect(() => {
   totalPrice = 0;
@@ -95,7 +109,7 @@ const Cart = () => {
 
  return (
   <>
-   {items ? (
+   {items && (
     <div className="grid grid-cols-6 gap-12 my-12 relative">
      <div className="col-span-4 flex flex-col gap-4">
       {items.map((item) => (
@@ -104,6 +118,7 @@ const Cart = () => {
         key={item.id}
        >
         <img
+         loading="lazy"
          src={`/img/product/${item.product.images[0].url}`}
          alt={item.product.name}
          className="w-52 h-48 object-cover
@@ -191,10 +206,130 @@ const Cart = () => {
        <p>Total</p>
        <p>{formater(totalPrice + shippingFee)}</p>
       </div>
-      <Button onClick={handelCheckout}>CHECKOUT</Button>
+      <Button onClick={handelCheckout} disabled={loading}>
+       CHECKOUT
+      </Button>
      </div>
     </div>
-   ) : (
+   )}
+   {paiedOrders?.length > 0 && (
+    <>
+     <Separator />
+     <Label className="text-xl font-semibold block mt-4">
+      Your Paied Orders
+     </Label>
+     <div className="my-12 flex flex-col gap-4">
+      {paiedOrders?.map((order) => (
+       <div className="" key={order.id}>
+        <div className="flex gap-4 shadow-md hover:shadow-lg duration-300">
+         <div className=" grid grid-cols-4 gap-2">
+          {order?.orderItems?.map((i) => (
+           <img
+            loading="lazy"
+            src={`/img/product/${i.product.images[0].url}`}
+            alt={i.product.name}
+            className="w-52 h-48 object-cover"
+           />
+          ))}
+         </div>
+         <div className=" p-4">
+          <div className="flex justify-end gap-20 ">
+           <div className="flex flex-col gap-1">
+            {order?.orderItems?.map((i) => (
+             <div className="flex">
+              <h2 className="font-semibold max-w-64 line-clamp-1 ">
+               {i.product.name} :
+              </h2>
+              <span className="">{i.size}</span>
+             </div>
+            ))}
+           </div>
+           <div className="font-bold flex flex-col gap-2 w-full">
+            <h3>
+             Items :{" "}
+             {order.orderItems.reduce((acc, item) => {
+              return (acc += +item.amount);
+             }, 0)}
+            </h3>
+            <h3>
+             Total :{" "}
+             {formater(
+              order.orderItems.reduce((acc, item) => {
+               return (acc += +item.amount * +item.product.price);
+              }, 0)
+             ).toString()}
+            </h3>
+            <h3>Date : {new Date(order.createdAt).toLocaleDateString()}</h3>
+            <h3>
+             Status :{" "}
+             <span
+              className="px-2 py-1 rounded-sm "
+              style={
+               order.status === "Recived"
+                ? { background: "lightGreen" }
+                : { background: "orange" }
+              }
+             >
+              {order.status}
+             </span>
+            </h3>
+           </div>
+          </div>
+          {/* <div className="flex">
+           <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => handelRemoveFromCart(order.orderItems[0].id)}
+           >
+            <Trash2 />
+           </Button>
+           <Button
+            size="icon"
+            variant="ghost"
+            onClick={() =>
+             wishlist?.find((p) => p.id === product.id)
+              ? dispatch(removeFromWishlist(product.id))
+              : dispatch(addToWishlist(product))
+            }
+           >
+            <Heart
+             // className="w-10 h-10"
+             style={
+              wishlist?.find((p) => p.id === item.product.id)
+               ? { fill: "red", color: "red" }
+               : {}
+             }
+            />
+           </Button>
+           <div className="flex-1 text-end flex justify-end items-center">
+            <Button
+             onClick={() => handelUpdateQuantity("-", item.id, item.amount)}
+             className="w-8 h-8  shadow-sm border border-gray-100"
+             size="icon"
+             variant="ghost"
+             disabled={+item.amount === 1}
+            >
+             <Minus />
+            </Button>
+            <Label className="px-2 text-lg">{item.amount}</Label>
+            <Button
+             onClick={() => handelUpdateQuantity("+", item.id, item.amount)}
+             className="w-8 h-8  shadow-sm border border-gray-100"
+             size="icon"
+             variant="ghost"
+            >
+             <Plus />
+            </Button>
+           </div>
+          </div> */}
+         </div>
+        </div>
+       </div>
+      ))}
+     </div>
+    </>
+   )}
+   {!items && !paiedOrders && (
     <h1>No orders yet, create one now by purchasing products</h1>
    )}
   </>

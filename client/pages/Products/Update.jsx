@@ -47,11 +47,14 @@ const UpdateProduct = () => {
 
  const [imageCoverPreview, setImageCoverPreview] = useState(null);
  const [imagesPreview, setImagesPreview] = useState([]);
+ const [loading, setLoading] = useState(false);
+
  const formData = new FormData();
 
  const nav = useNavigate();
  const handleSubmit = async (event) => {
   event.preventDefault();
+  setLoading(true);
   if (name) {
    formData.append("name", name);
   }
@@ -87,17 +90,19 @@ const UpdateProduct = () => {
    formData.append("productSizes", JSON.stringify(size));
   });
   try {
-  //  console.log(formData);
+   //  console.log(formData);
    const res = await axios.patch(`/api/v1/products/${productId}`, formData);
    if (res.status === 201) {
     toast.success("Product updated");
    }
-  //  console.log(res.data);
+   //  console.log(res.data);
    setTimeout(() => {
     nav("/dashboard?tab=products");
    }, 1000);
   } catch (error) {
    toast.error(error);
+  } finally {
+   setLoading(false);
   }
  };
 
@@ -288,7 +293,7 @@ const UpdateProduct = () => {
  }, []);
  //  console.log(productSizes[0].size.id===sizes[0].id);
  //  console.log(sizes[0]);
-//  console.log(productSizes);
+ //  console.log(productSizes);
 
  return (
   <>
@@ -531,6 +536,7 @@ const UpdateProduct = () => {
         {imageCoverPreview && (
          <div className="relative max-w-[200px]">
           <img
+           loading="lazy"
            src={imageCoverPreview}
            alt="Uploaded"
            className="max-w-[200px] max-h-[200px]"
@@ -562,6 +568,7 @@ const UpdateProduct = () => {
           {imagesPreview.map((imagePreview, index) => (
            <div key={index} className="relative w-[200px]">
             <img
+             loading="lazy"
              src={imagePreview}
              alt={`Uploaded ${index}`}
              className="max-w-[200px] max-h-[200px] mb-4"
@@ -580,7 +587,7 @@ const UpdateProduct = () => {
         )}
        </div>
       </div>
-      <Button type="submit" className="w-full mt-12 mb-8">
+      <Button type="submit" className="w-full mt-12 mb-8" disabled={loading}>
        Save
       </Button>
      </form>

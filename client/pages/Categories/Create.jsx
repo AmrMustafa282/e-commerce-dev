@@ -20,10 +20,12 @@ const CreateCategory = () => {
  const [name, setName] = useState("");
  const [billboardId, setBillboardId] = useState("");
  const [billboards, setBillboards] = useState([]);
+ const [loading, setLoading] = useState(false);
 
  const nav = useNavigate();
 
  const handleSubmit = async (e) => {
+  setLoading(true);
   e.preventDefault();
   try {
    if (!name || !billboardId) {
@@ -42,6 +44,8 @@ const CreateCategory = () => {
    }, 1000);
   } catch (error) {
    toast.error(error);
+  } finally {
+   setLoading(false);
   }
  };
  const handleNameChange = (event) => {
@@ -95,7 +99,9 @@ const CreateCategory = () => {
       </SelectContent>
      </Select>
     </div>
-    <Button type="submit">Create</Button>
+    <Button type="submit" disabled={loading}>
+     Create
+    </Button>
    </form>
   </>
  );

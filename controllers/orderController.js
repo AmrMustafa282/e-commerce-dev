@@ -164,8 +164,8 @@ export const getOrder = catchAsync(async (req, res, next) => {
 });
 
 export const getUserOrder = catchAsync(async (req, res, next) => {
- const order = await prisma.order.findFirst({
-  where: { userId: req.user.id, isPaid: false },
+ const orders = await prisma.order.findMany({
+  where: { userId: req.user.id },
   include: {
    orderItems: {
     include: {
@@ -180,13 +180,13 @@ export const getUserOrder = catchAsync(async (req, res, next) => {
   },
  });
 
- //  if (!order) {
- //   return next(new AppError("No document found with that ID", 404));
- //  }
+ const currentOrder = orders?.find((order) => order.isPaid === false) || {};
+ const paiedOrders = orders?.filter((order) => order.isPaid === true) || [];
 
  res.status(200).json({
   status: "success",
-  order,
+  currentOrder,
+  paiedOrders,
  });
 });
 
