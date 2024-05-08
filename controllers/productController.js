@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { AppError } from "./../utils/appError.js";
 import { catchAsync } from "./../utils/catchAsync.js";
-import { deleteOne, deleteAll, getAll } from "./handlerFactory.js";
+import { deleteOne, deleteAll } from "./handlerFactory.js";
 import multer from "multer";
 import sharp from "sharp";
 
@@ -63,7 +63,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
   })
  );
 
- // console.log(req.body)
+ req.body.images = req.body.images.sort();
  next();
 });
 
@@ -135,7 +135,7 @@ export const getFeaturedProducts = catchAsync(async (req, res, next) => {
 });
 
 export const createProduct = catchAsync(async (req, res, next) => {
- console.log(req.body);
+ //  console.log(req.body);
  let {
   categoryId,
   name,
@@ -232,11 +232,7 @@ export const getProduct = catchAsync(async (req, res, next) => {
   where: { id: req.params.id },
   include: {
    category: true,
-   images: {
-    orderBy: {
-     url: "asc",
-    },
-   },
+   images: true,
    color: true,
    productSizes: {
     include: {

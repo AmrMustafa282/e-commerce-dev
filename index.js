@@ -43,6 +43,10 @@ app.listen(port, () => {
  console.log(`App running on post: ${port}`);
 });
 
+app.get("/api/v1", (req, res) => {
+ res.send("Hello world!");
+});
+
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/billboards", billboardRoutes);
 app.use("/api/v1/categories", categoryRoutes);

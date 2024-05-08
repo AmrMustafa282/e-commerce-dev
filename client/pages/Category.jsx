@@ -264,7 +264,7 @@ const Category = () => {
             nav(`/product/${product.id}`);
            }}
            src={`/img/product/${product.images[0]?.url}`}
-           alt={"product.name"}
+           alt={product.name}
            className=" group-hover:scale-105 transition-all duration-300 w-[316px] h-[475px]"
           />
           <button

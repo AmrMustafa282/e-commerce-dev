@@ -10,8 +10,8 @@ import {
  Settings,
  Heart,
  User,
- User2,
  AlignJustify,
+ Search,
 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -30,9 +30,20 @@ import {
  SheetTitle,
  SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+ Dialog,
+ DialogClose,
+ DialogContent,
+ DialogDescription,
+ DialogFooter,
+ DialogHeader,
+ DialogTitle,
+ DialogTrigger,
+} from "@/components/ui/dialog";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
+import { Input } from "./ui/input";
 
 const Header = () => {
  const nav = useNavigate();
@@ -61,7 +72,7 @@ const Header = () => {
  return (
   <div className="py-2  w-full border-b">
    <div className="container mx-auto h-full flex justify-between items-center ">
-    <div className="md:flex gap-6 items-center justify-center hidden">
+    <div className="md:flex gap-6 items-center  hidden w-full">
      <Link to={"/"} className="font-bold text-2xl ">
       STORE
      </Link>
@@ -120,12 +131,12 @@ const Header = () => {
       </div>
      ) : (
       categories && (
-       <div className="md:flex gap-3 hidden">
+       <div className="md:flex items-center gap-3 hidden  ">
         {categories.map((category) => (
          <Link
           to={`/${category.name}`}
           key={category.id}
-          className="font-semibold"
+          className=" font-semibold"
          >
           {category.name}
          </Link>
@@ -136,6 +147,27 @@ const Header = () => {
     </div>
     <div className="md:flex items-center justify-center gap-4 hidden">
      {/* <ModeToggle /> */}
+     <Dialog>
+      <DialogTrigger asChild>
+       <Button variant="outline" size="icon">
+        <Search />
+       </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-xl ">
+       <div className="flex items-center space-x-2 mt-4">
+        <div className="grid flex-1 gap-2">
+         <Input placeholder="Search ..." />
+        </div>
+       </div>
+       <DialogFooter className="sm:justify-start">
+        <DialogClose asChild>
+         <Button className="ml-auto" type="button" variant="secondary">
+          Search
+         </Button>
+        </DialogClose>
+       </DialogFooter>
+      </DialogContent>
+     </Dialog>
      <Button size="icon" variant="outline" onClick={() => nav("/wishlist")}>
       <Heart />
      </Button>

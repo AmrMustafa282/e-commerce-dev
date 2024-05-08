@@ -117,7 +117,7 @@ const UpdateProduct = () => {
  };
  // console.log(images);
 
- const handleImagesChange = (event) => {
+ const handleImagesChange = async (event) => {
   const uploadedImages = event.target.files;
 
   // Check if the number of uploaded images exceeds the limit
@@ -134,36 +134,21 @@ const UpdateProduct = () => {
   const imagesPreviewArray = [];
 
   for (let i = 0; i < uploadedImages.length; i++) {
-   // console.log("uploaded", uploadedImages[i]);
-   // console.log(i);
    setImages((prev) => [...prev, uploadedImages[i]]);
-   // console.log(images);
-   // console.log(imageCover);
-   const reader = new FileReader();
 
-   reader.onload = ((file) => {
-    return () => {
-     imagesPreviewArray.push(reader.result);
-
-     if (imagesPreviewArray.length === uploadedImages.length) {
-      const updatedImagesArray = newImagesArray.concat(uploadedImages);
-      // const uploadedImage = uploadedImages[i];
-      // const imageName = uploadedImage.name;
-      // console.log("cover", imageCover);
-      // formData.append("images", uploadedImage[0]);
-
-      // formData.append("images", uploadedImage, imageName);
-      setImagesPreview((prev) => [...prev, ...imagesPreviewArray]);
-      // setImages(updatedImagesArray);[here]
-     }
-    };
-   })(uploadedImages[i]);
-
-   reader.readAsDataURL(uploadedImages[i]);
+   const imageDataURL = await readImage(uploadedImages[i]);
+   imagesPreviewArray.push(imageDataURL);
+   setImagesPreview((prev) => [...prev, imageDataURL]);
   }
  };
- console.log(images);
- console.log(imagesPreview);
+ const readImage = (file) => {
+  return new Promise((resolve, reject) => {
+   const reader = new FileReader();
+   reader.onload = () => resolve(reader.result);
+   reader.onerror = reject;
+   reader.readAsDataURL(file);
+  });
+ };
  const handleDeleteImages = (index) => {
   // Retrieve the image file extension
   const imageType = images[index].name.split(".").pop().toLowerCase();

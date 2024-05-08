@@ -240,7 +240,8 @@ const Cart = () => {
               <h2 className="font-semibold max-w-64 line-clamp-1 ">
                {i.product.name} :
               </h2>
-              <span className="">{i.size}</span>
+              <span>{i.size}</span>
+              <span className="ml-1">({i.amount})</span>
              </div>
             ))}
            </div>

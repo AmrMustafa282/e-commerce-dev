@@ -16,10 +16,11 @@ import {
  SelectValue,
 } from "@/components/ui/select";
 import { useEffect } from "react";
-import { Trash } from "lucide-react";
+import { Grip, Trash } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Reorder } from "framer-motion";
 
 const CreateProduct = () => {
  const [categories, setCategories] = useState([]);
@@ -45,6 +46,7 @@ const CreateProduct = () => {
  const [imageCoverPreview, setImageCoverPreview] = useState(null);
  const [imagesPreview, setImagesPreview] = useState([]);
  const [loading, setLoading] = useState(false);
+ let imgs;
 
  const formData = new FormData();
 
@@ -110,7 +112,7 @@ const CreateProduct = () => {
   };
   reader.readAsDataURL(uploadedImage);
  };
- const handleImagesChange = (event) => {
+ const handleImagesChange = async (event) => {
   const uploadedImages = event.target.files;
 
   if (
@@ -125,23 +127,31 @@ const CreateProduct = () => {
 
   for (let i = 0; i < uploadedImages.length; i++) {
    setImages((prev) => [...prev, uploadedImages[i]]);
-   const reader = new FileReader();
-
-   reader.onload = ((file) => {
-    return () => {
-     imagesPreviewArray.push(reader.result);
-
-     if (imagesPreviewArray.length === uploadedImages.length) {
-      setImagesPreview((prev) => [...prev, ...imagesPreviewArray]);
-     }
-    };
-   })(uploadedImages[i]);
-
-   reader.readAsDataURL(uploadedImages[i]);
+   const imageDataURL = await readImage(uploadedImages[i]);
+   imagesPreviewArray.push(imageDataURL);
+   setImagesPreview((prev) => [...prev, imageDataURL]);
+   imgs = imagesPreview;
   }
-  // console.log("image", imageCover);
-  console.log("images", images);
  };
+ const readImage = (file) => {
+  return new Promise((resolve, reject) => {
+   const reader = new FileReader();
+   reader.onload = () => resolve(reader.result);
+   reader.onerror = reject;
+   reader.readAsDataURL(file);
+  });
+ };
+ //  const useImageSrc = (file) => {
+ //   // useEffect(() => {
+ //   const reader = new FileReader();
+ //   reader.onload = () => {
+ //    return reader.result;
+ //   };
+ //   reader.readAsDataURL(file);
+ //   return () => {
+ //    reader.abort();
+ //   };
+ //  };
 
  const handleDeleteImages = (index) => {
   const updatedImagesPreview = imagesPreview.filter((_, i) => i !== index);
@@ -207,6 +217,7 @@ const CreateProduct = () => {
    console.log(err);
   }
  };
+
 
  useEffect(() => {
   fetchCategories();
@@ -471,12 +482,18 @@ const CreateProduct = () => {
        multiple
       />
       {imagesPreview && (
-       <div className="flex flex-wrap justify-start items-center gap-2">
-        {imagesPreview.map((imagePreview, index) => (
-         <div key={index} className="relative w-[200px]">
+       <div
+        
+        className="f flex-wrap justify-start items-center gap-2"
+       >
+        {imagesPreview.map((img, index) => (
+         <div
+          key={index}
+          className="relative w-[200px]"
+         >
           <img
            loading="lazy"
-           src={imagePreview}
+           src={img}
            alt={`Uploaded ${index}`}
            className="max-w-[200px] max-h-[200px] mb-4"
           />
@@ -487,6 +504,13 @@ const CreateProduct = () => {
            type="button"
           >
            <Trash />
+          </Button>
+          <Button
+           variant="ghost"
+           className="absolute bottom-2 right-2 p-2"
+           type="button"
+          >
+           <Grip />
           </Button>
          </div>
         ))}
