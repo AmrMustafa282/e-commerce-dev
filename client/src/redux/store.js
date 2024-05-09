@@ -5,6 +5,7 @@ import wishlistReducer from "./wishlist/wishlist.js";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
+import wishlist from "./wishlist/wishlist.js";
 
 const rootReducer = combineReducers({
  user: userReducer,
@@ -16,6 +17,7 @@ const persistConfig = {
  key: "root",
  storage,
  version: 1,
+ whitelist: ["user", "wishlist"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -63,7 +63,7 @@ const UpdateBillboard = () => {
     <p className="text-gray-700">Updated an existing billboard</p>
    </div>
    <div className="my-4">
-    <Label htmlFor="label" className="font-semibold text-md">
+    <Label htmlFor="label" className="font-semibold text-base">
      Label
     </Label>
     <Input
@@ -74,7 +74,7 @@ const UpdateBillboard = () => {
      className="mt-4 mb-8 "
      placeholder="billboard label"
     />
-    <Label htmlFor="image" className="font-semibold text-md">
+    <Label htmlFor="image" className="font-semibold text-base">
      Background image
     </Label>
     <Input

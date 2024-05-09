@@ -56,7 +56,7 @@ const UpdateColor = () => {
     <p className="text-gray-700">Updated an existing color</p>
    </div>
    <form onSubmit={handleSubmit} className="my-4">
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -67,7 +67,7 @@ const UpdateColor = () => {
      className="mt-4 mb-8 "
      placeholder="color name"
     />
-    <Label htmlFor="value" className="font-semibold text-md">
+    <Label htmlFor="value" className="font-semibold text-base">
      Value
     </Label>
     <Input

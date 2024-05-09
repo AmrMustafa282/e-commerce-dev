@@ -249,7 +249,7 @@ export const updateOrder = catchAsync(async (req, res, next) => {
   return next(new Error("No document found with that ID"));
  }
 
- if (req.user.id !== order.userId) {
+ if (req.user.id !== order.userId && req.user.role !== "admin") {
   return next(new AppError("You dont have permission to do this action"));
  }
 

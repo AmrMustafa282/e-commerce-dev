@@ -40,6 +40,7 @@ const Home = () => {
  const [colors, setColors] = useState([]);
  const [sizes, setSizes] = useState([]);
  const [loading, setLoading] = useState(false);
+ const { products: searchProducts } = useSelector((state) => state.product);
 
  const [filter, setFilter] = useState({
   order: "recentlyAdded",
@@ -157,29 +158,39 @@ const Home = () => {
   fetchColors();
   fetchSizes();
  }, []);
+ useEffect(() => {
+  if (searchProducts) {
+   setProducts(searchProducts);
+  } else {
+   setProducts(fullproducts);
+  }
+ }, [searchProducts]);
  return (
   <div>
    {billboard ? (
-    <div className="relative w-full h-[300px]">
+    <div className="relative w-full ">
      <img
       loading="lazy"
       src={`/img/billboard/${billboard.imageUrl}`}
+      // src={`https://e-commerce-dev.onrender.com/img/billboard/billboard-1715196316943.jpeg`}
       alt="billboard"
-      className="w-full mt-4 mb-12"
+      className="w-full md:mt-4 mb-4 md:mb-6"
      />
-     <h1 className="absolute bottom-[45%] text-center w-full  text-5xl">
+     <h1 className="absolute bottom-[45%] text-center w-full text-xl  md:text-3xl lg:text-5xl">
       {billboard.label}
      </h1>
     </div>
    ) : (
-    <Skeleton className="w-full h-[290px] mb-12" />
+    <Skeleton className="w-full md:my-6 xl:my-12 h-[120px] md:h-[240px] xl:h-[340px] mb-12" />
    )}
    {products?.length > 0 ? (
     <>
-     <div className="mb-4">
+     <div>
       <Sheet>
        <SheetTrigger asChild>
-        <Button variant="outline">Filter</Button>
+        <Button variant="outline" size="sm">
+         Filter
+        </Button>
        </SheetTrigger>
        <SheetContent side="left">
         <SheetHeader>
@@ -297,12 +308,9 @@ const Home = () => {
        </SheetContent>
       </Sheet>
      </div>
-     <div className="flex flex-wrap gap-4 items-center mb-12 ">
+     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12 mt-4">
       {products.map((product) => (
-       <Card
-        key={product.id}
-        className="w-[316px] h-[475px] group cursor-pointer rounded-sm"
-       >
+       <Card key={product.id} className=" group cursor-pointer rounded-sm">
         <CardContent className="p-0 ">
          <div className="overflow-hidden relative ">
           <img
@@ -310,9 +318,10 @@ const Home = () => {
            onClick={() => {
             nav(`/product/${product.id}`);
            }}
+           //  src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
            src={`/img/product/${product.images[0]?.url}`}
            alt={product.name}
-           className=" group-hover:scale-105 transition-all duration-300 w-[316px] h-[475px]"
+           className=" group-hover:scale-105 transition-all duration-300 w-full"
           />
           <button
            onClick={() =>
@@ -340,9 +349,9 @@ const Home = () => {
    ) : !loading ? (
     <h1>There are no available products!</h1>
    ) : (
-    <div className="flex gap-4 flex-wrap mb-12">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12 mt-4">
      {[1, 2, 3, 4].map((skl) => (
-      <Skeleton className="w-[316px] h-[475px]" key={skl} />
+      <Skeleton className="w-full aspect-[2/3]" key={skl} />
      ))}
     </div>
    )}

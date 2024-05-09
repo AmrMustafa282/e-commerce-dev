@@ -27,8 +27,8 @@ router.get("/checkout-session/:orderId", getCheckoutSession);
 
 router.route("/").post(createOrder).delete(deleteAllOrders);
 router.route("/me").get(getUserOrder);
-router.route("/:id").get(getOrder).patch(updateOrder).delete(deleteOrder);
 router.route("/deleteCompletedOrders").delete(deleteCompoletedOrders);
+router.route("/:id").get(getOrder).patch(updateOrder).delete(deleteOrder);
 
 router.route("/:id/:productId").post(createOrderItem);
 router.route("/deleteItems").delete(deleteAllOrderItems);

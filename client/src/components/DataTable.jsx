@@ -26,9 +26,7 @@ import {
  TableRow,
 } from "@/components/ui/table";
 
-
-
-export default function DataTableDemo({searchKey, data, columns}) {
+export default function DataTableDemo({ searchKey, data, columns }) {
  const [sorting, setSorting] = React.useState([]);
  const [columnFilters, setColumnFilters] = React.useState([]);
  const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -90,7 +88,7 @@ export default function DataTableDemo({searchKey, data, columns}) {
     </DropdownMenu>
    </div>
    <div className="rounded-md border">
-    <Table>
+    <Table className="overflow-x-scroll">
      <TableHeader>
       {table.getHeaderGroups().map((headerGroup) => (
        <TableRow key={headerGroup.id}>
@@ -111,7 +109,7 @@ export default function DataTableDemo({searchKey, data, columns}) {
        table.getRowModel().rows.map((row) => (
         <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
          {row.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id}>
+          <TableCell key={cell.id} className="text-xs md:text-sm">
            {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </TableCell>
          ))}
@@ -119,7 +117,7 @@ export default function DataTableDemo({searchKey, data, columns}) {
        ))
       ) : (
        <TableRow>
-        <TableCell colSpan={columns.length} className="h-24 text-center">
+        <TableCell colSpan={columns.length} className="h-24 text-center ">
          No results.
         </TableCell>
        </TableRow>

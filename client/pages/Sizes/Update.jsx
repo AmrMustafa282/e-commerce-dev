@@ -56,7 +56,7 @@ const UpdateSize = () => {
     <p className="text-gray-700">Updated an existing size</p>
    </div>
    <form onSubmit={handleSubmit} className="my-4">
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -67,7 +67,7 @@ const UpdateSize = () => {
      className="mt-4 mb-8 "
      placeholder="size name"
     />
-    <Label htmlFor="value" className="font-semibold text-md">
+    <Label htmlFor="value" className="font-semibold text-base">
      Value
     </Label>
     <Input

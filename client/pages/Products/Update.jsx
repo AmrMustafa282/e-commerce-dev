@@ -289,7 +289,7 @@ const UpdateProduct = () => {
       <p className="text-gray-700">Updated an existing product</p>
      </div>
      <form className="my-4" onSubmit={handleSubmit}>
-      <Label htmlFor="name" className="font-semibold text-md">
+      <Label htmlFor="name" className="font-semibold text-base">
        Name
       </Label>
       <Input
@@ -301,7 +301,7 @@ const UpdateProduct = () => {
        placeholder="product name"
        defaultValue={product?.name}
       />
-      <Label htmlFor="description" className="font-semibold text-md">
+      <Label htmlFor="description" className="font-semibold text-base">
        Description
       </Label>
       <Textarea
@@ -313,7 +313,7 @@ const UpdateProduct = () => {
        placeholder="product description"
        defaultValue={product?.description}
       />
-      <Label htmlFor="price" className="font-semibold text-md">
+      <Label htmlFor="price" className="font-semibold text-base">
        Price
       </Label>
       <Input
@@ -328,7 +328,7 @@ const UpdateProduct = () => {
       />
       <div className="flex gap-12">
        <div className="flex-1">
-        <Label htmlFor="categoryId" className="font-semibold text-md">
+        <Label htmlFor="categoryId" className="font-semibold text-base">
          Category
         </Label>
         <div className="mt-4 mb-8">
@@ -355,7 +355,7 @@ const UpdateProduct = () => {
        </div>
        <div className="flex-1">
         <div className="flex gap-4">
-         <Label htmlFor="relation" className="font-semibold text-md">
+         <Label htmlFor="relation" className="font-semibold text-base">
           Relation (optional)
          </Label>
          <div className="flex items-center space-x-2">
@@ -416,7 +416,7 @@ const UpdateProduct = () => {
       </div>
       <div className="flex justify-between gap-12">
        <div className="flex-1">
-        <Label htmlFor="sizeId" className="font-semibold text-md">
+        <Label htmlFor="sizeId" className="font-semibold text-base">
          Sizes
         </Label>
         <div className="mt-4 mb-8 flex gap-2 flex-wrap">
@@ -448,7 +448,7 @@ const UpdateProduct = () => {
         </div>
        </div>
        <div className="flex-1">
-        <Label htmlFor="colorId" className="font-semibold text-md">
+        <Label htmlFor="colorId" className="font-semibold text-base">
          Color
         </Label>
         <div className="mt-4 mb-8">
@@ -481,7 +481,7 @@ const UpdateProduct = () => {
           setIsFeatured(val);
          }}
         />
-        <Label htmlFor="isFeatured" className="font-semibold text-md">
+        <Label htmlFor="isFeatured" className="font-semibold text-base">
          <h2 className="text-xl">Featured</h2>
          <p className="font-normal text-gray-700">
           This product will appear on the home page.
@@ -498,7 +498,7 @@ const UpdateProduct = () => {
           setIsArchived(val);
          }}
         />
-        <Label htmlFor="isArchived" className="font-semibold text-md">
+        <Label htmlFor="isArchived" className="font-semibold text-base">
          <h2 className="text-xl">Archived</h2>
          <p className="font-normal text-gray-700">
           This product will not appear anywhere in the store.
@@ -509,7 +509,7 @@ const UpdateProduct = () => {
 
       <div className="flex justify-between gap-4">
        <div className="flex-[1/2]">
-        <Label htmlFor="coverImage" className="font-semibold text-md">
+        <Label htmlFor="coverImage" className="font-semibold text-base">
          Cover image
         </Label>
         <Input
@@ -538,7 +538,7 @@ const UpdateProduct = () => {
         )}
        </div>
        <div className="flex-1">
-        <Label htmlFor="coverImage" className="font-semibold text-md">
+        <Label htmlFor="coverImage" className="font-semibold text-base">
          Alternative images(max-10)
         </Label>
         <Input

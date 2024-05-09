@@ -54,7 +54,7 @@ const CreateSize = () => {
     <p className="text-gray-700">Add a new size</p>
    </div>
    <form className="my-4" onSubmit={handleSubmit}>
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -65,7 +65,7 @@ const CreateSize = () => {
      className="mt-4 mb-8"
      placeholder="size name"
     />
-    <Label htmlFor="value" className="font-semibold text-md">
+    <Label htmlFor="value" className="font-semibold text-base">
      Value
     </Label>
     <Input

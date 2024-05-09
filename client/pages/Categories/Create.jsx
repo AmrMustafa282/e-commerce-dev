@@ -68,7 +68,7 @@ const CreateCategory = () => {
     <p className="text-gray-700">Add a new category</p>
    </div>
    <form className="my-4" onSubmit={handleSubmit}>
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -79,7 +79,7 @@ const CreateCategory = () => {
      className="mt-4 mb-8"
      placeholder="category name"
     />
-    <Label htmlFor="billboardId" className="font-semibold text-md">
+    <Label htmlFor="billboardId" className="font-semibold text-base">
      Billboard
     </Label>
     <div className="mt-4 mb-8">

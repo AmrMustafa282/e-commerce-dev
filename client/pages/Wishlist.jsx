@@ -3,18 +3,20 @@ import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 import React from "react";
 import { Heart } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Wishlist = () => {
  const dispatch = useDispatch();
+ const nav = useNavigate();
  const { products: wishlist } = useSelector((state) => state.wishlist);
 
  return (
   <>
    {wishlist ? (
-    <div className="my-12 flex gap-4 flex-wrap ">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12 mt-4">
      {wishlist.map((product) => (
       <Card
        key={product.id}
-       className="w-[316px] h-[475px] group cursor-pointer rounded-sm"
+       className=" group cursor-pointer rounded-sm"
       >
        <CardContent className="p-0 ">
         <div className="overflow-hidden relative ">
@@ -25,7 +27,7 @@ const Wishlist = () => {
           }}
           src={`/img/product/${product.images[0]?.url}`}
           alt={"product.name"}
-          className=" group-hover:scale-105 transition-all duration-300 w-[316px] h-[475px]"
+          className=" group-hover:scale-105 transition-all duration-300 w-full"
          />
          <button
           onClick={() =>

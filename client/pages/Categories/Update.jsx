@@ -67,7 +67,7 @@ const UpdateCategory = () => {
     <p className="text-gray-700">Updated an existing category</p>
    </div>
    <form onSubmit={handleSubmit} className="my-4">
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -78,7 +78,7 @@ const UpdateCategory = () => {
      className="mt-4 mb-8 "
      placeholder="category name"
     />
-    <Label htmlFor="billboardId" className="font-semibold text-md">
+    <Label htmlFor="billboardId" className="font-semibold text-base">
      Billboard
     </Label>
     <div className="mt-4 mb-8">

@@ -76,7 +76,10 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
 
   const products = await prisma.product.findMany({
    where: {
-    OR: [{ name: { contains: search } }],
+    OR: [
+     { name: { contains: search } },
+     { category: { name: { contains: search } } },
+    ],
    },
    orderBy: {
     // price: sortDirection,
@@ -97,11 +100,9 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
    //  take: limit,
   });
 
-  const total = await prisma.product.count();
-
   res.status(200).json({
+   status: "success",
    products,
-   total,
   });
  } catch (error) {
   next(error);

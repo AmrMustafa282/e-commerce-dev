@@ -42,7 +42,7 @@ import { Button } from "@/components/ui/button";
 import { formater } from "@/lib/formater";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
-import { ArrowBigUp, MoreHorizontal, Star, Heart } from "lucide-react";
+import { ArrowBigUp, MoreHorizontal, Star, Heart, Axe } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
@@ -188,10 +188,10 @@ const ProductDetails = () => {
   <>
    {product ? (
     <div className=" my-12">
-     <div className="flex flex-col  gap-4 md:flex-row mb-12">
-      <div className="flex-1 ">
+     <div className="  flex flex-col  gap-12  md:flex-row mb-12">
+      <div className="flex-1 lg:flex md:justify-center gap-4">
        <Carousel
-        className=" w-[558px] h-[837px] overflow-hidden"
+        className=" lg:w-[558px] lg:h-[837px] overflow-hidden"
         opts={{
          align: "start",
          loop: true,
@@ -202,12 +202,13 @@ const ProductDetails = () => {
          {product.images.slice(1).map((image, index) => (
           <CarouselItem className="" key={index}>
            <div className="p-1">
-            <Card className="w-[558px] h-[837px] group cursor-pointer">
+            <Card className="  lg:w-[558px] lg:h-[837px] group cursor-pointer">
              <CardContent className="p-0">
               <div className="overflow-hidden relative">
                <img
                 loading="lazy"
                 src={`/img/product/${image.url}`}
+                // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
                 alt={product.name}
                 className="w-full h-full"
                />
@@ -220,11 +221,39 @@ const ProductDetails = () => {
         </CarouselContent>
         <CarouselScrollTo index={index} />
        </Carousel>
+       <div className="lg:flex flex-col gap-2 py-1 px-1 hidden">
+        {product.images.slice(1).map((image, i) => (
+         <img
+          loading="lazy"
+          key={i}
+          src={`/img/product/${image.url}`}
+          // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
+          alt={product.name}
+          className="h-[83px] cursor-pointer border border-gray-300 rounded-sm"
+          onClick={() => setIndex(i)}
+          style={i === index ? { border: "solid 2px black" } : {}}
+         />
+        ))}
+       </div>
+       <div className="flex flex-wrap gap-2 mt-4 px-1 lg:hidden">
+        {product.images.slice(1).map((image, i) => (
+         <img
+          loading="lazy"
+          key={i}
+          src={`/img/product/${image.url}`}
+          // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
+          alt={product.name}
+          className="h-[83px] cursor-pointer border border-gray-300 rounded-sm"
+          onClick={() => setIndex(i)}
+          style={i === index ? { border: "solid 2px black" } : {}}
+         />
+        ))}
+       </div>
       </div>
-      <div className="flex-1 mt-4 flex flex-col justify-between ">
+      <div className=" flex-1 mt-4 flex flex-col justify-between ">
        <div>
         <div className="flex items-start justify-between">
-         <h1 className="font-bold text-4xl mb-8">{product.name}</h1>
+         <h1 className="font-bold text-xl md:text-4xl mb-8">{product.name}</h1>
          <Button
           size="icon"
           variant="ghost"
@@ -235,7 +264,7 @@ const ProductDetails = () => {
           }
          >
           <Heart
-           className="w-10 h-10"
+           className="w-8 h-8  md:w-10 md:h-10"
            style={
             wishlist?.find((p) => p.id === product.id)
              ? { fill: "red", color: "red" }
@@ -244,19 +273,19 @@ const ProductDetails = () => {
           />
          </Button>
         </div>
-        <span className="w-20 h-2 bg-black block" />
-        <h2 className="font-semibold text-3xl my-8">
+        <span className=" w-20 h-1 md:h-2 bg-black block" />
+        <h2 className="font-semibold text-xl md:text-3xl my-3 md:my-8">
          {formater(product.price)}
         </h2>
-        <p className="text-lg text-gray-500 mb-6">{product.description}</p>
-        <p className="text-lg text-gray-500 mb-2">
+        <p className=" md:text-lg text-gray-500 mb-6">{product.description}</p>
+        <p className=" md:text-lg text-gray-500 mb-2">
          CHECK IN-STORE AVAILABILITY
         </p>
-        <p className="text-lg text-gray-500 ">
+        <p className=" md:text-lg text-gray-500 ">
          SHIPPING, EXCHANGES AND RETURNS
         </p>
         <hr className="my-8" />
-        <span className="text-2xl font-semibold ">
+        <span className="text-xl md:text-2xl font-semibold ">
          Size : <span className="font-normal">{currentSize.name}</span>
         </span>
         <div className="flex gap-4">
@@ -265,10 +294,10 @@ const ProductDetails = () => {
            key={e.id}
            type="button"
            onClick={() => setCurrentSize(e.size)}
-           className="relative  cursor-pointer w-12 h-16 mt-4 mb-8 bg-black text-white font-bold text-xl rounded-md"
+           className="relative  cursor-pointer w-8 h-12  md:w-12 md:h-16 mt-4 mb-8 bg-black text-white font-bold text-xl rounded-md"
           >
            <div
-            className="h-2 w-0  absolute -bottom-3   duration-300 animate-hGrow transition-all"
+            className="h-1 rounded md:h-2 w-0  absolute -bottom-3   duration-300 animate-hGrow transition-all"
             style={
              currentSize.id === e.size.id
               ? { width: "100%", background: "black" }
@@ -288,7 +317,7 @@ const ProductDetails = () => {
           <Button
            key={product.id}
            style={{ backgroundColor: `${product.color.value}` }}
-           className="cursor-pointer hover:scale-105 duration-300 transition-all w-fit px-6 py-8 my-4  text-white font-extrabold text-2xl"
+           className="cursor-pointer hover:scale-105 duration-300 transition-all w-fit px-4 py-6 md:px-6 md:py-8 my-4  text-white font-extrabold text-2xl"
            onClick={() => nav(`/product/${product.id}`)}
           ></Button>
          ))}
@@ -299,19 +328,7 @@ const ProductDetails = () => {
        </Button>
       </div>
      </div>
-     <div className="flex mt-4">
-      {product.images.slice(1).map((image, i) => (
-       <img
-        loading="lazy"
-        key={i}
-        src={`/img/product/${image.url}`}
-        alt={product.name}
-        className="w-[105px] h-[158px] cursor-pointer mx-2 border border-gray-300"
-        onClick={() => setIndex(i)}
-        style={i === index ? { border: "solid 2px black" } : {}}
-       />
-      ))}
-     </div>
+
      <div className="flex flex-col gap-4 mb-12 mt-20 container ">
       <Dialog>
        <DialogTrigger asChild>
@@ -466,15 +483,15 @@ const ProductDetails = () => {
          <div className="flex items-center gap-4 my-2">
           <Button
            size="icon"
-           variant="outline"
+           variant="ghost"
            type="button"
            onClick={() => handleUpvote(review.id)}
           >
-           <ArrowBigUp
+           <Heart
             style={
-             isUpvoted(review.upvotes) ? { fill: "green", color: "green" } : {}
+             isUpvoted(review.upvotes) ? { fill: "red", color: "red" } : {}
             }
-            className=" w-10 h-10 stroke-[1px] cursor-pointer hover:-translate-y-[1px] duration-300 transition-all"
+            className=" md:w-8 md:h-8 stroke-[1px] cursor-pointer hover:-translate-y-[1px] duration-300 transition-all"
            />
           </Button>
           <Label>{review.upvoteCount}</Label>
@@ -487,10 +504,10 @@ const ProductDetails = () => {
    ) : (
     // product && (
     <div className=" my-12">
-     <div className="flex flex-col  gap-4 md:flex-row mb-12">
-      <div className="flex-1 ">
+     <div className="  flex flex-col  gap-12  md:flex-row mb-12">
+      <div className="flex-1 lg:flex md:justify-center gap-4">
        <Carousel
-        className=" w-[558px] h-[837px] overflow-hidden"
+        className=" lg:w-[558px] lg:h-[837px] overflow-hidden"
         opts={{
          align: "start",
          loop: true,
@@ -498,12 +515,14 @@ const ProductDetails = () => {
         }}
        >
         <CarouselContent className="">
-         {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+         {[1, 2, 3, 4, 5, 6, 7, 8].map((image, index) => (
           <CarouselItem className="" key={index}>
            <div className="p-1">
-            <Card className="w-[558px] h-[837px] group cursor-pointer">
+            <Card className="  lg:w-[558px] lg:h-[837px] group cursor-pointer">
              <CardContent className="p-0">
-              <Skeleton className="w-full h-screen" />
+              <div className="overflow-hidden relative">
+               <Skeleton className="w-full h-[537px] lg:h-[837px]" />
+              </div>
              </CardContent>
             </Card>
            </div>
@@ -512,16 +531,27 @@ const ProductDetails = () => {
         </CarouselContent>
         <CarouselScrollTo index={index} />
        </Carousel>
+
+       <div className="lg:flex flex-col gap-3 py-1 px-1 hidden">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+         <Skeleton className=" h-[83px] aspect-[2/3] mx-2" key={index} />
+        ))}
+       </div>
+       <div className="flex flex-wrap  gap-1 mt-4 px-1 lg:hidden">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+         <Skeleton className=" h-[83px] aspect-[2/3]" key={index} />
+        ))}
+       </div>
       </div>
       <div className="flex-1 mt-4 flex flex-col justify-between ">
        <div>
         <div className="flex items-start justify-between">
          <Skeleton className="w-full h-12 mr-8" />
          <Button size="icon" variant="ghost">
-          <Heart className="w-10 h-10" />
+          <Heart className="w-8 h-8" />
          </Button>
         </div>
-        <span className="w-20 h-2 bg-black block" />
+        {/* <span className="w-20 h-1 mt-2 bg-black block" /> */}
         <Skeleton className="w-40 h-10 mb-4 mt-12" />
 
         <Skeleton className="w-full h-8 mt-8" />
@@ -549,11 +579,6 @@ const ProductDetails = () => {
        </div>
        <Skeleton className="w-full h-12  " />
       </div>
-     </div>
-     <div className="flex mt-4">
-      {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-       <Skeleton className="w-[105px] h-[158px] mx-2" key={index} />
-      ))}
      </div>
     </div>
     // )

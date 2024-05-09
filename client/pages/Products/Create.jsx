@@ -218,7 +218,6 @@ const CreateProduct = () => {
   }
  };
 
-
  useEffect(() => {
   fetchCategories();
   fetchColors();
@@ -233,7 +232,7 @@ const CreateProduct = () => {
     <p className="text-gray-700">Add a new product</p>
    </div>
    <form className="my-4" onSubmit={handleSubmit}>
-    <Label htmlFor="name" className="font-semibold text-md">
+    <Label htmlFor="name" className="font-semibold text-base">
      Name
     </Label>
     <Input
@@ -244,7 +243,7 @@ const CreateProduct = () => {
      className="mt-4 mb-8"
      placeholder="product name"
     />
-    <Label htmlFor="description" className="font-semibold text-md">
+    <Label htmlFor="description" className="font-semibold text-base">
      Description
     </Label>
     <Textarea
@@ -255,7 +254,7 @@ const CreateProduct = () => {
      className="mt-4 mb-8"
      placeholder="product description"
     />
-    <Label htmlFor="price" className="font-semibold text-md">
+    <Label htmlFor="price" className="font-semibold text-base">
      Price
     </Label>
     <Input
@@ -270,7 +269,7 @@ const CreateProduct = () => {
 
     <div className="flex justify-between gap-12">
      <div className="flex-1">
-      <Label htmlFor="categoryId" className="font-semibold text-md">
+      <Label htmlFor="categoryId" className="font-semibold text-base">
        Category
       </Label>
       <div className="mt-4 mb-8">
@@ -293,7 +292,7 @@ const CreateProduct = () => {
      </div>
      <div className="flex-1">
       <div className="flex gap-4">
-       <Label htmlFor="relation" className="font-semibold text-md">
+       <Label htmlFor="relation" className="font-semibold text-base">
         Relation (optional)
        </Label>
        <div className="flex items-center space-x-2">
@@ -354,7 +353,7 @@ const CreateProduct = () => {
     </div>
     <div className="flex justify-between gap-12">
      <div className="flex-1">
-      <Label htmlFor="sizeId" className="font-semibold text-md">
+      <Label htmlFor="sizeId" className="font-semibold text-base">
        Sizes
       </Label>
       <div className="mt-4 mb-8 flex gap-2 flex-wrap">
@@ -384,7 +383,7 @@ const CreateProduct = () => {
       </div>
      </div>
      <div className="flex-1">
-      <Label htmlFor="colorId" className="font-semibold text-md">
+      <Label htmlFor="colorId" className="font-semibold text-base">
        Color
       </Label>
       <div className="mt-4 mb-8">
@@ -416,7 +415,7 @@ const CreateProduct = () => {
         setIsFeatured(val);
        }}
       />
-      <Label htmlFor="isFeatured" className="font-semibold text-md">
+      <Label htmlFor="isFeatured" className="font-semibold text-base">
        <h2 className="text-xl">Featured</h2>
        <p className="font-normal text-gray-700">
         This product will appear on the home page.
@@ -432,7 +431,7 @@ const CreateProduct = () => {
         setIsArchived(val);
        }}
       />
-      <Label htmlFor="isArchived" className="font-semibold text-md">
+      <Label htmlFor="isArchived" className="font-semibold text-base">
        <h2 className="text-xl">Archived</h2>
        <p className="font-normal text-gray-700">
         This product will not appear anywhere in the store.
@@ -443,7 +442,7 @@ const CreateProduct = () => {
 
     <div className="flex justify-between gap-4">
      <div className="flex-[1/2]">
-      <Label htmlFor="coverImage" className="font-semibold text-md">
+      <Label htmlFor="coverImage" className="font-semibold text-base">
        Cover image
       </Label>
       <Input
@@ -471,7 +470,7 @@ const CreateProduct = () => {
       )}
      </div>
      <div className="flex-1">
-      <Label htmlFor="coverImage" className="font-semibold text-md">
+      <Label htmlFor="coverImage" className="font-semibold text-base">
        Alternative images(max-10)
       </Label>
       <Input
@@ -482,15 +481,9 @@ const CreateProduct = () => {
        multiple
       />
       {imagesPreview && (
-       <div
-        
-        className="f flex-wrap justify-start items-center gap-2"
-       >
+       <div className="f flex-wrap justify-start items-center gap-2">
         {imagesPreview.map((img, index) => (
-         <div
-          key={index}
-          className="relative w-[200px]"
-         >
+         <div key={index} className="relative w-[200px]">
           <img
            loading="lazy"
            src={img}

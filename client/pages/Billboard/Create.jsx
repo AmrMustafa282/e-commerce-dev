@@ -60,7 +60,7 @@ const CreateBillboard = () => {
     <p className="text-gray-700">Add a new billboard</p>
    </div>
    {/* <form className="my-4" onSubmit={handleSubmit}> */}
-   <Label htmlFor="label" className="font-semibold text-md">
+   <Label htmlFor="label" className="font-semibold text-base">
     Label
    </Label>
    <Input
@@ -71,7 +71,7 @@ const CreateBillboard = () => {
     className="mt-4 mb-8"
     placeholder="billboard label"
    />
-   <Label htmlFor="image" className="font-semibold text-md">
+   <Label htmlFor="image" className="font-semibold text-base">
     Background image
    </Label>
    <Input

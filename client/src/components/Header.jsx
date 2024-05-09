@@ -44,13 +44,16 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
+import axios from "axios";
+import { setProducts } from "@/redux/product/productSlice";
 
 const Header = () => {
  const nav = useNavigate();
  const { currentUser } = useSelector((state) => state.user);
  let { categories } = useSelector((state) => state.product);
- // categories = categories.slice(1)
  const [tab, setTab] = useState("overview");
+ const [search, setSearch] = useState("");
+ const [loading, setLoading] = useState(false);
  const location = useLocation();
  const auth = useAuthUser();
  const dispatch = useDispatch();
@@ -63,6 +66,25 @@ const Header = () => {
  };
  const handelLogin = () => {
   window.location.assign("/login");
+ };
+ const handelSearch = async () => {
+  if (search) {
+   setLoading(true);
+   try {
+    const res = await axios.get(
+     `/api/v1/products?search=${search.trim().toUpperCase()}`
+    );
+    if (res.data.status === "success") {
+     dispatch(setProducts(res.data.products));
+    }
+   } catch (error) {
+    console.log(error);
+   } finally {
+    setLoading(false);
+   }
+  } else {
+   dispatch(setProducts(null));
+  }
  };
  useEffect(() => {
   const urlParams = new URLSearchParams(location.search);
@@ -156,12 +178,22 @@ const Header = () => {
       <DialogContent className="sm:max-w-xl ">
        <div className="flex items-center space-x-2 mt-4">
         <div className="grid flex-1 gap-2">
-         <Input placeholder="Search ..." />
+         <Input
+          placeholder="Search ..."
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+         />
         </div>
        </div>
        <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
-         <Button className="ml-auto" type="button" variant="secondary">
+         <Button
+          className="ml-auto"
+          type="button"
+          variant="secondary"
+          onClick={handelSearch}
+          disabled={loading}
+         >
           Search
          </Button>
         </DialogClose>
@@ -214,7 +246,20 @@ const Header = () => {
          <Link to={"/"} className="font-bold text-2xl ">
           STORE
          </Link>
-         {/* <NavigationMenuDemo /> */}
+         <div className="">
+          <Input
+           placeholder="Search ..."
+           onChange={(e) => setSearch(e.target.value)}
+           value={search}
+           className="mt-2"
+          />
+          <SheetClose className="w-full" onClick={handelSearch}>
+           <Button className="w-full mt-2" variant="secondary" type="button">
+            Search
+           </Button>
+          </SheetClose>
+          <Separator className="my-4" />
+         </div>
 
          {location.pathname.includes("dashboard") ? (
           <div className="flex flex-col gap-3 text-gray-700 mt-3  ">
@@ -336,7 +381,6 @@ const Header = () => {
         </div>
         <Separator className="my-4 " />
        </div>
-
        <div>
         <h2 className="my-6 text-xl font-semibold">Taps</h2>
         <div className="flex flex-col  justify-center gap-4">
@@ -344,7 +388,7 @@ const Header = () => {
          <SheetClose asChild>
           <Link
            className="p-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100"
-           tp={"/wishlist"}
+           to={"/wishlist"}
           >
            <Label>Wishlist</Label>
            <Heart />

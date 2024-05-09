@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "@/redux/wishlist/wishlist";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Cart = () => {
  const dispatch = useDispatch();
@@ -23,13 +24,21 @@ const Cart = () => {
  let [totalItems, setTotalItems] = useState(0);
  let [shippingFee, setShippingFee] = useState(0);
  const [loading, setLoading] = useState(false);
+ const [fetching, setFetching] = useState(false);
 
  const getOrders = async () => {
-  const res = await axios.get("/api/v1/orders/me");
-  if (res.data.status === "success") {
-   setOrder(res.data.currentOrder);
-   setItems(res.data.currentOrder?.orderItems);
-   setPaiedOrders(res.data.paiedOrders);
+  try {
+   setFetching(true);
+   const res = await axios.get("/api/v1/orders/me");
+   if (res.data.status === "success") {
+    setOrder(res.data.currentOrder);
+    setItems(res.data.currentOrder?.orderItems);
+    setPaiedOrders(res.data.paiedOrders);
+   }
+  } catch (error) {
+   console.log(error);
+  } finally {
+   setFetching(false);
   }
  };
 
@@ -87,30 +96,27 @@ const Cart = () => {
   }
  };
 
- //  const handelWishlistAction = async (item) => {
-
- //  };
- useEffect(() => {
-  getOrders();
- }, []);
- useEffect(() => {
-  totalPrice = 0;
-  totalItems = 0;
-  items?.forEach((item) => {
-   const price = parseFloat(item.product.price);
-   const amount = parseInt(item.amount);
-   totalPrice += price * amount;
-   totalItems += amount;
-   setTotalPrice(totalPrice);
-   setTotalItems(totalItems);
-  });
-  totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
- }, [items]);
+ //  useEffect(() => {
+ //   getOrders();
+ //  }, []);
+ //  useEffect(() => {
+ //   totalPrice = 0;
+ //   totalItems = 0;
+ //   items?.forEach((item) => {
+ //    const price = parseFloat(item.product.price);
+ //    const amount = parseInt(item.amount);
+ //    totalPrice += price * amount;
+ //    totalItems += amount;
+ //    setTotalPrice(totalPrice);
+ //    setTotalItems(totalItems);
+ //   });
+ //   totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
+ //  }, [items]);
 
  return (
   <>
-   {items && (
-    <div className="grid grid-cols-6 gap-12 my-12 relative">
+   {items?.length > 0 && (
+    <div className="text-xs md:text-base grid grid-cols-1 md:grid-cols-6 gap-12 my-12 relative">
      <div className="col-span-4 flex flex-col gap-4">
       {items.map((item) => (
        <div
@@ -144,13 +150,12 @@ const Cart = () => {
            size="icon"
            variant="ghost"
            onClick={() =>
-            wishlist?.find((p) => p.id === product.id)
-             ? dispatch(removeFromWishlist(product.id))
-             : dispatch(addToWishlist(product))
+            wishlist?.find((p) => p.id === item.product.id)
+             ? dispatch(removeFromWishlist(item.product.id))
+             : dispatch(addToWishlist(item.product))
            }
           >
            <Heart
-            // className="w-10 h-10"
             style={
              wishlist?.find((p) => p.id === item.product.id)
               ? { fill: "red", color: "red" }
@@ -183,7 +188,7 @@ const Cart = () => {
        </div>
       ))}
      </div>
-     <div className="col-span-2 border py-12 px-8 flex flex-col gap-6 h-fit sticky top-3">
+     <div className="text-xs col-span-4 md:col-span-2 border py-12 px-8 flex flex-col gap-6 h-fit sticky top-3">
       <h2 className="font-semibold text-xl">Order Summary</h2>
       <div className="text-gray-600 flex justify-between items-center">
        <p>
@@ -218,13 +223,14 @@ const Cart = () => {
      <Label className="text-xl font-semibold block mt-4">
       Your Paied Orders
      </Label>
-     <div className="my-12 flex flex-col gap-4">
+     <div className="my-12 flex flex-col gap-4 text-xs md:text-base">
       {paiedOrders?.map((order) => (
        <div className="" key={order.id}>
-        <div className="flex gap-4 shadow-md hover:shadow-lg duration-300">
+        <div className="flex flex-col md:flex-row gap-4 divide-y-[1px] md:divide-y-0  shadow-md hover:shadow-lg duration-300">
          <div className=" grid grid-cols-4 gap-2">
           {order?.orderItems?.map((i) => (
            <img
+            key={i.id}
             loading="lazy"
             src={`/img/product/${i.product.images[0].url}`}
             alt={i.product.name}
@@ -232,11 +238,11 @@ const Cart = () => {
            />
           ))}
          </div>
-         <div className=" p-4">
+         <div className=" p-4 text-xs md:text-base">
           <div className="flex justify-end gap-20 ">
            <div className="flex flex-col gap-1">
             {order?.orderItems?.map((i) => (
-             <div className="flex">
+             <div className="flex" key={i.id}>
               <h2 className="font-semibold max-w-64 line-clamp-1 ">
                {i.product.name} :
               </h2>
@@ -245,7 +251,7 @@ const Cart = () => {
              </div>
             ))}
            </div>
-           <div className="font-bold flex flex-col gap-2 w-full">
+           <div className="font-semibold flex flex-col gap-2 w-full">
             <h3>
              Items :{" "}
              {order.orderItems.reduce((acc, item) => {
@@ -330,8 +336,20 @@ const Cart = () => {
      </div>
     </>
    )}
-   {!items && !paiedOrders && (
-    <h1>No orders yet, create one now by purchasing products</h1>
+   {!fetching ? (
+    <div className="md:grid grid-cols-5 gap-6 md:my-12">
+     <div className="md:col-span-3  my-6 md:my-0 space-y-4  ">
+      <Skeleton className="w-full h-52" />
+      <Skeleton className="w-full h-52" />
+      <Skeleton className="w-full aspect-[5/5] md:hidden" />
+     </div>
+     <Skeleton className="md:col-span-2  hidden md:block" />
+    </div>
+   ) : (
+    !items &&
+    !paiedOrders && (
+     <h1>No orders yet, create one now by purchasing products</h1>
+    )
    )}
   </>
  );

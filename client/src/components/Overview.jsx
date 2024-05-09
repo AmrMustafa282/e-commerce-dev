@@ -42,6 +42,11 @@ const Overview = () => {
  useEffect(() => {
   fetchStates();
  }, []);
+ const data = [
+  { total: 5, name: "first" },
+  { total: 10, name: "second" },
+  { total: 15, name: "thirs" },
+ ];
 
  return (
   <>
@@ -60,32 +65,34 @@ const Overview = () => {
      </div>
     ))}
    </div>
-   <Card>
-    <CardHeader>
-     <CardTitle>Overview</CardTitle>
-    </CardHeader>
-    <CardContent className="pl-2 h-[40vh]">
-     <ResponsiveContainer width="100%" height="100%">
-      <BarChart width={150} height={40} data={states?.graphData}>
-       <XAxis
-        dataKey={"name"}
-        stroke="#888888"
-        fontSize={12}
-        tickLine={false}
-        axisLine={false}
-       />
-       <YAxis
-        stroke="#888888"
-        fontSize={12}
-        tickLine={false}
-        axisLine={false}
-        tickFormatter={(val) => `$${val}`}
-       />
-       <Bar dataKey="total" fill="#2318f0" radius={[4, 4, 0, 0]} />
-      </BarChart>
-     </ResponsiveContainer>
-    </CardContent>
-   </Card>
+   <div className="mb-12">
+    <Card>
+     <CardHeader>
+      <CardTitle>Overview</CardTitle>
+     </CardHeader>
+     <CardContent className="pl-2 h-[40vh] ">
+      <ResponsiveContainer width="100%" height="100%">
+       <BarChart width={150} height={40} data={states?.graphData}>
+        <XAxis
+         stroke="#888888"
+         fontSize={12}
+         tickLine={false}
+         axisLine={false}
+         dataKey={"name"}
+        />
+        <YAxis
+         tickFormatter={(val) => `$${val}`}
+         stroke="#888888"
+         fontSize={12}
+         tickLine={false}
+         axisLine={false}
+        />
+        <Bar dataKey="total" fill="#2318f0" radius={[4, 4, 0, 0]} />
+       </BarChart>
+      </ResponsiveContainer>
+     </CardContent>
+    </Card>
+   </div>
   </>
  );
 };
