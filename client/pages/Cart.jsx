@@ -96,22 +96,22 @@ const Cart = () => {
   }
  };
 
-  useEffect(() => {
-   getOrders();
-  }, []);
-  useEffect(() => {
-   totalPrice = 0;
-   totalItems = 0;
-   items?.forEach((item) => {
-    const price = parseFloat(item.product.price);
-    const amount = parseInt(item.amount);
-    totalPrice += price * amount;
-    totalItems += amount;
-    setTotalPrice(totalPrice);
-    setTotalItems(totalItems);
-   });
-   totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
-  }, [items]);
+ useEffect(() => {
+  getOrders();
+ }, []);
+ useEffect(() => {
+  totalPrice = 0;
+  totalItems = 0;
+  items?.forEach((item) => {
+   const price = parseFloat(item.product.price);
+   const amount = parseInt(item.amount);
+   totalPrice += price * amount;
+   totalItems += amount;
+   setTotalPrice(totalPrice);
+   setTotalItems(totalItems);
+  });
+  totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
+ }, [items]);
 
  return (
   <>
@@ -232,13 +232,14 @@ const Cart = () => {
            <img
             key={i.id}
             loading="lazy"
-            src={`/img/product/${i.product.images[0].url}`}
+            // src={`/img/product/${i.product.images[0].url}`}
+            src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715264955369.jpeg`}
             alt={i.product.name}
-            className="w-52 h-48 object-cover"
+            className="w-32  object-cover"
            />
           ))}
          </div>
-         <div className=" p-4 text-xs md:text-base">
+         <div className="ml-auto p-4 text-xs md:text-base">
           <div className="flex justify-end gap-20 ">
            <div className="flex flex-col gap-1">
             {order?.orderItems?.map((i) => (
@@ -336,7 +337,7 @@ const Cart = () => {
      </div>
     </>
    )}
-   {!fetching ? (
+   {fetching ? (
     <div className="md:grid grid-cols-5 gap-6 md:my-12">
      <div className="md:col-span-3  my-6 md:my-0 space-y-4  ">
       <Skeleton className="w-full h-52" />

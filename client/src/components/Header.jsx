@@ -232,7 +232,7 @@ const Header = () => {
       <Button onClick={handelLogin}>SignIn</Button>
      )}
     </div>
-    <div className="md:hidden flex justify-between items-center w-full">
+    <div className=" md:hidden flex justify-between items-center w-full">
      <Link to={"/"} className="font-bold text-2xl ">
       STORE
      </Link>
@@ -240,7 +240,7 @@ const Header = () => {
       <SheetTrigger asChild>
        <AlignJustify />
       </SheetTrigger>
-      <SheetContent side="top">
+      <SheetContent className="overflow-y-scroll" side="top">
        <div>
         <div className=" ">
          <Link to={"/"} className="font-bold text-2xl ">
@@ -253,8 +253,8 @@ const Header = () => {
            value={search}
            className="mt-2"
           />
-          <SheetClose className="w-full" onClick={handelSearch}>
-           <Button className="w-full mt-2" variant="secondary" type="button">
+          <SheetClose className="w-full mt-3" onClick={handelSearch}>
+           <Button className="w-full" variant="secondary" type="button">
             Search
            </Button>
           </SheetClose>

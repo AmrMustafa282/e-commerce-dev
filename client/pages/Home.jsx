@@ -192,7 +192,7 @@ const Home = () => {
          Filter
         </Button>
        </SheetTrigger>
-       <SheetContent side="left">
+       <SheetContent side="left" className="overflow-y-scroll">
         <SheetHeader>
          <SheetTitle>Filter products</SheetTitle>
          <SheetDescription>

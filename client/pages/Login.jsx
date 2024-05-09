@@ -22,7 +22,6 @@ const Login = () => {
 
  const onSubmit = async (values) => {
   console.log("Values: ", values);
-  
 
   try {
    dispatch(signInStart());
@@ -61,7 +60,8 @@ const Login = () => {
    nav("/");
   } catch (err) {
    dispatch(signInFailure());
-   if (err && err instanceof AxiosError) toast.error(err.response?.data.message);
+   if (err && err instanceof AxiosError)
+    toast.error(err.response?.data.message);
    else if (err && err instanceof Error) toast.error(err.message);
 
    console.log("Error: ", err);
@@ -79,11 +79,11 @@ const Login = () => {
  return (
   <div className="my-32 h-full">
    <div className="flex justify-center items-center w-full ">
-    <div className="bg-white px-12 pb-12 pt-4 rounded-lg shadow-lg">
-     <form onSubmit={formik.handleSubmit}>
+    <div className="bg-white pb-12 pt-4 rounded-lg">
+     <form onSubmit={formik.handleSubmit} className="mx-auto">
       <h1 className="my-4 text-center font-semibold text-3xl">Login</h1>
 
-      <div className="flex flex-col gap-4 w-full min-w-96">
+      <div className="flex flex-col gap-4 w-full min-w-80">
        <Input
         name="email"
         value={formik.values.email}
