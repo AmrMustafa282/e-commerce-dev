@@ -96,22 +96,22 @@ const Cart = () => {
   }
  };
 
- //  useEffect(() => {
- //   getOrders();
- //  }, []);
- //  useEffect(() => {
- //   totalPrice = 0;
- //   totalItems = 0;
- //   items?.forEach((item) => {
- //    const price = parseFloat(item.product.price);
- //    const amount = parseInt(item.amount);
- //    totalPrice += price * amount;
- //    totalItems += amount;
- //    setTotalPrice(totalPrice);
- //    setTotalItems(totalItems);
- //   });
- //   totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
- //  }, [items]);
+  useEffect(() => {
+   getOrders();
+  }, []);
+  useEffect(() => {
+   totalPrice = 0;
+   totalItems = 0;
+   items?.forEach((item) => {
+    const price = parseFloat(item.product.price);
+    const amount = parseInt(item.amount);
+    totalPrice += price * amount;
+    totalItems += amount;
+    setTotalPrice(totalPrice);
+    setTotalItems(totalItems);
+   });
+   totalPrice > 500 ? setShippingFee(0) : setShippingFee(50);
+  }, [items]);
 
  return (
   <>
