@@ -232,8 +232,8 @@ const Cart = () => {
            <img
             key={i.id}
             loading="lazy"
-            // src={`/img/product/${i.product.images[0].url}`}
-            src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715264955369.jpeg`}
+            src={`/img/product/${i.product.images[0].url}`}
+            // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715264955369.jpeg`}
             alt={i.product.name}
             className="w-32  object-cover"
            />
