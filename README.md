@@ -13,7 +13,7 @@ This repository contains the source code for a E-commerce(store - dashboard) app
 
 ## Tech Stack
 
-- **Back-end**: Node, Express, PostgreSQL, PrismaORM, JWT, Multer for robust back-end support.
+- **Back-end**: Node, Express, PostgreSQL, PrismaORM, Pug.js, JWT, Multer for robust back-end support.
 - **Front-end**: React.js , Redux, Tailwind, Shadcn/ui for client-side.
 - **Payment**: Managed online payment with stripe.
 - **Email provider**: Integrated Brevo (SMTP) as email provider service .
@@ -53,7 +53,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 
-- This project was inspired by @Antonio Erdeljac [Tutorial](https://www.youtube.com/watch?v=5miHyP6lExg&t=37486s) .
+- This project was inspired by [@Antonio Erdeljac](https://github.com/AntonioErdeljac) [Tutorial](https://www.youtube.com/watch?v=5miHyP6lExg&t=37486s) .
 - Special thanks to the contributors and maintainers of the technologies used in this project.
 
 Feel free to reach out with any questions or feedback!
