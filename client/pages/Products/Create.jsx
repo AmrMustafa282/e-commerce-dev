@@ -481,7 +481,7 @@ const CreateProduct = () => {
        multiple
       />
       {imagesPreview && (
-       <div className="f flex-wrap justify-start items-center gap-2">
+       <div className="flex flex-wrap justify-start items-center gap-2">
         {imagesPreview.map((img, index) => (
          <div key={index} className="relative w-[200px]">
           <img
@@ -497,13 +497,6 @@ const CreateProduct = () => {
            type="button"
           >
            <Trash />
-          </Button>
-          <Button
-           variant="ghost"
-           className="absolute bottom-2 right-2 p-2"
-           type="button"
-          >
-           <Grip />
           </Button>
          </div>
         ))}

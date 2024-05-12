@@ -188,9 +188,9 @@ const Cart = () => {
        </div>
       ))}
      </div>
-     <div className="text-xs col-span-4 md:col-span-2 border py-12 px-8 flex flex-col gap-6 h-fit sticky top-3">
+     <div className="text-xs md:text-base col-span-4 md:col-span-2 border py-12 px-8 flex flex-col gap-6 h-fit sticky top-3">
       <h2 className="font-semibold text-xl">Order Summary</h2>
-      <div className="text-gray-600 flex justify-between items-center">
+      <div className=" text-gray-600 flex justify-between items-center">
        <p>
         Subtotal ({totalItems}) {totalItems <= 1 ? "item" : "items"}
        </p>

@@ -30,9 +30,7 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
  const session = await stripe.checkout.sessions.create({
   payment_method_types: ["card"],
   success_url: `${req.protocol}://${req.get("host")}/`,
-  cancel_url: `${req.protocol}://${req.get("host")}/fialed`,
-  // customer_email: req.user.email,
-  // client_reference_id: req.params.orderId,
+  cancel_url: `${req.protocol}://${req.get("host")}/`,
   customer_email: order.user.email,
   client_reference_id: req.params.orderId,
   mode: "payment",
@@ -53,17 +51,16 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
       description: order.orderItems
        .map((item) => item.product.description)
        .join(" ,"),
-      images:
-       //    order.orderItems.map(
-       //  (item) =>
-       //   `${req.protocol}://${req.get("host")}/img/products/${
-       //    item.product.images[0]
-       //   }`
-       // ),
-       [
-        "https://static.zara.net/assets/public/ef35/f816/b44a4a02b4b8/78103cb08cc3/08574500806-e1/08574500806-e1.jpg?ts=1703759618908&w=750",
-        "https://static.zara.net/assets/public/7dd5/b904/bbe7430eb666/2a16fbdb1feb/08574500806-a4/08574500806-a4.jpg?ts=1713195215620&w=750",
-       ],
+      images: order.orderItems.map(
+       (item) =>
+        `${req.protocol}://${req.get("host")}/img/products/${
+         item.product.images[0]
+        }`
+      ),
+      //  [
+      //   "https://static.zara.net/assets/public/ef35/f816/b44a4a02b4b8/78103cb08cc3/08574500806-e1/08574500806-e1.jpg?ts=1703759618908&w=750",
+      //   "https://static.zara.net/assets/public/7dd5/b904/bbe7430eb666/2a16fbdb1feb/08574500806-a4/08574500806-a4.jpg?ts=1713195215620&w=750",
+      //  ],
      },
     },
    },
