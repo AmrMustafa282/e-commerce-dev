@@ -320,6 +320,7 @@ const Home = () => {
            }}
            //  src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
            src={`/img/product/${product.images[0]?.url}`}
+           //  src={`/client/static-assets/img/product/${product.images[0]?.url}`}
            alt={product.name}
            className=" group-hover:scale-105 transition-all duration-300 w-full"
           />

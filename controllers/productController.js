@@ -46,6 +46,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
   .toFormat("jpeg")
   .jpeg({ quality: 90 })
   .toFile(`client/dist/img/product/${req.body.imageCover}`),
+  // .toFile(`client/static-assets/img/product/${req.body.imageCover}`),
   // 2) Images
 
   (req.body.images = []);
@@ -59,6 +60,7 @@ export const resizeProductImages = catchAsync(async (req, res, next) => {
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
     .toFile(`client/dist/img/product/${filename}`);
+   // .toFile(`client/static-assets/img/product/${filename}`);
    req.body.images.push(filename);
   })
  );
