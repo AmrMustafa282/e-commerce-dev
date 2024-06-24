@@ -26,7 +26,7 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
  });
  // 2) Create checkout session  [npm i stripe]
  // console.log(order)
- console.log(order.orderItems[0].product.images);
+//  console.log(order.orderItems[0].product.images[0]);
 
  const session = await stripe.checkout.sessions.create({
   payment_method_types: ["card"],
@@ -54,7 +54,7 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
        .join(" ,"),
       images: order.orderItems.map(
        (item) =>
-        `${req.protocol}://${req.get("host")}/img/products/${
+        `${req.protocol}://${req.get("host")}/img/product/${
          item.product.images[0].url
         }`
       ),
