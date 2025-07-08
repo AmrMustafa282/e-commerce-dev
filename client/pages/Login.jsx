@@ -47,7 +47,7 @@ const Login = () => {
     dispatch(signInFailure());
     return;
    }
-   if (response.data.data.user.role === "admin") {
+   if (response.data?.data?.user?.role === "admin") {
     options.role = "admin";
    }
    signIn({

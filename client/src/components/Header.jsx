@@ -208,7 +208,7 @@ const Header = () => {
        <Link to="/cart" className="border p-2 rounded-lg">
         <ShoppingCart className="" />
        </Link>
-       {auth.role === "admin" && (
+       {auth?.role === "admin" && (
         <Link to="/dashboard?tab=overview" className="border p-2 rounded-lg">
          <Settings className="" />
         </Link>
@@ -405,7 +405,7 @@ const Header = () => {
              </div>
             </Link>
            </SheetClose>
-           {auth.role === "admin" && (
+           {auth?.role === "admin" && (
             <SheetClose asChild>
              <Link to="/dashboard?tab=overview">
               <div className="py-2 w-full flex justify-between items-center px-4 rounded-lg bg-gray-100">
