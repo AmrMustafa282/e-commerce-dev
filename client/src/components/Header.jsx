@@ -156,7 +156,7 @@ const Header = () => {
        <div className="md:flex items-center gap-3 hidden  ">
         {categories.map((category) => (
          <Link
-          to={`/${category.name}`}
+          to={`/${category.id}`}
           key={category.id}
           className=" font-semibold"
          >

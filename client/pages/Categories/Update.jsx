@@ -60,6 +60,22 @@ const UpdateCategory = () => {
  useEffect(() => {
   fetchBillboards();
  }, []);
+
+ useEffect(() => {
+  const getCategory = async () => {
+   try {
+    const res = await axios.get(`/api/v1/categories/${categoryId}`);
+    if (res.data.status === "success") {
+      setName(res.data.category.name);
+      setBillboardId(res.data.category.billboard.id)
+    }
+   } catch (error) {
+    toast.error("something went wrong");
+   }
+  };
+  getCategory();
+ }, [categoryId]);
+
  return (
   <>
    <div className="py-4 border-b flex justify-between items-end">
@@ -77,12 +93,13 @@ const UpdateCategory = () => {
      name="name"
      className="mt-4 mb-8 "
      placeholder="category name"
+     value={name}
     />
     <Label htmlFor="billboardId" className="font-semibold text-base">
      Billboard
     </Label>
     <div className="mt-4 mb-8">
-     <Select id="billboardId" onValueChange={handleBillboardIdChange}>
+         <Select id="billboardId" onValueChange={handleBillboardIdChange} value={billboardId}>
       <SelectTrigger className="">
        <SelectValue placeholder="Select a billboard" />
       </SelectTrigger>

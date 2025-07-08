@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -56,6 +56,21 @@ const UpdateBillboard = () => {
   };
   reader.readAsDataURL(uploadedImage);
  };
+
+ useEffect(() => {
+  const getBillboard = async () => {
+   try {
+    const res = await axios.get(`/api/v1/billboards/${billboardId}`);
+    if (res.data.status === "success") {
+     setLabel(res.data.data.data.label);
+     setImagePreview(res.data.data.data.imageUrl);
+    }
+   } catch (error) {
+    toast.error("something went wrong");
+   }
+  };
+  getBillboard();
+ }, [billboardId]);
  return (
   <>
    <div className="py-4 border-b flex justify-between items-end">
@@ -73,6 +88,7 @@ const UpdateBillboard = () => {
      name="label"
      className="mt-4 mb-8 "
      placeholder="billboard label"
+     value={label}
     />
     <Label htmlFor="image" className="font-semibold text-base">
      Background image

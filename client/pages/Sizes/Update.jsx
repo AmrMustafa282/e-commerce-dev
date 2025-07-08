@@ -49,6 +49,20 @@ const UpdateSize = () => {
   setValue(val.target.value);
  };
 
+ useEffect(() => {
+  const getSize = async () => {
+   try {
+    const res = await axios.get(`/api/v1/sizes/${sizeId}`);
+    if (res.data.status === "success") {
+     setName(res.data.data.data.name);
+     setValue(res.data.data.data.value);
+    }
+   } catch (error) {
+    toast.error("something went wrong");
+   }
+  };
+  getSize();
+ }, [sizeId]);
  return (
   <>
    <div className="py-4 border-b flex justify-between items-end">
@@ -66,6 +80,7 @@ const UpdateSize = () => {
      name="name"
      className="mt-4 mb-8 "
      placeholder="size name"
+     value={name}
     />
     <Label htmlFor="value" className="font-semibold text-base">
      Value
@@ -77,6 +92,7 @@ const UpdateSize = () => {
      name="value"
      className="mt-4 mb-8 "
      placeholder="size (XL)"
+     value={value}
     ></Input>
     <Button type="submit" disabled={loading}>
      Save

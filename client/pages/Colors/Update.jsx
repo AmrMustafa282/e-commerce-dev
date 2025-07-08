@@ -49,6 +49,21 @@ const UpdateColor = () => {
   setValue(val.target.value);
  };
 
+ useEffect(() => {
+  const getColor = async () => {
+   try {
+    const res = await axios.get(`/api/v1/colors/${colorId}`);
+    if (res.data.status === "success") {
+     setName(res.data.data.data.name);
+     setValue(res.data.data.data.value);
+    }
+   } catch (error) {
+    toast.error("something went wrong");
+   }
+  };
+  getColor();
+ }, [colorId]);
+
  return (
   <>
    <div className="py-4 border-b flex justify-between items-end">
@@ -66,6 +81,7 @@ const UpdateColor = () => {
      name="name"
      className="mt-4 mb-8 "
      placeholder="color name"
+     value={name}
     />
     <Label htmlFor="value" className="font-semibold text-base">
      Value
@@ -77,6 +93,7 @@ const UpdateColor = () => {
      name="value"
      className="mt-4 mb-8 "
      placeholder="color (#FFFFFF)"
+     value={value}
     ></Input>
     <Button type="submit" disabled={loading}>
      Save

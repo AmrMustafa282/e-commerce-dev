@@ -37,7 +37,7 @@ function App() {
      <Route path="/" element={<Home />} />
      <Route path="/wishlist" element={<Wishlist />} />
      <Route path="/product/:productId" element={<ProductDetails />} />
-     <Route path="/:categoryName" element={<Category />} />
+     <Route path="/:categoryId" element={<Category />} />
      <Route element={<AuthOutlet fallbackPath="/login" />}>
       <Route path="/cart" element={<Cart />} />
       <Route element={<Restrict />}>
@@ -68,7 +68,7 @@ function App() {
      </Route>
     </Routes>
    </Layouting>
-   <Toaster position="top-center" richColors closeButton />
+   <Toaster position="top-center" closeButton />
   </>
  );
 }

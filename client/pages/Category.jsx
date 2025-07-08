@@ -55,9 +55,7 @@ const Category = () => {
  const fetchCategory = async () => {
   setLoading(true);
   try {
-   const products = await axios.get(
-    `/api/v1/categories/${params.categoryName}`
-   );
+   const products = await axios.get(`/api/v1/categories/${params.categoryId}`);
    setData([products.data.category]);
    setProducts(products.data.category.products);
    setFullproducts(products.data.category.products);
@@ -133,7 +131,7 @@ const Category = () => {
 
  useEffect(() => {
   fetchCategory();
- }, [params.categoryName]);
+ }, [params.categoryId]);
 
  return (
   <>
