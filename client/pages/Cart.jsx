@@ -125,7 +125,7 @@ const Cart = () => {
        >
         <img
          loading="lazy"
-         src={`/img/product/${item.product.images[0].url}`}
+         src={`${item.product.images[0].url}`}
          alt={item.product.name}
          className="w-52 h-48 object-cover
          "
@@ -232,7 +232,7 @@ const Cart = () => {
            <img
             key={i.id}
             loading="lazy"
-            src={`/img/product/${i.product.images[0].url}`}
+            src={`${i.product.images[0].url}`}
             // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715264955369.jpeg`}
             alt={i.product.name}
             className="w-32  object-cover"

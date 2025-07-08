@@ -9,7 +9,6 @@ import {
  deleteProduct,
  createProduct,
  uploadProductImages,
- resizeProductImages,
  deleteAllProduct,
  getFeaturedProducts,
  relatedProducts,
@@ -28,11 +27,11 @@ router.use(restrictTo("admin"));
 
 router
  .route("/")
- .post(uploadProductImages, resizeProductImages, createProduct)
+ .post(uploadProductImages, createProduct)
  .delete(deleteAllProduct);
 router
  .route("/:id")
- .patch(uploadProductImages, resizeProductImages, updateProduct)
+ .patch(uploadProductImages, updateProduct)
  .delete(deleteProduct);
 
 router.route("/relations/:id").delete(deleteRelation);

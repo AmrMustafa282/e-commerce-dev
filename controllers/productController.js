@@ -5,11 +5,26 @@ import { catchAsync } from "./../utils/catchAsync.js";
 import { deleteOne, deleteAll } from "./handlerFactory.js";
 import multer from "multer";
 import sharp from "sharp";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../utils/cloudinary.js";
 
 const prisma = new PrismaClient();
 const model = "product";
 
-const multerStorage = multer.memoryStorage();
+const storage = new CloudinaryStorage({
+ cloudinary,
+ params: async (req, file) => {
+  const isCover = file.fieldname === "imageCover";
+  return {
+   folder: "products",
+   public_id: `${isCover ? "product-cover" : "product-img"}-${Date.now()}`,
+   format: "jpeg",
+   transformation: isCover
+    ? [{ width: 316, height: 475, crop: "limit", quality: "auto" }]
+    : [{ width: 750, height: 1125, crop: "limit", quality: "auto" }],
+  };
+ },
+});
 
 const multerFilter = (req, file, cb) => {
  if (file.mimetype.startsWith("image")) {
@@ -20,8 +35,8 @@ const multerFilter = (req, file, cb) => {
 };
 
 const upload = multer({
- storage: multerStorage,
- // fileFilter: multerFilter,
+ storage,
+ fileFilter: multerFilter,
 });
 
 export const uploadProductImages = upload.fields([
@@ -31,41 +46,6 @@ export const uploadProductImages = upload.fields([
  { name: "imageCover", maxCount: 1 },
  { name: "images", maxCount: 10 },
 ]);
-
-export const resizeProductImages = catchAsync(async (req, res, next) => {
- // console.log(req.files);
- if (!req.files.imageCover && !req.files.images) {
-  // console.log("out");
-  return next();
- }
- // 1) Cover Image [to handel render timeout ]
- req.body.imageCover = `product-cover-${Date.now()}.jpeg`;
-
- await sharp(req.files.imageCover[0].buffer)
-  .resize(316, 475)
-  .toFormat("jpeg")
-  .jpeg({ quality: 90 })
-  .toFile(`client/dist/img/product/${req.body.imageCover}`),
-  // 2) Images
-
-  (req.body.images = []);
-
- await Promise.all(
-  req.files.images.map(async (file, i) => {
-   const filename = `product-img-${Date.now()}-${i + 1}.jpeg`;
-
-   await sharp(file.buffer)
-    .resize(750, 1125)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`client/dist/img/product/${filename}`);
-   req.body.images.push(filename);
-  })
- );
-
- req.body.images = req.body.images.sort();
- next();
-});
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
  try {
@@ -195,21 +175,28 @@ export const createProduct = catchAsync(async (req, res, next) => {
   },
  });
 
- await prisma.image.create({
-  data: {
-   productId: product.id,
-   url: req.body.imageCover,
-  },
- });
+ const imageCoverUrl = req.files?.imageCover?.[0]?.path;
 
- for (const i in req.body.images) {
+ if (imageCoverUrl) {
   await prisma.image.create({
    data: {
     productId: product.id,
-    url: req.body.images[i],
+    url: imageCoverUrl,
    },
   });
  }
+
+ const imageUrls = req.files?.images?.map((file) => file.path) || [];
+
+ for (const url of imageUrls) {
+  await prisma.image.create({
+   data: {
+    productId: product.id,
+    url,
+   },
+  });
+ }
+
  for (const i in productSizes) {
   await prisma.productSize.create({
    data: {
@@ -326,18 +313,24 @@ export const updateProduct = catchAsync(async (req, res, next) => {
  await prisma.image.deleteMany({
   where: { productId: product.id },
  });
- await prisma.image.create({
-  data: {
-   productId: product.id,
-   url: req.body.imageCover,
-  },
- });
 
- for (const i in req.body.images) {
+ const imageCoverUrl = req.files?.imageCover?.[0]?.path;
+ if (imageCoverUrl) {
   await prisma.image.create({
    data: {
     productId: product.id,
-    url: req.body.images[i],
+    url: imageCoverUrl,
+   },
+  });
+ }
+
+ const imageUrls = req.files?.images?.map((file) => file.path) || [];
+
+ for (const url of imageUrls) {
+  await prisma.image.create({
+   data: {
+    productId: product.id,
+    url,
    },
   });
  }

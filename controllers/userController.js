@@ -4,11 +4,22 @@ import {AppError} from "./../utils/appError.js";
 import {catchAsync} from "./../utils/catchAsync.js";
 import {getAll, getOne, deleteOne, updateOne} from "./handlerFactory.js";
 import multer from "multer";
-import sharp from "sharp";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../utils/cloudinary.js";
+
 
 const prisma = new PrismaClient();
 
-const multerStorage = multer.memoryStorage();
+const storage = new CloudinaryStorage({
+ cloudinary,
+ params: {
+  folder: "users",
+  format: "jpeg",
+  public_id: (req, file) => `user-${req.user.id}-${Date.now()}`,
+  transformation: [{ width: 500, height: 500, crop: "limit", quality: "auto" }],
+ },
+});
+
 
 const multerFilter = (req, file, cb) => {
  if (file.mimetype.startsWith("image")) {
@@ -19,20 +30,10 @@ const multerFilter = (req, file, cb) => {
 };
 
 const upload = multer({
- storage: multerStorage,
+ storage,
  fileFilter: multerFilter,
 });
 
-export const resizeUserPhoto = catchAsync(async (req, res, next) => {
- if (!req.file) return next();
- req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
- await sharp(req.file.buffer)
-  .resize(500, 500)
-  .toFormat("jpeg")
-  .jpeg({ quality: 90 })
-  .toFile(`public/img/users/${req.file.filename}`);
- next();
-});
 
 export const uploadUserPhoto = upload.single("photo");
 
@@ -56,14 +57,14 @@ export const updateMe = catchAsync(async (req, res, next) => {
  }
  // 2) filterout unwanted fields names that are not allowed to be updated like [role]
  const filterdBody = filterObj(req.body, "username", "email"); // only update name and email
- if (req.file) filterdBody.photo = req.file.filename;
+ if (req.file) filterdBody.photo = req.file.path; // Cloudinary secure URL
 
-  const updatedUser = await prisma.user.update({
-    where: {
-      id: req.user.id,
-    },
-      data:filterdBody
-   });
+ const updatedUser = await prisma.user.update({
+  where: {
+   id: req.user.id,
+  },
+  data: filterdBody,
+ });
 
  res.status(200).json({
   status: "success",
@@ -120,5 +121,3 @@ export const getUser = getOne('user');
 // Do NOT update passwords with this!!!!
 export const updateUser = updateOne('user');
 export const deleteUser = deleteOne('user');
-
-

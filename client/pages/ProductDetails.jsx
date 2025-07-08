@@ -207,7 +207,7 @@ const ProductDetails = () => {
               <div className="overflow-hidden relative">
                <img
                 loading="lazy"
-                src={`/img/product/${image.url}`}
+                src={`${image.url}`}
                 // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
                 alt={product.name}
                 className="w-full h-full"
@@ -226,7 +226,7 @@ const ProductDetails = () => {
          <img
           loading="lazy"
           key={i}
-          src={`/img/product/${image.url}`}
+          src={`${image.url}`}
           // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
           alt={product.name}
           className="h-[83px] cursor-pointer border border-gray-300 rounded-sm"
@@ -240,7 +240,7 @@ const ProductDetails = () => {
          <img
           loading="lazy"
           key={i}
-          src={`/img/product/${image.url}`}
+          src={`${image.url}`}
           // src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
           alt={product.name}
           className="h-[83px] cursor-pointer border border-gray-300 rounded-sm"

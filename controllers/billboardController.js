@@ -2,13 +2,14 @@ import { PrismaClient } from "@prisma/client";
 
 import { AppError } from "./../utils/appError.js";
 import { catchAsync } from "./../utils/catchAsync.js";
-import { getOne, deleteOne, updateOne } from "./handlerFactory.js";
+import { getOne, deleteOne} from "./handlerFactory.js";
 import multer from "multer";
-import sharp from "sharp";
+
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../utils/cloudinary.js";
 
 const prisma = new PrismaClient();
 
-const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
  if (file.mimetype.startsWith("image")) {
@@ -18,29 +19,30 @@ const multerFilter = (req, file, cb) => {
  }
 };
 
+
+const storage = new CloudinaryStorage({
+ cloudinary,
+ params: {
+  folder: "billboards",
+  format: async (req, file) => "jpeg", // force jpeg
+  public_id: (req, file) => `billboard-${Date.now()}`,
+  transformation: [
+   { width: 1200, height: 290, crop: "limit", quality: "auto" },
+  ],
+ },
+});
+
 const upload = multer({
- storage: multerStorage,
+ storage,
  fileFilter: multerFilter,
 });
 
 export const uploadBillboardPhoto = upload.single("image");
 
-export const resizeBillboardPhoto = catchAsync(async (req, res, next) => {
- if (!req.file) return next();
-
- req.file.filename = `billboard-${Date.now()}.jpeg`; // [render timeout]
- await sharp(req.file.buffer)
-  .resize(1200, 290)
-  .toFormat("jpeg")
-  .jpeg({ quality: 90 })
-  .toFile(`client/dist/img/billboard/${req.file.filename}`);
- next();
-});
 
 export const createBillboard = catchAsync(async (req, res, next) => {
- //  console.log(req.file);
  const { label } = req.body;
- const imageUrl = req.file.filename; // Assuming the image has been uploaded and resized
+ const imageUrl = req.file.path; // Cloudinary URL
 
  const billboard = await prisma.billboard.create({
   data: {
@@ -48,41 +50,35 @@ export const createBillboard = catchAsync(async (req, res, next) => {
    imageUrl,
   },
  });
+
  res.status(201).json({
   status: "success",
-  data: {
-   billboard,
-  },
+  data: { billboard },
  });
 });
 
 export const updateBillboard = catchAsync(async (req, res, next) => {
- try {
-  const { label } = req.body;
-  const imageUrl = req.file?.filename;
+ const { label } = req.body;
+ const imageUrl = req.file?.path;
 
-  const billboard = await prisma.billboard.update({
-   where: { id: req.params.id },
-   data: {
-    label,
-    imageUrl,
-   },
-  });
+ const billboard = await prisma.billboard.update({
+  where: { id: req.params.id },
+  data: {
+   label,
+   ...(imageUrl && { imageUrl }), // only update if new image
+  },
+ });
 
-  if (!billboard) {
-   return next(new Error("No document found with that ID"));
-  }
-
-  res.status(200).json({
-   status: "success",
-   data: {
-    billboard,
-   },
-  });
- } catch (error) {
-  next(error);
+ if (!billboard) {
+  return next(new AppError("No document found with that ID", 404));
  }
+
+ res.status(200).json({
+  status: "success",
+  data: { billboard },
+ });
 });
+
 export const getAllBillboards = catchAsync(async (req, res, next) => {
  const billboards = await prisma.billboard.findMany({});
 

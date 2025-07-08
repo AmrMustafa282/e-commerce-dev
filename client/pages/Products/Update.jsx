@@ -223,10 +223,10 @@ const UpdateProduct = () => {
    setProductSizes(prod.productSizes.map((e) => e.size));
 
    // Convert image names to URLs
-   const imageCoverUrl = `/img/product/${prod.images[0].url}`;
+   const imageCoverUrl = `${prod.images[0].url}`;
    const imageUrls = prod.images
     .slice(1)
-    .map((image) => `/img/product/${image.url}`);
+    .map((image) => `${image.url}`);
 
    // Convert image URLs to files
    //  console.log("ursl", imageUrls);

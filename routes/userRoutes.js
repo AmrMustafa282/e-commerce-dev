@@ -19,7 +19,6 @@ import {
  getAllUsers,
  getMe,
  getUser,
- resizeUserPhoto,
  updateMe,
  updateUser,
  uploadUserPhoto,
@@ -32,7 +31,7 @@ router.get("/logout", logout);
 router.post("/forgotPassword", forgotPassword);
 router.patch("/resetPassword/:token", resetPassword);
 
-router.post("/sendConfirmation", sendConfirmation); 
+router.post("/sendConfirmation", sendConfirmation);
 router.get("/confirmEmail/:token", confirmEmail);
 
 // router.post("/forgotPassword", forgotPassword);
@@ -42,12 +41,12 @@ router.get("/confirmEmail/:token", confirmEmail);
 // router.get("/confirmEmail/:token", confirmEmail);
 
 // this is gonna work as a Middelware so, anything after this is gonne be protected
-router.use(protect); 
+router.use(protect);
 
 router.patch("/updateMyPassword/", updatePassword);
 
 router.get("/me", getMe, getUser);
-router.patch("/updateMe/", uploadUserPhoto, resizeUserPhoto, updateMe);
+router.patch("/updateMe/", uploadUserPhoto, updateMe);
 router.delete("/deleteMe/", deleteMe);
 
 router.use(restrictTo("admin"));

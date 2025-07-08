@@ -141,7 +141,7 @@ const Category = () => {
     <div className="relative w-full ">
      <img
       loading="lazy"
-      src={`/img/billboard/${data[0].billboard.imageUrl}`}
+      src={`${data[0].billboard.imageUrl}`}
       alt="billboard"
       className="w-full md:mt-4 mb-4 md:mb-6"
      />
@@ -262,7 +262,7 @@ const Category = () => {
            onClick={() => {
             nav(`/product/${product.id}`);
            }}
-           src={`/img/product/${product.images[0]?.url}`}
+           src={`${product.images[0]?.url}`}
            alt={product.name}
            className=" group-hover:scale-105 transition-all duration-300 w-full"
           />

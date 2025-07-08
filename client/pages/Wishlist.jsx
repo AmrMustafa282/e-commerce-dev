@@ -25,7 +25,7 @@ const Wishlist = () => {
           onClick={() => {
            nav(`/product/${product.id}`);
           }}
-          src={`/img/product/${product.images[0]?.url}`}
+          src={`${product.images[0]?.url}`}
           alt={"product.name"}
           className=" group-hover:scale-105 transition-all duration-300 w-full"
          />

@@ -171,7 +171,7 @@ const Home = () => {
     <div className="relative w-full ">
      <img
       loading="lazy"
-      src={`/img/billboard/${billboard.imageUrl}`}
+      src={`${billboard.imageUrl}`}
       // src={`https://e-commerce-dev.onrender.com/img/billboard/billboard-1715196316943.jpeg`}
       alt="billboard"
       className="w-full md:mt-4 mb-4 md:mb-6"
@@ -319,7 +319,7 @@ const Home = () => {
             nav(`/product/${product.id}`);
            }}
            //  src={`https://e-commerce-dev.onrender.com/img/product/product-cover-1715196125657.jpeg`}
-           src={`/img/product/${product.images[0]?.url}`}
+           src={`${product.images[0]?.url}`}
            alt={product.name}
            className=" group-hover:scale-105 transition-all duration-300 w-full"
           />

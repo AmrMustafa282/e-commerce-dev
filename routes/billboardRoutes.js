@@ -9,7 +9,6 @@ import {
   deleteBillboard,
   createBillboard,
   uploadBillboardPhoto,
-  resizeBillboardPhoto,
   getFeaturedBillboard,
 } from "../controllers/billboardController.js";
 
@@ -22,10 +21,10 @@ router.use(restrictTo("admin"));
 
 router
   .route("/")
-  .post(uploadBillboardPhoto, resizeBillboardPhoto, createBillboard);
+  .post(uploadBillboardPhoto, createBillboard);
 router
   .route("/:id")
-  .patch(uploadBillboardPhoto, resizeBillboardPhoto, updateBillboard)
+  .patch(uploadBillboardPhoto, updateBillboard)
   .delete(deleteBillboard);
 
 export default router;
