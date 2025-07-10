@@ -1,13 +1,14 @@
-import { PrismaClient } from"@prisma/client"
+import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-import { v2 as cloudinary } from "cloudinary"; // Import your configured Cloudinary
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import path from "path";
 
 cloudinary.config({
  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
  api_key: process.env.CLOUDINARY_API_KEY,
  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 
 const prisma = new PrismaClient();
 
@@ -24,37 +25,170 @@ const generatePasswordHash = () => {
 };
 
 // Helper function to upload image to Cloudinary
-const uploadToCloudinary = async (imagePath, folder = "fashion-store") => {
+const uploadToCloudinary = async (
+ imagePath,
+ folder = "fashion-store",
+ options = {}
+) => {
  try {
   const result = await cloudinary.uploader.upload(imagePath, {
-   folder: folder,
+   folder,
    resource_type: "image",
-   transformation: [{ width: 800, height: 800, crop: "fill", quality: "auto" }],
+   transformation: Array.isArray(options) ? options : [options],
   });
   return result.secure_url;
+  //  return "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D";
  } catch (error) {
   console.error(`Error uploading ${imagePath}:`, error);
   return null;
  }
 };
 
-// YOUR EXACT CATEGORIES STRUCTURE WITH IMAGES
+// Function to read products from JSON file and group by category
+const readProductsFromJSON = () => {
+ try {
+  const jsonPath = path.join(process.cwd(), "./scripts/products.json");
+  const jsonData = fs.readFileSync(jsonPath, "utf8");
+  const productsArray = JSON.parse(jsonData);
+
+  // Group products by category
+  const productsByCategory = {};
+
+  for (const product of productsArray) {
+   const category = product.category;
+   if (!productsByCategory[category]) {
+    productsByCategory[category] = [];
+   }
+   productsByCategory[category].push(product);
+  }
+
+  return productsByCategory;
+ } catch (error) {
+  console.error("Error reading products.json:", error);
+  console.log(
+   "Make sure products.json exists in the same directory as this script"
+  );
+  process.exit(1);
+ }
+};
+
+// Function to parse price string to number
+const parsePrice = (priceObj) => {
+ if (typeof priceObj === "object" && priceObj.current) {
+  // Extract number from "1,990 EGP" format
+  const priceStr = priceObj.current.replace(/[^\d.,]/g, "").replace(",", "");
+  return parseFloat(priceStr) || 0;
+ }
+ return parseFloat(priceObj) || 0;
+};
+
+// Function to get color info from product
+const getProductColor = async (productColor, availableColors) => {
+ if (productColor && productColor.name && productColor.hex) {
+  // Try to find existing color by name (case insensitive)
+  const existingColor = availableColors.find(
+   (c) => c.name.toLowerCase() === productColor.name.toLowerCase()
+  );
+
+  if (existingColor) {
+   console.log("get the color", existingColor);
+   return existingColor;
+  }
+
+  // If not found, we could create a new color or use a default
+  // For now, let's use a random existing color
+  console.log("didnt found the color");
+  const color = await prisma.color.create({
+   data: {
+    name: productColor.name,
+    value: productColor.hex
+   },
+  });
+   if(color.name && color.value) console.log("create the color", color)
+  return color;
+ }
+ return faker.helpers.arrayElement(availableColors);
+};
+
+// Function to normalize product name for grouping variants
+const normalizeProductName = (productName) => {
+ // Remove common color words and extra spaces
+ const colorWords = [
+  "black",
+  "white",
+  "red",
+  "blue",
+  "green",
+  "yellow",
+  "brown",
+  "gray",
+  "grey",
+  "pink",
+  "purple",
+  "orange",
+  "navy",
+  "beige",
+  "khaki",
+  "olive",
+  "burgundy",
+  "camel",
+  "cream",
+  "charcoal",
+  "taupe",
+  "rust",
+  "stone",
+  "sage",
+  "ecru",
+ ];
+
+ let normalized = productName
+  .toLowerCase()
+  .replace(/[^\w\s]/g, "") // Remove special characters
+  .trim();
+
+ // Remove color words
+ colorWords.forEach((color) => {
+  const regex = new RegExp(`\\b${color}\\b`, "gi");
+  normalized = normalized.replace(regex, "");
+ });
+
+ // Clean up extra spaces and return
+ return normalized.replace(/\s+/g, " ").trim();
+};
+
+// Function to find or create related product group
+const findOrCreateRelatedProductGroup = async (
+ productName,
+ relatedProductsGroups
+) => {
+ const normalizedName = normalizeProductName(productName);
+
+ // Check if a related product group already exists for this product type
+ const existingGroup = relatedProductsGroups.find(
+  (group) => normalizeProductName(group.name) === normalizedName
+ );
+
+ if (existingGroup) {
+  return existingGroup;
+ }
+
+ // Create new related product group
+ const newGroup = await prisma.relatedProducts.create({
+  data: {
+   name: normalizedName,
+  },
+ });
+
+ relatedProductsGroups.push(newGroup);
+ return newGroup;
+};
+
+// YOUR EXACT CATEGORIES STRUCTURE
 const fashionCategories = [
- {
-  name: "tops",
- },
- {
-  name: "bottoms",
- },
- {
-  name: "shoes",
- },
- {
-  name: "bags",
- },
- {
-  name: "accessories",
- },
+ { name: "tops" },
+ { name: "bottoms" },
+ { name: "shoes | bags" },
+ { name: "accessories" },
 ];
 
 // YOUR EXACT COLORS
@@ -89,209 +223,49 @@ const clothingSizes = [
 // YOUR EXACT BILLBOARDS
 const fashionBillboards = [
  {
+  label: "Featured",
+  imageUrl: "./assets/billboard-2.jpg",
+ },
+ {
   label: "New Season Collection",
-  imageUrl: "./assets/test.png" // Local path
+  imageUrl: "./assets/billboard-1.jpg",
  },
  {
   label: "Spring/Summer 2024",
-  imageUrl: "./assets/test.png" // Local path
+  imageUrl: "./assets/billboard-2.jpg",
  },
  {
   label: "Essential Wardrobe",
-  imageUrl: "./assets/test.png" // Local path
+  imageUrl: "./assets/billboard-1.jpg",
  },
  {
   label: "Limited Edition",
-  imageUrl: "./assets/test.png" // Local path
+  imageUrl: "./assets/billboard-2.jpg",
  },
  {
   label: "Autumn Essentials",
-  imageUrl: "./assets/test.png" // Local path
+  imageUrl: "./assets/billboard-1.jpg",
  },
 ];
 
-// Related product collections
-const fashionCollections = [
- "Essential Basics",
- "Work Wardrobe",
- "Weekend Casual",
- "Evening Wear",
- "Seasonal Favorites",
- "Trending Now",
- "Capsule Collection",
- "Limited Edition",
-];
-
-// UPDATED STATIC PRODUCT DATA ARRAYS WITH LOCAL IMAGE PATHS
-const productsByCategory = {
- tops: [
-  {
-   name: "Classic White T-Shirt",
-   description:
-    "Essential cotton t-shirt with crew neck and short sleeves. Perfect for layering or wearing alone.",
-   price: 19.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Striped Long Sleeve Top",
-   description:
-    "Casual striped top with long sleeves and relaxed fit. Made from soft cotton blend.",
-   price: 29.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Silk Blouse",
-   description:
-    "Elegant silk blouse with button-up front and long sleeves. Perfect for office or evening wear.",
-   price: 79.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Oversized Sweater",
-   description:
-    "Cozy oversized sweater in soft knit fabric. Round neckline and dropped shoulders.",
-   price: 49.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Cropped Hoodie",
-   description:
-    "Trendy cropped hoodie with drawstring hood and kangaroo pocket. Comfortable cotton blend.",
-   price: 39.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  // Add more tops with images...
- ],
- bottoms: [
-  {
-   name: "Straight Leg Jeans",
-   description:
-    "Classic straight leg jeans with five-pocket styling. Comfortable mid-rise fit.",
-   price: 59.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Wide Leg Pants",
-   description:
-    "Flowing wide leg pants with high waist and relaxed fit. Perfect for both casual and dressy occasions.",
-   price: 49.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Skinny Jeans",
-   description:
-    "Fitted skinny jeans with stretch fabric for comfort. Classic five-pocket design.",
-   price: 54.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  // Add more bottoms with images...
- ],
- shoes: [
-  {
-   name: "White Sneakers",
-   description:
-    "Classic white sneakers with lace-up closure. Comfortable and versatile for everyday wear.",
-   price: 79.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Ankle Boots",
-   description:
-    "Stylish ankle boots with low heel and side zip. Perfect for transitional weather.",
-   price: 119.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  // Add more shoes with images...
- ],
- bags: [
-  {
-   name: "Leather Handbag",
-   description:
-    "Spacious leather handbag with multiple compartments. Perfect for work or daily use.",
-   price: 149.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Crossbody Bag",
-   description:
-    "Convenient crossbody bag with adjustable strap. Hands-free and stylish.",
-   price: 79.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  // Add more bags with images...
- ],
- accessories: [
-  {
-   name: "Silk Scarf",
-   description:
-    "Luxurious silk scarf with elegant print. Perfect for adding sophistication to any outfit.",
-   price: 49.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  {
-   name: "Leather Belt",
-   description:
-    "Classic leather belt with metal buckle. Essential accessory for defining waist.",
-   price: 35.95,
-   images: [
-    "./assets/test.png",
-    "./assets/test.png",
-   ],
-  },
-  // Add more accessories with images...
- ],
-};
-
 async function main() {
  console.log(
-  "Starting your custom fashion database seed with Cloudinary uploads..."
+  "Starting your custom fashion database seed with JSON products and Cloudinary uploads..."
  );
+
+ // Read products from JSON file
+ console.log("Reading products from products.json...");
+ const productsByCategory = readProductsFromJSON();
+ console.log(
+  `Loaded products for categories: ${Object.keys(productsByCategory).join(
+   ", "
+  )}`
+ );
+
+ // Log product counts per category
+ Object.entries(productsByCategory).forEach(([category, products]) => {
+  console.log(`  ${category}: ${products.length} products`);
+ });
 
  // Clear existing data (optional)
  await prisma.upvote.deleteMany({});
@@ -313,7 +287,7 @@ async function main() {
  // Create Users
  const users = [];
  const fashionUsernames = [
-  "fashionista_23",
+  "admin",
   "style_maven",
   "trendsetter_pro",
   "chic_shopper",
@@ -339,11 +313,15 @@ async function main() {
   const user = await prisma.user.create({
    data: {
     username: fashionUsernames[i] || faker.internet.userName(),
-    email: faker.internet.email(),
-    role: i < 2 ? "admin" : "user",
-    isActive: faker.datatype.boolean(0.9),
-    isConfirmed: faker.datatype.boolean(0.85),
-    password: generatePasswordHash(),
+    email: i < 1 ? "admin@me.com" : faker.internet.email(),
+    role: i < 1 ? "admin" : "user",
+    isActive: i < 1 ? true : faker.datatype.boolean(0.9),
+    isConfirmed: i < 1 ? true : faker.datatype.boolean(0.85),
+    password:
+     //  i < 1
+     // ?
+     "$2a$10$CxrVY9esWeq6Z2fTEtnVluh5JCCjacG7MVizCcPx4m5vAWN0BdeI6",
+    // : generatePasswordHash(),
     passwordResetToken: faker.datatype.boolean(0.05) ? faker.string.uuid() : "",
     passwordResetExpires: randomDate(),
     emailConfirmToken: faker.datatype.boolean(0.1) ? faker.string.uuid() : "",
@@ -388,17 +366,8 @@ async function main() {
  }
  console.log(`Created ${sizes.length} sizes.`);
 
- // Create Related Products Collections
+ // Initialize related products groups array (will be populated as we create products)
  const relatedProductsGroups = [];
- for (const collectionName of fashionCollections) {
-  const relatedProducts = await prisma.relatedProducts.create({
-   data: {
-    name: collectionName,
-   },
-  });
-  relatedProductsGroups.push(relatedProducts);
- }
- console.log(`Created ${relatedProductsGroups.length} collections.`);
 
  // Create YOUR Billboards with Cloudinary Upload
  const billboards = [];
@@ -408,7 +377,8 @@ async function main() {
   console.log(`Uploading billboard: ${billboardInfo.label}`);
   const cloudinaryUrl = await uploadToCloudinary(
    billboardInfo.imageUrl,
-   "fashion-store/billboards"
+   "fashion-store/billboards",
+   { width: 1200, height: 290, crop: "fill", gravity: "auto", quality: "auto" }
   );
 
   const billboard = await prisma.billboard.create({
@@ -423,12 +393,9 @@ async function main() {
  }
  console.log(`Created ${billboards.length} billboards.`);
 
- // Create YOUR Categories with Cloudinary Upload
+ // Create YOUR Categories
  const categories = [];
- console.log("Uploading category images to Cloudinary...");
-
  for (const categoryInfo of fashionCategories) {
-  console.log(`Uploading category image: ${categoryInfo.name}`);
   const category = await prisma.category.create({
    data: {
     name: categoryInfo.name,
@@ -439,48 +406,111 @@ async function main() {
   });
   categories.push(category);
  }
- console.log(`Created ${categories.length} categories with Cloudinary images.`);
+ console.log(`Created ${categories.length} categories.`);
 
- // Create Products from YOUR Static Data with Cloudinary Image Upload
+ // Create Products from JSON Data with Cloudinary Image Upload
  const products = [];
- console.log("Creating products and uploading images to Cloudinary...");
+ console.log(
+  "Creating products from JSON data and uploading images to Cloudinary..."
+ );
 
+ let totalProductsCreated = 0;
  for (const [categoryName, categoryProducts] of Object.entries(
   productsByCategory
  )) {
-  // Find the category (update this part in the product creation section)
+  // Find the category
   const category = categories.find((cat) => cat.name === categoryName);
-  if (category) {
-   for (const productData of categoryProducts) {
-    console.log(`Creating product: ${productData.name}`);
+  if (!category) {
+   console.log(
+    `⚠️  Category "${categoryName}" not found, skipping products...`
+   );
+   continue;
+  }
 
-    const product = await prisma.product.create({
-     data: {
-      name: productData.name,
-      description: productData.description,
-      price: productData.price,
-      isFeatured: faker.datatype.boolean(0.25),
-      isArchived: faker.datatype.boolean(0.05),
-      categoryId: category.id,
-      colorId: faker.helpers.arrayElement(colors).id,
-      relatedProductsId: faker.helpers.arrayElement(relatedProductsGroups).id,
-      createdAt: randomDate(),
-      updatedAt: randomDate(),
-     },
-    });
-    products.push(product);
+  console.log(
+   `\nProcessing ${categoryProducts.length} products for category: ${categoryName}`
+  );
 
-    // Upload product images to Cloudinary
-    if (productData.images && productData.images.length > 0) {
-     console.log(
-      `  Uploading ${productData.images.length} images for ${productData.name}`
+  for (const productData of categoryProducts) {
+   console.log(`  Creating product: ${productData.name}`);
+
+   // Validate required fields
+   if (!productData.name || !productData.description || !productData.price) {
+    console.log(
+     `    ⚠️  Skipping product due to missing required fields: ${JSON.stringify(
+      productData
+     )}`
+    );
+    continue;
+   }
+
+   // Parse price from your JSON format
+   const parsedPrice = parsePrice(productData.price);
+
+   // Get color for this product
+   const productColor = await getProductColor(productData.color, colors);
+
+   // Find or create related product group based on product name
+   const relatedProductGroup = await findOrCreateRelatedProductGroup(
+    productData.name,
+    relatedProductsGroups
+   );
+
+   console.log(
+    `    Linked to related product group: "${relatedProductGroup.name}"`
+   );
+
+   const product = await prisma.product.create({
+    data: {
+     name: productData.name,
+     description: productData.description,
+     price: parsedPrice,
+     isFeatured: faker.datatype.boolean(0.25),
+     isArchived: faker.datatype.boolean(0.05),
+     categoryId: category.id,
+     colorId: productColor.id,
+     relatedProductsId: relatedProductGroup.id,
+     createdAt: randomDate(),
+     updatedAt: randomDate(),
+    },
+   });
+   products.push(product);
+   totalProductsCreated++;
+
+   // Upload product images to Cloudinary
+   if (
+    productData.images &&
+    Array.isArray(productData.images) &&
+    productData.images.length > 0
+   ) {
+    console.log(
+     `    Uploading ${productData.images.length} images for ${productData.name}`
+    );
+
+    // Handle imageCover if needed (create first image as cover)
+    if (
+     productData.imageCover
+     //  &&
+     //  !productData.images?.includes(productData.imageCover)
+    ) {
+     const coverImagePath = path.join(
+      process.cwd(),
+      "assets",
+      productData.imageCover
      );
 
-     for (const imagePath of productData.images) {
-      console.log(`    Uploading: ${imagePath}`);
+     if (fs.existsSync(coverImagePath)) {
+      console.log(`    Uploading cover image: ${productData.imageCover}`);
       const cloudinaryUrl = await uploadToCloudinary(
-       imagePath,
-       `fashion-store/products/${categoryName}`
+       coverImagePath,
+       `fashion-store/products/${categoryName}`,
+       {
+        width: 316,
+        height: 475,
+        crop: "fill",
+        gravity: "auto",
+        quality: "auto",
+       }
       );
 
       if (cloudinaryUrl) {
@@ -488,19 +518,58 @@ async function main() {
         data: {
          productId: product.id,
          url: cloudinaryUrl,
-         createdAt: randomDate(),
-         updatedAt: randomDate(),
+         createdAt: new Date(),
+         updatedAt: new Date(),
         },
        });
-      } else {
-       console.log(`    Failed to upload: ${imagePath}`);
       }
+     }
+    }
+
+    if (!productData.images || productData.images.length === 0) {
+     console.log(`    ⚠️  No images found for ${productData.name}`);
+    }
+
+    for (const imageFileName of productData.images) {
+     // Construct full path (assuming images are in ./assets/ folder)
+     const imagePath = path.join(process.cwd(), "assets", imageFileName);
+
+     // Check if image path exists
+     if (!fs.existsSync(imagePath)) {
+      console.log(`    ⚠️  Image not found: ${imagePath}`);
+      continue;
+     }
+
+     console.log(`      Uploading: ${imageFileName}`);
+     const cloudinaryUrl = await uploadToCloudinary(
+      imagePath,
+      `fashion-store/products/${categoryName}`,
+      {
+       width: 750,
+       height: 1125,
+       crop: "fill",
+       gravity: "auto",
+       quality: "auto",
+      }
+     );
+
+     if (cloudinaryUrl) {
+      await prisma.image.create({
+       data: {
+        productId: product.id,
+        url: cloudinaryUrl,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+       },
+      });
+     } else {
+      console.log(`      ❌ Failed to upload: ${imageFileName}`);
      }
     }
    }
   }
  }
- console.log(`Created ${products.length} products from your static data.`);
+ console.log(`\nCreated ${totalProductsCreated} products from JSON data.`);
 
  // Create Product Sizes
  let totalProductSizes = 0;
@@ -588,7 +657,7 @@ async function main() {
     data: {
      orderId: order.id,
      productId: product.id,
-     amount: Number.parseFloat(faker.number.int({ min: 1, max: 2 }).toString()),
+     amount: parseFloat(faker.number.int({ min: 1, max: 2 }).toString()),
      size: selectedSize,
      createdAt: randomDate(),
      updatedAt: randomDate(),
@@ -656,7 +725,7 @@ async function main() {
  console.log(`Created ${totalUpvotes} upvotes.`);
 
  console.log(
-  "\n🎉 YOUR CUSTOM FASHION STORE WITH CLOUDINARY IMAGES IS READY! 🎉"
+  "\n🎉 YOUR CUSTOM FASHION STORE WITH PRODUCT VARIANTS IS READY! 🎉"
  );
  console.log("\n=== SUMMARY ===");
  console.log(`👤 Users: ${users.length}`);
@@ -668,11 +737,11 @@ async function main() {
  console.log(
   `🏷️ Categories: ${
    categories.length
-  } (YOUR exact categories: ${fashionCategories.join(", ")})`
+  } (YOUR exact categories: ${fashionCategories.map((c) => c.name).join(", ")})`
  );
- console.log(`📦 Collections: ${relatedProductsGroups.length}`);
+ console.log(`📦 Product Variants Groups: ${relatedProductsGroups.length}`);
  console.log(
-  `👕 Products: ${products.length} (from YOUR static data with Cloudinary images)`
+  `👕 Products: ${products.length} (from YOUR JSON file with automatic variant grouping)`
  );
  console.log(`📐 Product Sizes: ${totalProductSizes}`);
  console.log(`🛒 Orders: ${orders.length}`);
@@ -680,12 +749,20 @@ async function main() {
  console.log(`⭐ Reviews: ${reviews.length}`);
  console.log(`👍 Upvotes: ${totalUpvotes}`);
 
- console.log("\n📝 NEXT STEPS:");
+ console.log("\n📝 PRODUCT VARIANT LOGIC:");
  console.log(
-  "1. Make sure your local image files exist in the specified paths"
+  "✅ Products with similar names are automatically grouped together"
  );
- console.log("2. All images have been uploaded to Cloudinary automatically");
- console.log("3. Your database is ready with real Cloudinary URLs!");
+ console.log(
+  "✅ Each product creates or joins a related product group based on its name"
+ );
+ console.log("✅ Color variations of the same product are now properly linked");
+ console.log("✅ Users can now see all color variants of a product");
+
+ console.log("\n🔗 RELATED PRODUCT GROUPS CREATED:");
+ relatedProductsGroups.forEach((group, index) => {
+  console.log(`${index + 1}. "${group.name}"`);
+ });
 }
 
 main()

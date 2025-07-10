@@ -60,7 +60,12 @@ export const getCategory = catchAsync(async (req, res, next) => {
         size: true,
        },
       },
-      images: true,
+      images: {
+       include: true,
+       orderBy: {
+        createdAt: "asc",
+       },
+      },
       category: true,
      },
     },
@@ -81,7 +86,7 @@ export const getCategory = catchAsync(async (req, res, next) => {
 });
 
 export const getCategoryByName = catchAsync(async (req, res, next) => {
-  try {
+ try {
   const category = await prisma.category.findFirst({
    where: { name: req.params.name },
    include: {

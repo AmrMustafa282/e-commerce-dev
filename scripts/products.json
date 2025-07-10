@@ -1,0 +1,911 @@
+[
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "OYSTER-WHITE"
+  },
+  "description": "Relaxed fit shirt made in a cotton and linen blend. Bowling collar and short sleeves. Matching embroidered detail on the front. Button-up front.",
+  "imageCover": "embroidered-cotton-linen-shirt-5.jpeg",
+  "images": [
+   "embroidered-cotton-linen-shirt-0.jpeg",
+   "embroidered-cotton-linen-shirt-1.jpeg",
+   "embroidered-cotton-linen-shirt-2.jpeg",
+   "embroidered-cotton-linen-shirt-3.jpeg",
+   "embroidered-cotton-linen-shirt-4.jpeg",
+   "embroidered-cotton-linen-shirt-5.jpeg",
+   "embroidered-cotton-linen-shirt-6.jpeg"
+  ],
+  "name": "embroidered-cotton-linen-shirt",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,490 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Shirt made from easy-care, easy-to-maintain textured fabric.\n\nRegular fit shirt with a spread collar and long sleeves finished with buttoned cuffs. Button-up front.",
+  "imageCover": "easy-care-textured-shirt-7.jpeg",
+  "images": [
+   "easy-care-textured-shirt-0.jpeg",
+   "easy-care-textured-shirt-1.jpeg",
+   "easy-care-textured-shirt-2.jpeg",
+   "easy-care-textured-shirt-3.jpeg",
+   "easy-care-textured-shirt-4.jpeg",
+   "easy-care-textured-shirt-5.jpeg",
+   "easy-care-textured-shirt-6.jpeg",
+   "easy-care-textured-shirt-7.jpeg",
+   "easy-care-textured-shirt-8.jpeg"
+  ],
+  "name": "easy-care-textured-shirt",
+  "price": {
+   "current": "1,490 EGP",
+   "old": "2,990 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "ECRU"
+  },
+  "description": "Sweater made of spun cotton fabric. Featuring a round neckline and long sleeve. Ribbed trims.",
+  "imageCover": "basic-textured-sweater-5.jpeg",
+  "images": [
+   "basic-textured-sweater-0.jpeg",
+   "basic-textured-sweater-1.jpeg",
+   "basic-textured-sweater-2.jpeg",
+   "basic-textured-sweater-3.jpeg",
+   "basic-textured-sweater-4.jpeg",
+   "basic-textured-sweater-5.jpeg",
+   "basic-textured-sweater-6.jpeg",
+   "basic-textured-sweater-7.jpeg"
+  ],
+  "name": "basic-textured-sweater",
+  "price": {
+   "current": "1,690 EGP",
+   "old": "2,490 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "ECRU"
+  },
+  "description": "Regular fit shirt made of cotton blend fabric. Shirt collar and short sleeve. Hem with side vents. Button-up front fastening.",
+  "imageCover": "textured-shirt-5.jpeg",
+  "images": [
+   "textured-shirt-0.jpeg",
+   "textured-shirt-1.jpeg",
+   "textured-shirt-2.jpeg",
+   "textured-shirt-3.jpeg",
+   "textured-shirt-4.jpeg",
+   "textured-shirt-5.jpeg",
+   "textured-shirt-6.jpeg",
+   "textured-shirt-7.jpeg"
+  ],
+  "name": "textured-shirt",
+  "price": {
+   "current": "2,490 EGP",
+   "old": "6,690 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#F3E5AB",
+   "name": "VANILLA"
+  },
+  "description": "Regular fit T-shirt. Round neck and short sleeve. Contrast graphic print on the front.",
+  "imageCover": "contrast-print-t-shirt-6.jpeg",
+  "images": [
+   "contrast-print-t-shirt-0.jpeg",
+   "contrast-print-t-shirt-1.jpeg",
+   "contrast-print-t-shirt-2.jpeg",
+   "contrast-print-t-shirt-3.jpeg",
+   "contrast-print-t-shirt-4.jpeg",
+   "contrast-print-t-shirt-5.jpeg",
+   "contrast-print-t-shirt-6.jpeg",
+   "contrast-print-t-shirt-7.jpeg"
+  ],
+  "name": "contrast-print-t-shirt",
+  "price": {
+   "current": "990 EGP",
+   "old": "1,690 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#36454F",
+   "name": "ANTHRACITE GREY"
+  },
+  "description": "Cotton hoodie with a napped interior. Featuring an adjustable hood, long sleeves, a front pouch pocket and ribbed trims.",
+  "imageCover": "basic-hoodie-5.jpeg",
+  "images": [
+   "basic-hoodie-0.jpeg",
+   "basic-hoodie-1.jpeg",
+   "basic-hoodie-2.jpeg",
+   "basic-hoodie-3.jpeg",
+   "basic-hoodie-4.jpeg",
+   "basic-hoodie-5.jpeg",
+   "basic-hoodie-6.jpeg",
+   "basic-hoodie-7.jpeg"
+  ],
+  "name": "basic-hoodie",
+  "price": {
+   "current": "1,290 EGP",
+   "old": "2,290 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "BEIGE"
+  },
+  "description": "Relaxed fit shirt made from a cotton blend fabric. Featuring a camp collar, short sleeve, side vents at the hem and a button-up front.",
+  "imageCover": "textured-stripe-shirt-6.jpeg",
+  "images": [
+   "textured-stripe-shirt-0.jpeg",
+   "textured-stripe-shirt-1.jpeg",
+   "textured-stripe-shirt-2.jpeg",
+   "textured-stripe-shirt-3.jpeg",
+   "textured-stripe-shirt-4.jpeg",
+   "textured-stripe-shirt-5.jpeg",
+   "textured-stripe-shirt-6.jpeg",
+   "textured-stripe-shirt-7.jpeg"
+  ],
+  "name": "textured-stripe-shirt",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,490 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#000080",
+   "name": "NAVY BLUE"
+  },
+  "description": "Regular fit knitted T-shirt in cotton yarn. Featuring a round neck, short sleeves and ribbed trims.",
+  "imageCover": "regular-fit-knitted-t-shirt-6.jpeg",
+  "images": [
+   "regular-fit-knitted-t-shirt-0.jpeg",
+   "regular-fit-knitted-t-shirt-1.jpeg",
+   "regular-fit-knitted-t-shirt-2.jpeg",
+   "regular-fit-knitted-t-shirt-3.jpeg",
+   "regular-fit-knitted-t-shirt-4.jpeg",
+   "regular-fit-knitted-t-shirt-5.jpeg",
+   "regular-fit-knitted-t-shirt-6.jpeg",
+   "regular-fit-knitted-t-shirt-7.jpeg"
+  ],
+  "name": "regular-fit-knitted-t-shirt",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,490 EGP"
+  }
+ },
+ {
+  "category": "tops",
+  "color": {
+   "hex": "#8B7D6B",
+   "name": "TAUPE GREY"
+  },
+  "description": "Relaxed fit shirt made of cotton fabric. Camp collar and short sleeves. Button-up front.",
+  "imageCover": "geometric-jacquard-shirt-6.jpeg",
+  "images": [
+   "geometric-jacquard-shirt-0.jpeg",
+   "geometric-jacquard-shirt-1.jpeg",
+   "geometric-jacquard-shirt-2.jpeg",
+   "geometric-jacquard-shirt-3.jpeg",
+   "geometric-jacquard-shirt-4.jpeg",
+   "geometric-jacquard-shirt-5.jpeg",
+   "geometric-jacquard-shirt-6.jpeg",
+   "geometric-jacquard-shirt-7.jpeg",
+   "geometric-jacquard-shirt-8.jpeg"
+  ],
+  "name": "geometric-jacquard-shirt",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,990 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#2F4F4F",
+   "name": "DARK GREY"
+  },
+  "description": "Oversized fit Bermuda shorts made from compact cotton fabric with added stretch. Elastic waistband with adjustable drawstring. Front pockets and patch back pocket detail.",
+  "imageCover": "technical-oversized-fit-jogger-bermuda-shorts-6.jpeg",
+  "images": [
+   "technical-oversized-fit-jogger-bermuda-shorts-0.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-1.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-2.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-3.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-4.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-5.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-6.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-7.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-8.jpeg",
+   "technical-oversized-fit-jogger-bermuda-shorts-9.jpeg"
+  ],
+  "name": "technical-oversized-fit-jogger-bermuda-shorts",
+  "price": {
+   "current": "1,490 EGP",
+   "old": "2,490 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#808080",
+   "name": "MID-GREY"
+  },
+  "description": "Relaxed fit Bermuda shorts made from a cotton fabric. Featuring an elasticated waistband, front pockets, rear patch pockets and a zip fly and top button fastening.",
+  "imageCover": "relaxed-fit-bermuda-shorts-4.jpeg",
+  "images": [
+   "relaxed-fit-bermuda-shorts-0.jpeg",
+   "relaxed-fit-bermuda-shorts-1.jpeg",
+   "relaxed-fit-bermuda-shorts-2.jpeg",
+   "relaxed-fit-bermuda-shorts-3.jpeg",
+   "relaxed-fit-bermuda-shorts-4.jpeg",
+   "relaxed-fit-bermuda-shorts-5.jpeg",
+   "relaxed-fit-bermuda-shorts-6.jpeg",
+   "relaxed-fit-bermuda-shorts-7.jpeg"
+  ],
+  "name": "relaxed-fit-bermuda-shorts",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,590 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#008000",
+   "name": "GREEN"
+  },
+  "description": "Relaxed fit Bermuda shorts. Elastic drawstring waistband. Front pockets and patch pocket detail on the back with contrasting combined patch. Contrasting combined bottomstitching throughout. Uneven hem.",
+  "imageCover": "patch-jogger-bermuda-shorts-5.jpeg",
+  "images": [
+   "patch-jogger-bermuda-shorts-0.jpeg",
+   "patch-jogger-bermuda-shorts-1.jpeg",
+   "patch-jogger-bermuda-shorts-2.jpeg",
+   "patch-jogger-bermuda-shorts-3.jpeg",
+   "patch-jogger-bermuda-shorts-4.jpeg",
+   "patch-jogger-bermuda-shorts-5.jpeg",
+   "patch-jogger-bermuda-shorts-6.jpeg",
+   "patch-jogger-bermuda-shorts-7.jpeg",
+   "patch-jogger-bermuda-shorts-8.jpeg"
+  ],
+  "name": "patch-jogger-bermuda-shorts",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,590 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "LIGHT BEIGE"
+  },
+  "description": "Regular fit trousers made in linen fabric. Waistband with front pleat detail. Front pockets and back welt pockets with button detail. Front zip and button fastening.",
+  "imageCover": "100--linen-trousers-6.jpeg",
+  "images": [
+   "100--linen-trousers-0.jpeg",
+   "100--linen-trousers-1.jpeg",
+   "100--linen-trousers-2.jpeg",
+   "100--linen-trousers-3.jpeg",
+   "100--linen-trousers-4.jpeg",
+   "100--linen-trousers-5.jpeg",
+   "100--linen-trousers-6.jpeg",
+   "100--linen-trousers-7.jpeg",
+   "100--linen-trousers-8.jpeg",
+   "100--linen-trousers-9.jpeg"
+  ],
+  "name": "100--linen-trousers",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "3,290 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#ADD8E6",
+   "name": "LIGHT BLUE"
+  },
+  "description": "Faded slim fit cropped jeans with five pockets. Button fastening.",
+  "imageCover": "slim-cropped-fit-jeans-4.jpeg",
+  "images": [
+   "slim-cropped-fit-jeans-0.jpeg",
+   "slim-cropped-fit-jeans-1.jpeg",
+   "slim-cropped-fit-jeans-2.jpeg",
+   "slim-cropped-fit-jeans-3.jpeg",
+   "slim-cropped-fit-jeans-4.jpeg",
+   "slim-cropped-fit-jeans-5.jpeg",
+   "slim-cropped-fit-jeans-6.jpeg",
+   "slim-cropped-fit-jeans-7.jpeg"
+  ],
+  "name": "slim-cropped-fit-jeans",
+  "price": {
+   "current": "1,690 EGP",
+   "old": "2,190 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#000080",
+   "name": "NAVY BLUE"
+  },
+  "description": "Regular fit trousers made from a cotton and linen blend fabric. Featuring an elasticated waistband with adjustable drawstring, front pockets and rear welt pocket detail. Zip fly and button fastening.",
+  "imageCover": "cotton-linen-trousers-4.jpeg",
+  "images": [
+   "cotton-linen-trousers-0.jpeg",
+   "cotton-linen-trousers-1.jpeg",
+   "cotton-linen-trousers-2.jpeg",
+   "cotton-linen-trousers-3.jpeg",
+   "cotton-linen-trousers-4.jpeg",
+   "cotton-linen-trousers-5.jpeg",
+   "cotton-linen-trousers-6.jpeg",
+   "cotton-linen-trousers-7.jpeg"
+  ],
+  "name": "cotton-linen-trousers",
+  "price": {
+   "current": "1,990 EGP",
+   "old": "2,990 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "LIGHT BEIGE"
+  },
+  "description": "Textured cotton trousers. Featuring an elasticated drawstring waistband, side pockets and rear welt pockets.",
+  "imageCover": "relaxed-fit-textured-trousers-5.jpeg",
+  "images": [
+   "relaxed-fit-textured-trousers-0.jpeg",
+   "relaxed-fit-textured-trousers-1.jpeg",
+   "relaxed-fit-textured-trousers-2.jpeg",
+   "relaxed-fit-textured-trousers-3.jpeg",
+   "relaxed-fit-textured-trousers-4.jpeg",
+   "relaxed-fit-textured-trousers-5.jpeg",
+   "relaxed-fit-textured-trousers-6.jpeg",
+   "relaxed-fit-textured-trousers-7.jpeg",
+   "relaxed-fit-textured-trousers-8.jpeg"
+  ],
+  "name": "relaxed-fit-textured-trousers",
+  "price": {
+   "current": "2,990 EGP",
+   "old": "4,990 EGP"
+  }
+ },
+ {
+  "category": "bottoms",
+  "color": {
+   "hex": "#F5F5DC",
+   "name": "ECRU"
+  },
+  "description": "Slim fit trousers made of slightly stretchy cotton fabric. Featuring an adjustable elasticated waistband with drawstring. Front pockets and rear welt pockets. Faded effect. Elasticated cuffed hems.",
+  "imageCover": "faded-jogger-waist-trousers-5.jpeg",
+  "images": [
+   "faded-jogger-waist-trousers-0.jpeg",
+   "faded-jogger-waist-trousers-1.jpeg",
+   "faded-jogger-waist-trousers-2.jpeg",
+   "faded-jogger-waist-trousers-3.jpeg",
+   "faded-jogger-waist-trousers-4.jpeg",
+   "faded-jogger-waist-trousers-5.jpeg",
+   "faded-jogger-waist-trousers-6.jpeg",
+   "faded-jogger-waist-trousers-7.jpeg",
+   "faded-jogger-waist-trousers-8.jpeg"
+  ],
+  "name": "faded-jogger-waist-trousers",
+  "price": {
+   "current": "1,490 EGP",
+   "old": "2,190 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#F9F6EE",
+   "name": "BONE WHITE"
+  },
+  "description": "Vertical crossbody bag with a rubberised finish. Main compartment with zip closure. Interior with zip pocket. Adjustable shoulder strap.\n\nHeight x Length x Width: 18 x 13 x 8 cm. / 7.0 x 5.1 x 3.1\"",
+  "imageCover": "rubberised-crossbody-bag-2.jpeg",
+  "images": [
+   "rubberised-crossbody-bag-0.jpeg",
+   "rubberised-crossbody-bag-1.jpeg",
+   "rubberised-crossbody-bag-2.jpeg",
+   "rubberised-crossbody-bag-3.jpeg",
+   "rubberised-crossbody-bag-4.jpeg",
+   "rubberised-crossbody-bag-5.jpeg"
+  ],
+  "name": "rubberised-crossbody-bag",
+  "price": {
+   "current": "690 EGP",
+   "old": "850 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#8FBC8F",
+   "name": "KHAKI GREEN"
+  },
+  "description": "Rigid crossbody bag. Rubberised finish with raised design. Main compartment with double zip closure. Mesh inside pocket. Adjustable and detachable shoulder strap.\n\nHeight x Length x Width: 13 x 19 x 6 cm.",
+  "imageCover": "rigid-crossbody-bag-0.jpeg",
+  "images": [
+   "rigid-crossbody-bag-0.jpeg",
+   "rigid-crossbody-bag-1.jpeg",
+   "rigid-crossbody-bag-2.jpeg",
+   "rigid-crossbody-bag-3.jpeg"
+  ],
+  "name": "rigid-crossbody-bag",
+  "price": {
+   "current": "1,590 EGP",
+   "old": "2,190 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Crossbody bag made of technical fabric. Main compartment with magnetic popper fastening under the flap. Zip pocket on the flap. Inside zip pocket. Adjustable shoulder strap.\n\nHeight x Length x Width: 13 x 21 x 4.5 cm. / 5.1 x 8.2 x 1.7\"",
+  "imageCover": "nylon-crossbody-bag-with-flap-2.jpeg",
+  "images": [
+   "nylon-crossbody-bag-with-flap-0.jpeg",
+   "nylon-crossbody-bag-with-flap-1.jpeg",
+   "nylon-crossbody-bag-with-flap-2.jpeg",
+   "nylon-crossbody-bag-with-flap-3.jpeg",
+   "nylon-crossbody-bag-with-flap-4.jpeg",
+   "nylon-crossbody-bag-with-flap-5.jpeg"
+  ],
+  "name": "nylon-crossbody-bag-with-flap",
+  "price": {
+   "current": "1,390 EGP",
+   "old": "1,790 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#808080",
+   "name": "MULTICOLOURED"
+  },
+  "description": "Penny loafers. Leather upper with contrast colours. Leather insole. Rounded toe. Sole with slight heel.",
+  "imageCover": "contrast-leather-penny-loafers-2.jpeg",
+  "images": [
+   "contrast-leather-penny-loafers-0.jpeg",
+   "contrast-leather-penny-loafers-1.jpeg",
+   "contrast-leather-penny-loafers-2.jpeg",
+   "contrast-leather-penny-loafers-3.jpeg"
+  ],
+  "name": "contrast-leather-penny-loafers",
+  "price": {
+   "current": "3,799 EGP",
+   "old": "4,990 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#808080",
+   "name": "GREY"
+  },
+  "description": "Deck shoes. Leather upper with a split suede finish. Chunky rubber sole.",
+  "imageCover": "leather-deck-shoes-6.jpeg",
+  "images": [
+   "leather-deck-shoes-0.jpeg",
+   "leather-deck-shoes-1.jpeg",
+   "leather-deck-shoes-2.jpeg",
+   "leather-deck-shoes-3.jpeg",
+   "leather-deck-shoes-4.jpeg",
+   "leather-deck-shoes-5.jpeg",
+   "leather-deck-shoes-6.jpeg",
+   "leather-deck-shoes-7.jpeg"
+  ],
+  "name": "leather-deck-shoes",
+  "price": {
+   "current": "2,490 EGP",
+   "old": "3,290 EGP"
+  }
+ },
+ {
+  "category": "shoes | bags",
+  "color": {
+   "hex": "#FFFFFF",
+   "name": "WHITE"
+  },
+  "description": "Retro style trainers. Upper made from a combination of panels. Contrast sole.",
+  "imageCover": null,
+  "images": [
+   "sneakers-with-contrast-soles-0.jpeg",
+   "sneakers-with-contrast-soles-1.jpeg",
+   "sneakers-with-contrast-soles-2.jpeg",
+   "sneakers-with-contrast-soles-3.jpeg",
+   "sneakers-with-contrast-soles-4.jpeg",
+   "sneakers-with-contrast-soles-5.jpeg"
+  ],
+  "name": "sneakers-with-contrast-soles",
+  "price": {
+   "current": "2,490 EGP",
+   "old": "3,290 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#DC143C",
+   "name": "RED"
+  },
+  "description": "Oriental eau de parfum. The fragrance pyramid reveals notes of orange, amber and evernyl. It’s a warm, elegant and luminous fragrance.",
+  "imageCover": "for-him-red-edition-edp-50ml---1-69-oz-0.jpeg",
+  "images": [
+   "for-him-red-edition-edp-50ml---1-69-oz-0.jpeg",
+   "for-him-red-edition-edp-50ml---1-69-oz-1.jpeg"
+  ],
+  "name": "for-him-red-edition-edp-50ml---1-69-oz",
+  "price": {
+   "current": "799 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#DC143C",
+   "name": "RED"
+  },
+  "description": "A fragrance that takes the iconic original perfume to a new level of refinement.\n\nThe vibrant citrus notes of bergamot and grapefruit contrast with a rich woody and spicy signature that creates a unique and powerful aroma.\nCompleting this sophisticated essence, a trio of Amber, Tonka and Black Vanilla adds a reinvented addiction, revealing a deeper fascination.\n\nA story of greater intensity, bold sensuality and an irresistible appeal for those who are reshaping the boundaries of masculinity.",
+  "imageCover": "for-him-red-edition-intense-parfum-100-ml---3-38-oz-0.jpeg",
+  "images": [
+   "for-him-red-edition-intense-parfum-100-ml---3-38-oz-0.jpeg",
+   "for-him-red-edition-intense-parfum-100-ml---3-38-oz-1.jpeg",
+   "for-him-red-edition-intense-parfum-100-ml---3-38-oz-2.jpeg"
+  ],
+  "name": "for-him-red-edition-intense-parfum-100-ml---3-38-oz",
+  "price": {
+   "current": "1,490 EGP",
+   "old": "1,990 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Eau de parfum. A fragrance that takes the iconic original scent to a new level of refinement. The vibrant citrus notes of bergamot and grapefruit contrast with a rich woody and spicy signature that creates a unique and powerful aroma. Completing this sophisticated essence, a trio of Amber, Tonka and Black Vanilla adds a reinvented addiction, revealing a deeper fascination. A story of greater intensity, bold sensuality and an irresistible appeal for those who are reshaping the boundaries of masculinity.",
+  "imageCover": "for-him-intense-parfum-100-ml---3-38-oz-0.jpeg",
+  "images": [
+   "for-him-intense-parfum-100-ml---3-38-oz-0.jpeg",
+   "for-him-intense-parfum-100-ml---3-38-oz-1.jpeg",
+   "for-him-intense-parfum-100-ml---3-38-oz-2.jpeg"
+  ],
+  "name": "for-him-intense-parfum-100-ml---3-38-oz",
+  "price": {
+   "current": "1,490 EGP",
+   "old": "1,990 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#808080",
+   "name": "VARIOUS"
+  },
+  "description": "Pack of four pairs of cotton-blend no-show socks. Ribbed finish.",
+  "imageCover": "pack-of-4-no-show-socks-0.jpeg",
+  "images": [
+   "pack-of-4-no-show-socks-0.jpeg",
+   "pack-of-4-no-show-socks-1.jpeg"
+  ],
+  "name": "pack-of-4-no-show-socks",
+  "price": {
+   "current": "370 EGP",
+   "old": "850 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#DC143C",
+   "name": "RED"
+  },
+  "description": "Oriental eau de parfum. The fragrance pyramid reveals notes of orange, amber and evernyl. It’s a warm, elegant and luminous fragrance.\n\nThe perfume comes in a special case and a bottle with metallic decoration for this festive edition.",
+  "imageCover": "for-him-red-edition-edp-100-ml---3-38-oz-0.jpeg",
+  "images": [
+   "for-him-red-edition-edp-100-ml---3-38-oz-0.jpeg",
+   "for-him-red-edition-edp-100-ml---3-38-oz-1.jpeg"
+  ],
+  "name": "for-him-red-edition-edp-100-ml---3-38-oz",
+  "price": {
+   "current": "1,290 EGP",
+   "old": "1,690 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#FF0000",
+   "name": "RED"
+  },
+  "description": "Double-sided scarf in a soft-touch fabric. Fringed trims.\n\nMeasurements: 200 cm / 78.7″ x 32 cm / 12.5″",
+  "imageCover": "check-combination-scarf-1.jpeg",
+  "images": [
+   "check-combination-scarf-0.jpeg",
+   "check-combination-scarf-1.jpeg",
+   "check-combination-scarf-2.jpeg"
+  ],
+  "name": "check-combination-scarf",
+  "price": {
+   "current": "1,290 EGP",
+   "old": "1,990 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#8B4513",
+   "name": "BROWN"
+  },
+  "description": "Eau de parfum. Limited edition. A balance between the warmth of woody notes and the intensity of leather. Citrus notes of bergamot and lemon blend with bamboo, leather accords and a base of patchouli and papyrus.",
+  "imageCover": "vibrant-leather-edp-100-ml---3-38-oz---12-ml---0-41-oz-0.jpeg",
+  "images": [
+   "vibrant-leather-edp-100-ml---3-38-oz---12-ml---0-41-oz-0.jpeg",
+   "vibrant-leather-edp-100-ml---3-38-oz---12-ml---0-41-oz-1.jpeg"
+  ],
+  "name": "vibrant-leather-edp-100-ml---3-38-oz---12-ml---0-41-oz",
+  "price": {
+   "current": "1,290 EGP",
+   "old": "1,690 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#228B22",
+   "name": "GREEN"
+  },
+  "description": "Hesperidic amber eau de toilette. The fragrance pyramid reveals fruity top notes such as bergamot, mandarin and grapefruit, with ginger. Accompanied by notes of lavender, apple, sage and tonka bean. The base reveals incense and amber notes wrapped in cedarwood and musk. It’s a fresh, luminous and captivating fragrance.",
+  "imageCover": "green-savage-edt-90-ml---3-04-oz-0.jpeg",
+  "images": [
+   "green-savage-edt-90-ml---3-04-oz-0.jpeg",
+   "green-savage-edt-90-ml---3-04-oz-1.jpeg",
+   "green-savage-edt-90-ml---3-04-oz-2.jpeg"
+  ],
+  "name": "green-savage-edt-90-ml---3-04-oz",
+  "price": {
+   "current": "799 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#4169E1",
+   "name": "BLUE"
+  },
+  "description": "Marine fougère eau de toilette. The fragrance pyramid includes fruity notes such as mandarin, apple and orange blossom, accompanied by a woody and amber base. It’s a fresh, sporty and comfortable fragrance.",
+  "imageCover": "seoul-winter-edt-90-ml---3-04-oz-0.jpeg",
+  "images": [
+   "seoul-winter-edt-90-ml---3-04-oz-0.jpeg",
+   "seoul-winter-edt-90-ml---3-04-oz-1.jpeg",
+   "seoul-winter-edt-90-ml---3-04-oz-2.jpeg"
+  ],
+  "name": "seoul-winter-edt-90-ml---3-04-oz",
+  "price": {
+   "current": "799 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Bandana made of cotton.\n\nMeasurements: 60 x 60 cm. / 23.6 x 23.6″",
+  "imageCover": "paisley-print-bandanna-1.jpeg",
+  "images": [
+   "paisley-print-bandanna-0.jpeg",
+   "paisley-print-bandanna-1.jpeg",
+   "paisley-print-bandanna-2.jpeg"
+  ],
+  "name": "paisley-print-bandanna",
+  "price": {
+   "current": "690 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Knitted beanie in a cotton yarn. Turn-up brim.",
+  "imageCover": "basic-knitted-beanie-1.jpeg",
+  "images": [
+   "basic-knitted-beanie-0.jpeg",
+   "basic-knitted-beanie-1.jpeg",
+   "basic-knitted-beanie-2.jpeg",
+   "basic-knitted-beanie-3.jpeg"
+  ],
+  "name": "basic-knitted-beanie",
+  "price": {
+   "current": "690 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+  "description": "Pack of three pairs of cotton-blend knit socks. Ribbed cuffs.",
+  "imageCover": "3-pack-of-plain-socks-0.jpeg",
+  "images": [
+   "3-pack-of-plain-socks-0.jpeg",
+   "3-pack-of-plain-socks-1.jpeg",
+   "3-pack-of-plain-socks-2.jpeg"
+  ],
+  "name": "3-pack-of-plain-socks",
+  "price": {
+   "current": "530 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#808080",
+   "name": "VARIOUS"
+  },
+  "description": "Pack of three pairs of socks made of a spun cotton blend fabric. Ribbed trims.",
+  "imageCover": "pack-of-3-ribbed-socks-2.jpeg",
+  "images": [
+   "pack-of-3-ribbed-socks-0.jpeg",
+   "pack-of-3-ribbed-socks-1.jpeg",
+   "pack-of-3-ribbed-socks-2.jpeg"
+  ],
+  "name": "pack-of-3-ribbed-socks",
+  "price": {
+   "current": "370 EGP",
+   "old": "850 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#808080",
+   "name": "VARIOUS"
+  },
+  "description": "Pack of four pairs of ankle socks made of a spun cotton blend fabric. Ribbed trims.",
+  "imageCover": "4-pack-of-ankle-socks-with-stripes-0.jpeg",
+  "images": [
+   "4-pack-of-ankle-socks-with-stripes-0.jpeg",
+   "4-pack-of-ankle-socks-with-stripes-1.jpeg"
+  ],
+  "name": "4-pack-of-ankle-socks-with-stripes",
+  "price": {
+   "current": "370 EGP",
+   "old": "850 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#6B8E23",
+   "name": "DARK KHAKI"
+  },
+  "description": "Peak cap made of cotton fabric with a velvety finish. Adjustable at the back.",
+  "imageCover": "basic-soft-cap-4.jpeg",
+  "images": [
+   "basic-soft-cap-0.jpeg",
+   "basic-soft-cap-1.jpeg",
+   "basic-soft-cap-2.jpeg",
+   "basic-soft-cap-3.jpeg",
+   "basic-soft-cap-4.jpeg",
+   "basic-soft-cap-5.jpeg",
+   "basic-soft-cap-6.jpeg"
+  ],
+  "name": "basic-soft-cap",
+  "price": {
+   "current": "530 EGP",
+   "old": "1,090 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#FFFFFF",
+   "name": "WHITE"
+  },
+  "description": "Pack of 3 pairs of socks made of a spun cotton blend fabric. Ribbed elastic trims.",
+  "imageCover": "pack-of-3-textured-socks-0.jpeg",
+  "images": [
+   "pack-of-3-textured-socks-0.jpeg",
+   "pack-of-3-textured-socks-1.jpeg",
+   "pack-of-3-textured-socks-2.jpeg"
+  ],
+  "name": "pack-of-3-textured-socks",
+  "price": {
+   "current": "370 EGP",
+   "old": "850 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#FFD700",
+   "name": "GOLD"
+  },
+  "description": "Eau de parfum. Woody and ambery fragrance with vibrant lemon and mandarin, a spicy touch of pink pepper and the warmth of cinnamon. Its base reveals cedarwood, palo santo, roasted chestnut, guaiac wood and vanilla, creating a seductive and enigmatic richness.",
+  "imageCover": "gold-absolute-edp-90ml---3-04-oz-0.jpeg",
+  "images": [
+   "gold-absolute-edp-90ml---3-04-oz-0.jpeg",
+   "gold-absolute-edp-90ml---3-04-oz-1.jpeg",
+   "gold-absolute-edp-90ml---3-04-oz-2.jpeg"
+  ],
+  "name": "gold-absolute-edp-90ml---3-04-oz",
+  "price": {
+   "current": "990 EGP",
+   "old": "1,290 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#0000FF",
+   "name": "BLUE"
+  },
+  "description": "Washed cotton peaked cap. Contrasting Queen © Bravado graphic print. Adjustable fastening at the back.",
+  "imageCover": "queen---cap-1.jpeg",
+  "images": [
+   "queen---cap-0.jpeg",
+   "queen---cap-1.jpeg",
+   "queen---cap-2.jpeg",
+   "queen---cap-3.jpeg"
+  ],
+  "name": "queen---cap",
+  "price": {
+   "current": "920 EGP",
+   "old": "1,690 EGP"
+  }
+ },
+ {
+  "category": "accessories",
+  "color": {
+   "hex": "#000000",
+   "name": "BLACK"
+  },
+
+  "description": "Bandana made of cotton.\n\nMeasurements: 60 x 60 cm. / 23.6 x 23.6″",
+  "imageCover": "paisley-print-bandanna-1.jpeg",
+  "images": [
+   "paisley-print-bandanna-0.jpeg",
+   "paisley-print-bandanna-1.jpeg",
+   "paisley-print-bandanna-2.jpeg"
+  ],
+  "name": "paisley-print-bandanna",
+  "price": {
+   "current": "690 EGP",
+   "old": "1,090 EGP"
+  }
+ }
+]

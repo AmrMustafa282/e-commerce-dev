@@ -66,7 +66,12 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     updatedAt: sortDirection,
    },
    include: {
-    images: true,
+    images: {
+     include: true,
+     orderBy: {
+      createdAt: "asc",
+     },
+    },
     category: true,
     productSizes: true,
     color: true,
@@ -220,7 +225,12 @@ export const getProduct = catchAsync(async (req, res, next) => {
   where: { id: req.params.id },
   include: {
    category: true,
-   images: true,
+   images: {
+    include: true,
+    orderBy: {
+     createdAt: "asc",
+    },
+   },
    color: true,
    productSizes: {
     include: {
