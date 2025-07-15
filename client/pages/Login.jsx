@@ -1,9 +1,9 @@
-import { useState } from "react";
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { useDispatch } from "react-redux";
 import {
@@ -11,18 +11,18 @@ import {
  signInFailure,
  signInSuccess,
 } from "@/redux/user/userSlice";
-
 import { toast } from "sonner";
+import DemoAlert from "@/components/Alert";
+import { useEffect } from "react";
 
 const Login = () => {
  const dispatch = useDispatch();
  const nav = useNavigate();
-
  const signIn = useSignIn();
+ const location = useLocation();
 
  const onSubmit = async (values) => {
   console.log("Values: ", values);
-
   try {
    dispatch(signInStart());
    const response = await axios.post("/api/v1/users/login", values);
@@ -47,15 +47,18 @@ const Login = () => {
     dispatch(signInFailure());
     return;
    }
+
    if (response.data?.data?.user?.role === "admin") {
     options.role = "admin";
    }
+
    signIn({
     auth: {
      token: response.data.token,
     },
     userState: options,
    });
+
    dispatch(signInSuccess(response.data));
    nav("/");
   } catch (err) {
@@ -63,7 +66,6 @@ const Login = () => {
    if (err && err instanceof AxiosError)
     toast.error(err.response?.data.message);
    else if (err && err instanceof Error) toast.error(err.message);
-
    console.log("Error: ", err);
   }
  };
@@ -76,14 +78,33 @@ const Login = () => {
   onSubmit,
  });
 
+ useEffect(() => {
+  if (location.state?.email && location.state?.password) {
+   formik.setValues({
+    email: location.state.email,
+    password: location.state.password,
+   });
+  }
+ }, [location.state]);
+
+ const handleTryAccount = (email, password) => {
+  formik.setValues({
+   email: email,
+   password: password,
+  });
+ };
+
  return (
   <div className="my-32 h-full">
-   <div className="flex justify-center items-center w-full ">
-    <div className="bg-white pb-12 pt-4 rounded-lg">
-     <form onSubmit={formik.handleSubmit} className="mx-auto">
-      <h1 className="my-4 text-center font-semibold text-3xl">Login</h1>
+   <div className="flex justify-center items-center w-full">
+    <div className="bg-white pb-12 pt-4 rounded-lg max-w-md w-full mx-4">
+     <div className="px-6">
+      <DemoAlert onTryAccount={handleTryAccount} />
+     </div>
 
-      <div className="flex flex-col gap-4 w-full min-w-80">
+     <form onSubmit={formik.handleSubmit} className="mx-auto px-6">
+      <h1 className="my-4 text-center font-semibold text-3xl">Login</h1>
+      <div className="flex flex-col gap-4 w-full">
        <Input
         name="email"
         value={formik.values.email}
@@ -103,7 +124,7 @@ const Login = () => {
         Forget Password?
        </Link>
        <p className="mt-8">
-        Doesn't have an account yet?{" "}
+        {"Doesn't have an account yet? "}
         <Link to="/sign-up" className="underline text-blue-600">
          Sign Up
         </Link>
